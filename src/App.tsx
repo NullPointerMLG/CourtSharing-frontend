@@ -4,16 +4,19 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-import Landing from './components/Landing/Landing';
+import {Landing} from './components/Landing/Landing';
 import Register from './components/Register/Register';
 import { NotFound } from './components/NotFound/NotFound';
-import { Theme } from './themes/theme';
+import { theme } from './themes/theme';
 import { MuiThemeProvider } from '@material-ui/core';
+import { initializeFirebase } from './utils/firebase';
 
 const App: React.FC = () => {
+  initializeFirebase();
+
   return (
     <div className="App">
-      <MuiThemeProvider theme={Theme}>
+      <MuiThemeProvider theme={theme}>
         <BrowserRouter>
             <React.Fragment> 
               <Switch>
