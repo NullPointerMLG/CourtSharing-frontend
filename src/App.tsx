@@ -11,6 +11,7 @@ import { theme } from './themes/theme';
 import { MuiThemeProvider } from '@material-ui/core';
 import { initializeFirebase } from './utils/firebase';
 import { Login } from './components/Login/Login';
+import { Feed } from './components/Feed/Feed';
 
 initializeFirebase();
 
@@ -25,6 +26,7 @@ const App: React.FC = () => {
                 <Route exact path="/" component={Landing} /> 
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
+                <Route exact path="/feed" component={Feed} />
                 <Route component={NotFound} />
               </Switch> 
             </React.Fragment>
