@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import Landing from './components/Landing/Landing';
 import Register from './components/Register/Register';
-import NotFound from './components/NotFound/NotFound';
+import {NotFound} from './components/NotFound/NotFound';
 
 
 const App: React.FC = () => {
