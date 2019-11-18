@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/styles';
-import { StyledFirebaseAuth } from 'react-firebaseui';
-import firebase from 'firebase';
-
+import React from "react";
+import { makeStyles } from "@material-ui/styles";
+import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: { padding: "200px 0", textAlign: "center" },
@@ -12,29 +11,23 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const uiConfig = {
-  signInFlow: 'popup',
-  signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID
-  ],
-  callbacks: {
-    signInSuccessWithAuthResult: () => false
-  }
-}
-
-export const Landing: React.FC = props => { 
+export const Landing: React.FC = props => {
   const classes = useStyles();
   return (
     <React.Fragment>
-    <div>
-      <h1>CourtSharing</h1>
-    </div>
-    <div>
-      <div className='login-container'>
-        <h2>Login</h2>
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+      <div>
+        <h1>CourtSharing</h1>
       </div>
-    </div>
+      <div>
+        <div className="login-container">
+          <h2>Landing page</h2>
+          <Link className={classes.buttonLabel} to="/login">
+            <Button variant="contained" color="primary">
+              Log in
+            </Button>
+          </Link>
+        </div>
+      </div>
     </React.Fragment>
-  )
-}
+  );
+};

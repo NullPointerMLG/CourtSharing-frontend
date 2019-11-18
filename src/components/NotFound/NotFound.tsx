@@ -16,9 +16,11 @@ export const NotFound: React.FC = props => {
   return (
     <div className={classes.root}>
       <h1>Ooops! You are lost!</h1>
-      <Button variant="contained" color="primary">
-        <Link className={classes.buttonLabel}  to="/">Back Home</Link>
-      </Button>
+      <Link className={classes.buttonLabel} to="/">
+        <Button variant="contained" color="primary">
+          Back Home
+        </Button>
+      </Link>
     </div>
   );
 };

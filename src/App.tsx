@@ -10,6 +10,7 @@ import { NotFound } from './components/NotFound/NotFound';
 import { theme } from './themes/theme';
 import { MuiThemeProvider } from '@material-ui/core';
 import { initializeFirebase } from './utils/firebase';
+import { Login } from './components/Login/Login';
 
 initializeFirebase();
 
@@ -22,6 +23,7 @@ const App: React.FC = () => {
             <React.Fragment> 
               <Switch>
                 <Route exact path="/" component={Landing} /> 
+                <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route component={NotFound} />
               </Switch> 
