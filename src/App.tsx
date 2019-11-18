@@ -11,8 +11,9 @@ import { theme } from './themes/theme';
 import { MuiThemeProvider } from '@material-ui/core';
 import { initializeFirebase } from './utils/firebase';
 
+initializeFirebase();
+
 const App: React.FC = () => {
-  initializeFirebase();
 
   return (
     <div className="App">
