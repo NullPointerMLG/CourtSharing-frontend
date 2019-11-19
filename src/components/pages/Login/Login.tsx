@@ -3,6 +3,7 @@ import { StyledFirebaseAuth } from "react-firebaseui";
 import firebase from "firebase";
 import { UserContext } from "../../../context/UserContext";
 import { Redirect } from "react-router-dom";
+import { login } from "../../../services/API";
 
 
 export const Login: React.FC = props => {
@@ -14,7 +15,11 @@ export const Login: React.FC = props => {
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
     callbacks: {
       signInSuccessWithAuthResult: () => {
-        setUser(firebase.auth().currentUser);
+        const user: firebase.User | null = firebase.auth().currentUser;
+        if(user) {
+          login(user.getIdToken());
+          setUser(user);
+        }
         return false;
       }
     }
