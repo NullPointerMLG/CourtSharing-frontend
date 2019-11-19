@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Landing } from "./components/pages/Landing/Landing";
 import Register from "./components/pages/Register/Register";
@@ -11,12 +11,10 @@ import { Feed } from "./components/pages/Feed/Feed";
 import { MainAppBar } from "./components/shared/AppBar";
 import { UserProvider } from "./context/UserContext";
 
-const App: React.FC = () => {
-  
-  useEffect(() => {
-    initializeFirebase()
-  }, []);
-  
+const App: React.FC = () => {  
+
+  initializeFirebase();
+
   return (
     <UserProvider>
       <div className="App">
