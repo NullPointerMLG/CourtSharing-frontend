@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AppBar, Toolbar, Typography, Button, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PersonSharpIcon from "@material-ui/icons/PersonSharp";
+import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
 import { Link } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -27,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const MainAppBar = () => {
   const classes = useStyles();
-  const loggedUser: string | null = localStorage.getItem("loggedUser");
+  const [user, setUser] = useContext(UserContext);
 
   const renderLoginButton = () => {
     return <Link to="/login">
@@ -41,6 +43,7 @@ export const MainAppBar = () => {
   const renderLogoutButton = () => {
     return <Link to="/logout">
           <Button color="secondary">
+            <ExitToAppSharpIcon className={classes.loginIcon} />
             <Typography className={classes.loginButtonText}>Log out</Typography>
           </Button>
         </Link>
@@ -52,7 +55,7 @@ export const MainAppBar = () => {
         <Typography className={classes.title} color="secondary">
           <Link to="/" className={classes.link}>Court-Sharing</Link>
         </Typography>
-        {(loggedUser === null) ? renderLogoutButton() : renderLoginButton()}
+        {(user) ? renderLogoutButton() : renderLoginButton()}
       </Toolbar>
     </AppBar>
   );

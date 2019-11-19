@@ -1,13 +1,11 @@
-import React from "react";
-import { User } from "firebase";
+import React, { useContext } from "react";
 import { Redirect } from "react-router";
+import { UserContext } from "../../../context/UserContext";
 
 export const Feed: React.FC = props => {
-  const loggedUser: string | null = localStorage.getItem("loggedUser");
+  const [user, setUser] = useContext(UserContext);
 
-  if (!loggedUser) return <Redirect to="/login" />;
-
-  const user: User = JSON.parse(loggedUser);
+  if (!user) return <Redirect to="/login" />;
 
   return (
     <div>
