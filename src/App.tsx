@@ -9,7 +9,7 @@ import { initializeFirebase } from "./utils/firebase";
 import { Login } from "./components/pages/Login/Login";
 import { Feed } from "./components/pages/Feed/Feed";
 import { MainAppBar } from "./components/shared/AppBar";
-import { UserProvider } from "./context/UserContext.jsx";
+import { UserProvider } from "./context/UserContext";
 
 initializeFirebase();
 

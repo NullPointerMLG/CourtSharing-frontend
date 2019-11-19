@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StyledFirebaseAuth } from "react-firebaseui";
 import firebase from "firebase";
-import { UserContext } from "../../../context/UserContext.jsx";
+import { UserContext } from "../../../context/UserContext";
 import { Redirect } from "react-router-dom";
 
 
