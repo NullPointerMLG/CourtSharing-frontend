@@ -34,6 +34,7 @@ export const MainAppBar = () => {
     const undefinedValue: any = undefined;
     firebase.auth().signOut();
     setUser(undefinedValue);
+    localStorage.removeItem("loggedUser");
   }
 
   const renderLoginButton = () => {
