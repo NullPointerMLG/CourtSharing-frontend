@@ -9,12 +9,10 @@ import firebase from "firebase";
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
-    fontFamily: "Roboto",
     fontSize: "20px",
     flexGrow: 1
   },
   loginButtonText: {
-    fontFamily: "Roboto",
     fontSize: "15px",
     textAlign: "center",
     paddingRight: "5px"

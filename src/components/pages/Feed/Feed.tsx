@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import { Redirect } from "react-router";
 import { UserContext } from "../../../context/UserContext";
 
-export const Feed: React.FC = props => {
-  const [user, setUser] = useContext(UserContext);
+export const Feed: React.FC = () => {
+  const [user] = useContext(UserContext);
 
   if (!user) return <Redirect to="/login" />;
 
