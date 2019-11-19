@@ -5,6 +5,7 @@ import PersonSharpIcon from "@material-ui/icons/PersonSharp";
 import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import firebase from "firebase";
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -31,6 +32,12 @@ export const MainAppBar = () => {
   const classes = useStyles();
   const [user, setUser] = useContext(UserContext);
 
+  const userLogOut = () => {
+    const undefinedValue: any = undefined;
+    firebase.auth().signOut();
+    setUser(undefinedValue);
+  }
+
   const renderLoginButton = () => {
     return <Link to="/login">
           <Button color="secondary">
@@ -41,8 +48,8 @@ export const MainAppBar = () => {
   }
 
   const renderLogoutButton = () => {
-    return <Link to="/logout">
-          <Button color="secondary">
+    return <Link to="/">
+          <Button color="secondary" onClick={userLogOut}>
             <ExitToAppSharpIcon className={classes.loginIcon} />
             <Typography className={classes.loginButtonText}>Log out</Typography>
           </Button>
