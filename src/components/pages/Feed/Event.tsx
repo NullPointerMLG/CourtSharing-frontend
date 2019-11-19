@@ -68,6 +68,15 @@ export const Event: React.FC<Props> = props => {
     setExpanded(!expanded);
   };
 
+  const formatDate = (value: number): string => {
+    var date = new Date(value * 1000);
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).substr(-2);
+    var day = ("0" + date.getDate()).substr(-2);
+    var formattedTime = `${year}-${month}-${day}`;
+    return formattedTime;
+  };
+
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -80,7 +89,7 @@ export const Event: React.FC<Props> = props => {
           </IconButton>
         }
         title={props.event.title}
-        subheader={props.event.eventDate}
+        subheader={formatDate(props.event.eventDate)}
       />
       <CardMedia
         className={classes.media}
