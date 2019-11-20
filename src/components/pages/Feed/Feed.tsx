@@ -6,6 +6,8 @@ import { Event as EventEntity } from "./../../../models/event";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { FilterMenu } from "./FilterMenu";
+import Grid from "@material-ui/core/Grid";
 
 const eventListMock: EventEntity[] = Array(10).fill({
   title: "Meet new friends playing football",
@@ -25,14 +27,20 @@ const eventListMock: EventEntity[] = Array(10).fill({
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      marginTop: "60px"
+    },
     eventGridListContainer: {
       display: "flex",
       flexWrap: "wrap",
       justifyContent: "space-around",
       overflow: "hidden",
-      paddingTop: "60px"
+      paddingLeft: "60px"
     },
-    event: { marginBottom: "60px" }
+    event: { marginBottom: "60px" },
+    menuContainer: {
+      marginLeft: "30px"
+    }
   })
 );
 
@@ -43,21 +51,29 @@ export const Feed: React.FC = () => {
   if (!user) return <Redirect to="/login" />;
 
   return (
-    <div>
-      <h2>Helloo {user.displayName}</h2>
-      <div className={classes.eventGridListContainer}>
-        <GridList
-          cellHeight={500}
-          className={classes.eventGridListContainer}
-          cols={3}
-        >
-          {eventListMock.map((event, i) => (
-            <GridListTile key={i} cols={1} className={classes.event}>
-              <Event event={event} />
-            </GridListTile>
-          ))}
-        </GridList>
-      </div>
+    <div className={classes.root}>
+      <Grid container>
+        <Grid item xs={3}>
+          <div className={classes.menuContainer}>
+            <FilterMenu />
+          </div>
+        </Grid>
+        <Grid item xs={9}>
+          <div className={classes.eventGridListContainer}>
+            <GridList
+              cellHeight={500}
+              className={classes.eventGridListContainer}
+              cols={3}
+            >
+              {eventListMock.map((event, i) => (
+                <GridListTile key={i} cols={1} className={classes.event}>
+                  <Event event={event} />
+                </GridListTile>
+              ))}
+            </GridList>
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };
