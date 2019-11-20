@@ -3,6 +3,9 @@ import { Redirect } from "react-router";
 import { UserContext } from "../../../context/UserContext";
 import { Event } from "./Event";
 import { Event as EventEntity } from "./../../../models/event";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 const eventListMock: EventEntity[] = Array(10).fill({
   title: "Meet new friends playing football",
@@ -20,22 +23,41 @@ const eventListMock: EventEntity[] = Array(10).fill({
   eventDate: 1554336000
 });
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    eventGridListContainer: {
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-around",
+      overflow: "hidden",
+      paddingTop: "60px"
+    },
+    event: { marginBottom: "60px" }
+  })
+);
+
 export const Feed: React.FC = () => {
+  const classes = useStyles();
   const [user] = useContext(UserContext);
 
   if (!user) return <Redirect to="/login" />;
 
   return (
     <div>
-      <h1>Feed</h1>
       <h2>Helloo {user.displayName}</h2>
-      {eventListMock.map(event => {
-        return (
-          <div style={{ marginBottom: "20px" }}>
-            <Event event={event} />
-          </div>
-        );
-      })}
+      <div className={classes.eventGridListContainer}>
+        <GridList
+          cellHeight={500}
+          className={classes.eventGridListContainer}
+          cols={3}
+        >
+          {eventListMock.map((event, i) => (
+            <GridListTile key={i} cols={1} className={classes.event}>
+              <Event event={event} />
+            </GridListTile>
+          ))}
+        </GridList>
+      </div>
     </div>
   );
 };
