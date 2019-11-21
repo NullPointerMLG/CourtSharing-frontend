@@ -28,18 +28,18 @@ const eventListMock: EventEntity[] = Array(10).fill({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: "60px"
+      padding: "60px"
     },
     eventGridListContainer: {
       display: "flex",
       flexWrap: "wrap",
       justifyContent: "space-around",
       overflow: "hidden",
-      paddingLeft: "60px"
+      paddingLeft: "40px"
     },
     event: { marginBottom: "60px" },
     menuContainer: {
-      marginLeft: "30px"
+      marginLeft: "16px"
     }
   })
 );
@@ -63,7 +63,7 @@ export const Feed: React.FC = () => {
             <GridList
               cellHeight={500}
               className={classes.eventGridListContainer}
-              cols={3}
+              cols={2}
             >
               {eventListMock.map((event, i) => (
                 <GridListTile key={i} cols={1} className={classes.event}>
