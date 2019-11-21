@@ -12,7 +12,9 @@ import { MainAppBar } from "./components/shared/AppBar";
 import { UserProvider } from "./context/UserContext";
 
 const useStyles = makeStyles(theme => ({
-  root: { height: "100%"}
+  root: { height: "100vh",
+          display: "flex",
+          flexDirection: "column"}
 }));
 
 const App: React.FC = () => {  

@@ -4,11 +4,10 @@ import firebase from "firebase";
 import { UserContext } from "../../../context/UserContext";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
-import classes from "*.module.css";
-
 const useStyles = makeStyles(theme => ({
   root: { display: "flex", 
           flexDirection: "column",
+          justifyContent: "center",
           width: "50%",
           height: "100%",
           textAlign: "center" }
@@ -34,7 +33,7 @@ export const Login: React.FC = props => {
 
   return (
     <div className={classes.root}>
-      <h1>Login</h1>
+      <h1>Sign In</h1>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
   );
