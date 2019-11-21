@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AppBar, Toolbar, Typography, Button, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PersonSharpIcon from "@material-ui/icons/PersonSharp";
-import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
+import ExitToAppSharpIcon from "@material-ui/icons/ExitToAppSharp";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import firebase from "firebase";
@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: "5px"
   },
   link: {
-      textDecoration: "none",
-      color: "inherit"
+    textDecoration: "none",
+    color: "inherit"
   }
 }));
 
@@ -35,33 +35,39 @@ export const MainAppBar = () => {
     firebase.auth().signOut();
     setUser(undefinedValue);
     localStorage.removeItem("loggedUser");
-  }
+  };
 
   const renderLoginButton = () => {
-    return <Link to="/login">
-          <Button color="secondary">
-            <PersonSharpIcon className={classes.loginIcon} />
-            <Typography className={classes.loginButtonText}>Log in</Typography>
-          </Button>
-        </Link>
-  }
+    return (
+      <Link to="/login">
+        <Button color="secondary">
+          <PersonSharpIcon className={classes.loginIcon} />
+          <Typography className={classes.loginButtonText}>Log in</Typography>
+        </Button>
+      </Link>
+    );
+  };
 
   const renderLogoutButton = () => {
-    return <Link to="/">
-          <Button color="secondary" onClick={userLogOut}>
-            <ExitToAppSharpIcon className={classes.loginIcon} />
-            <Typography className={classes.loginButtonText}>Log out</Typography>
-          </Button>
-        </Link>
-  }
+    return (
+      <Link to="/">
+        <Button color="secondary" onClick={userLogOut}>
+          <ExitToAppSharpIcon className={classes.loginIcon} />
+          <Typography className={classes.loginButtonText}>Log out</Typography>
+        </Button>
+      </Link>
+    );
+  };
 
   return (
-    <AppBar color="primary">
+    <AppBar color="primary" position={"absolute"}>
       <Toolbar>
         <Typography className={classes.title} color="secondary">
-          <Link to="/" className={classes.link}>Court-Sharing</Link>
+          <Link to="/" className={classes.link}>
+            Court-Sharing
+          </Link>
         </Typography>
-        {(user) ? renderLogoutButton() : renderLoginButton()}
+        {user ? renderLogoutButton() : renderLoginButton()}
       </Toolbar>
     </AppBar>
   );
