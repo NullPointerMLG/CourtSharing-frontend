@@ -29,9 +29,15 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: "200px 200px"
   },
   landingMessage: {
-    backgroundColor: "rgba(29, 161, 242, 0.6)",
+    backgroundColor: "rgba(29, 161, 242, 0.9)",
     borderRadius: "20px",
-    padding: "20px"
+    padding: "20px",
+  },
+  landingHeader: {
+    fontSize: "250%"
+  },
+  landingSubtitle: {
+    fontSize: "110%"
   }
 }));
 
@@ -42,9 +48,9 @@ export const Landing: React.FC = props => {
       <div className={classes.landing}>
         <div className={classes.landingBg}>
           <div className={classes.landingMessage}>
-            <h1>CourtSharing</h1>
-            <p>Find sports and events.</p>
-            <p>Anywhere, anytime.</p>
+            <h1 className={classes.landingHeader}>CourtSharing</h1>
+            <p className={classes.landingSubtitle}>Find sports and events.</p>
+            <p className={classes.landingSubtitle}>Anywhere, anytime.</p>
           </div>
         </div>
       </div>
