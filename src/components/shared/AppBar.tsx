@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   link: {
       textDecoration: "none",
       color: "inherit"
+  },
+  appbar: {
+    position: "absolute"
   }
 }));
 
@@ -56,12 +59,11 @@ export const MainAppBar = () => {
   }
 
   return (
-    <AppBar color="primary">
+    <AppBar color="primary" position="sticky" >
       <Toolbar>
         <Typography className={classes.title} color="secondary">
-          <Link to="/" className={classes.link}>Court-Sharing</Link>
+          <Link to="/" className={classes.link}>CourtSharing</Link>
         </Typography>
-        {(user) ? renderLogoutButton() : renderLoginButton()}
       </Toolbar>
     </AppBar>
   );
