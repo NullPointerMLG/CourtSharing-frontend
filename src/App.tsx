@@ -14,7 +14,6 @@ import { UserProvider } from "./context/UserContext";
 initializeFirebase();
 
 const App: React.FC = () => {
-  
   return (
     <UserProvider>
       <div className="App">
