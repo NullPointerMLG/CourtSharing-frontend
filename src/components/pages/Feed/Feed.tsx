@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Redirect } from "react-router";
 import { UserContext } from "../../../context/UserContext";
 import { Event } from "./Event";
-import { Event as EventEntity } from "./../../../models/event";
+import { Event as EventEntity } from "./../../../models/Event";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";

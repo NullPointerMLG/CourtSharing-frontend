@@ -6,10 +6,11 @@ import { NotFound } from "./components/pages/NotFound/NotFound";
 import { theme } from "./themes/theme";
 import { MuiThemeProvider, makeStyles } from "@material-ui/core";
 import { initializeFirebase } from "./utils/firebase";
-import { Login } from "./components/pages/Login/Login";
 import { Feed } from "./components/pages/Feed/Feed";
 import { MainAppBar } from "./components/shared/AppBar";
 import { UserProvider } from "./context/UserContext";
+
+initializeFirebase();
 
 const useStyles = makeStyles(theme => ({
   root: { height: "100vh",
@@ -18,8 +19,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const App: React.FC = () => {  
-
-  initializeFirebase();
   const classes = useStyles();
   return (
     <UserProvider>
@@ -30,7 +29,6 @@ const App: React.FC = () => {
             <React.Fragment>
               <Switch>
                 <Route exact path="/" component={Landing}/>
-                <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/feed" component={Feed} />
                 <Route component={NotFound} />

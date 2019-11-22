@@ -7,6 +7,12 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import firebase from "firebase";
 
+const navbarItems = [
+  {name: "Courts", url: "/courts"},
+  {name: "Feed", url: "/feed"},
+  {name: "Profile", url: "/profile"},
+]
+
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
     fontSize: "20px",
@@ -22,17 +28,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   link: {
       textDecoration: "none",
-      color: "inherit"
+      color: "inherit",
+      marginLeft: "0.5rem"
   },
   appbar: {
-    position: "absolute"
+    display: "absolute"
   }
 }));
 
 export const MainAppBar = () => {
   const classes = useStyles();
   const [user, setUser] = useContext(UserContext);
-
+  const links = navbarItems.map(link =>
+    <Link to={link.url}  className={classes.link}>{link.name}</Link>)
   const userLogOut = () => {
     const undefinedValue: any = undefined;
     firebase.auth().signOut();
@@ -63,12 +71,18 @@ export const MainAppBar = () => {
   };
 
   return (
+    (user) ? 
     <AppBar color="primary" position="sticky" >
       <Toolbar>
         <Typography className={classes.title} color="secondary">
           <Link to="/" className={classes.link}>CourtSharing</Link>
         </Typography>
+        <div className={classes.appbar}>  
+          {links}
+        </div>
+        {(user) ? renderLogoutButton() : renderLoginButton()}
       </Toolbar>
     </AppBar>
+    : <React.Fragment></React.Fragment>
   );
 };

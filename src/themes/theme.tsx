@@ -12,6 +12,9 @@ export const theme = createMuiTheme({
             dark: "#657786",
             contrastText: "#14171A"
         },
+        error: {
+            main: "#B22222"
+        }
     },
     typography: {
         fontFamily: 'Roboto'

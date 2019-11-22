@@ -15,7 +15,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { Event as EventEntity } from "./../../../models/event";
+import { Event as EventEntity } from "./../../../models/Event";
 import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme: Theme) =>
