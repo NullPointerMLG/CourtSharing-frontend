@@ -29,10 +29,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   link: {
       textDecoration: "none",
       color: "inherit",
-      marginLeft: "0.5rem"
+      marginLeft: "1rem"
   },
   appbar: {
     display: "absolute"
+  },
+  userButton: {
+    marginLeft: "10px"
   }
 }));
 
@@ -40,7 +43,7 @@ export const MainAppBar = () => {
   const classes = useStyles();
   const [user, setUser] = useContext(UserContext);
   const links = navbarItems.map(link =>
-    <Link to={link.url}  className={classes.link}>{link.name}</Link>)
+    <Link to={link.url} className={classes.link}>{link.name}</Link>)
   const userLogOut = () => {
     const undefinedValue: any = undefined;
     firebase.auth().signOut();
@@ -50,8 +53,8 @@ export const MainAppBar = () => {
 
   const renderLoginButton = () => {
     return (
-      <Link to="/login">
-        <Button color="secondary">
+      <Link to="/login" className={classes.link}>
+        <Button color="secondary" className={classes.userButton}>
           <PersonSharpIcon className={classes.loginIcon} />
           <Typography className={classes.loginButtonText}>Log in</Typography>
         </Button>
@@ -61,8 +64,8 @@ export const MainAppBar = () => {
 
   const renderLogoutButton = () => {
     return (
-      <Link to="/">
-        <Button color="secondary" onClick={userLogOut}>
+      <Link to="/" className={classes.link}>
+        <Button color="secondary" onClick={userLogOut} className={classes.userButton}>
           <ExitToAppSharpIcon className={classes.loginIcon} />
           <Typography className={classes.loginButtonText}>Log out</Typography>
         </Button>
