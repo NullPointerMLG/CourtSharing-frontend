@@ -1,8 +1,10 @@
+import { User } from "./User";
+
 export interface Event {
-    creationDate: string
-    eventDate: string
+    creationDate: Date
+    eventDate: number
     title: string
     description?: string
     courtID: string
-    creator: string
+    creator: User
 }

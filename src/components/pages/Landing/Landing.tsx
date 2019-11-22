@@ -1,12 +1,23 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { Login } from "../Login/Login";
 
 const useStyles = makeStyles(theme => ({
-  root: { padding: "200px 0", textAlign: "center" },
+  root: { 
+    display: "flex", 
+    justifyContent: "space-between",
+    height: "100%",
+    textAlign: "center" },
   buttonLabel: {
     textDecoration: "none",
+    color: "white"
+  },
+  landing: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50%",
+    backgroundColor: "#1DA1F2",
     color: "white"
   }
 }));
@@ -14,20 +25,15 @@ const useStyles = makeStyles(theme => ({
 export const Landing: React.FC = props => {
   const classes = useStyles();
   return (
-    <React.Fragment>
-      <div>
-        <h1>CourtSharing</h1>
-      </div>
-      <div>
-        <div className="login-container">
-          <h2>Landing page</h2>
-          <Link className={classes.buttonLabel} to="/login">
-            <Button variant="contained" color="primary">
-              Log in
-            </Button>
-          </Link>
+    <div className={classes.root}>
+      <div className={classes.landing}>
+        <div>
+          <h1>CourtSharing</h1>
+          <p>Find sports and events.</p>
+          <p>Anywhere, anytime.</p>
         </div>
       </div>
-    </React.Fragment>
+      <Login></Login>
+    </div>
   );
 };

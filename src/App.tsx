@@ -4,28 +4,31 @@ import { Landing } from "./components/pages/Landing/Landing";
 import Register from "./components/pages/Register/Register";
 import { NotFound } from "./components/pages/NotFound/NotFound";
 import { theme } from "./themes/theme";
-import { MuiThemeProvider } from "@material-ui/core";
+import { MuiThemeProvider, makeStyles } from "@material-ui/core";
 import { initializeFirebase } from "./utils/firebase";
-import { Login } from "./components/pages/Login/Login";
 import { Feed } from "./components/pages/Feed/Feed";
 import { MainAppBar } from "./components/shared/AppBar";
 import { UserProvider } from "./context/UserContext";
-import { addNewEvent } from "./services/API";
-import { Event } from "./models/Event";
 
 initializeFirebase();
 
-const App: React.FC = () => {
+const useStyles = makeStyles(theme => ({
+  root: { height: "100vh",
+          display: "flex",
+          flexDirection: "column"}
+}));
+
+const App: React.FC = () => {  
+  const classes = useStyles();
   return (
     <UserProvider>
-      <div className="App">
+      <div className={classes.root}>
         <MuiThemeProvider theme={theme}>
           <BrowserRouter>
             <MainAppBar></MainAppBar>
             <React.Fragment>
               <Switch>
-                <Route exact path="/" component={Landing} />
-                <Route exact path="/login" component={Login} />
+                <Route exact path="/" component={Landing}/>
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/feed" component={Feed} />
                 <Route component={NotFound} />

@@ -9,6 +9,16 @@ import { switchMap } from "rxjs/operators";
 import { isErrorMessage } from "../../../models/ErrorMessage";
 import { Snackbar } from "@material-ui/core";
 import { SnackbarOrigin } from "@material-ui/core/Snackbar";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles(theme => ({
+  root: { display: "flex", 
+          flexDirection: "column",
+          justifyContent: "center",
+          width: "50%",
+          height: "100%",
+          textAlign: "center" }
+}));
 
 export const Login: React.FC = props => {
   const NO_ERROR_MESSAGE: string = "";
@@ -26,6 +36,7 @@ export const Login: React.FC = props => {
     setShowErrorMessage(NO_ERROR_MESSAGE);
   };
 
+  const classes = useStyles();
   const uiConfig = {
     signInFlow: "popup",
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
@@ -37,6 +48,7 @@ export const Login: React.FC = props => {
             .pipe(switchMap((token: string) => login(token)))
             .subscribe(
               () => {
+                localStorage.setItem("loggedUser", JSON.stringify(user));
                 setUser(user);
               },
               err => {
@@ -54,7 +66,7 @@ export const Login: React.FC = props => {
   if (user) return <Redirect to="/feed"></Redirect>;
 
   return (
-    <div className="login-container">
+    <div className={classes.root}>
       <Snackbar
         key={new Date().getTime() - 10}
         open={showErrorMessage.length > 0}
