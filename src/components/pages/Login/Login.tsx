@@ -10,14 +10,22 @@ import { isErrorMessage } from "../../../models/ErrorMessage";
 import { Snackbar } from "@material-ui/core";
 import { SnackbarOrigin } from "@material-ui/core/Snackbar";
 import { makeStyles } from "@material-ui/styles";
+import { Paper } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
-  root: { display: "flex", 
-          flexDirection: "column",
-          justifyContent: "center",
-          width: "50%",
-          height: "100%",
-          textAlign: "center" }
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "50%",
+    height: "100%",
+    textAlign: "center"
+  },
+  signBox: {
+    boxShadow: "none",
+    width: "50%"
+  }
 }));
 
 export const Login: React.FC = props => {
@@ -75,8 +83,15 @@ export const Login: React.FC = props => {
         onClose={closeSnackBar}
         message={showErrorMessage}
       />
-      <h1>Login</h1>
-      <StyledFirebaseAuth key={new Date().getTime()} uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+
+      <Paper className={classes.signBox}>
+        <h1>Login</h1>
+        <StyledFirebaseAuth
+          key={new Date().getTime()}
+          uiConfig={uiConfig}
+          firebaseAuth={firebase.auth()}
+        />
+      </Paper>
     </div>
   );
 };

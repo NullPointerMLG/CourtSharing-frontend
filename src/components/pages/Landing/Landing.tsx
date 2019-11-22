@@ -3,22 +3,41 @@ import { makeStyles } from "@material-ui/styles";
 import { Login } from "../Login/Login";
 
 const useStyles = makeStyles(theme => ({
-  root: { 
-    display: "flex", 
+  root: {
+    display: "flex",
     justifyContent: "space-between",
     height: "100%",
-    textAlign: "center" },
+    textAlign: "center"
+  },
   buttonLabel: {
     textDecoration: "none",
     color: "white"
   },
   landing: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     width: "50%",
     backgroundColor: "#1DA1F2",
     color: "white"
+  },
+  landingBg: {
+    backgroundImage:
+      "url('https://www.trzcacak.rs/myfile/full/331-3312030_royalty-free-halftone-pattern-abstract-geometric-royaltyfree-black.png')",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    backgroundSize: "200px 200px"
+  },
+  landingMessage: {
+    backgroundColor: "rgba(29, 161, 242, 0.9)",
+    borderRadius: "20px",
+    padding: "20px",
+  },
+  landingHeader: {
+    fontSize: "250%"
+  },
+  landingSubtitle: {
+    fontSize: "110%"
   }
 }));
 
@@ -27,10 +46,12 @@ export const Landing: React.FC = props => {
   return (
     <div className={classes.root}>
       <div className={classes.landing}>
-        <div>
-          <h1>CourtSharing</h1>
-          <p>Find sports and events.</p>
-          <p>Anywhere, anytime.</p>
+        <div className={classes.landingBg}>
+          <div className={classes.landingMessage}>
+            <h1 className={classes.landingHeader}>CourtSharing</h1>
+            <p className={classes.landingSubtitle}>Find sports and events.</p>
+            <p className={classes.landingSubtitle}>Anywhere, anytime.</p>
+          </div>
         </div>
       </div>
       <Login></Login>
