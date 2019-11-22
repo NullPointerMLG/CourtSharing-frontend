@@ -19,9 +19,6 @@ const useStyles = makeStyles(theme => ({
     width: "50%",
     backgroundColor: "#1DA1F2",
     color: "white"
-  },
-  landingMessage: {
-
   }
 }));
 
@@ -30,7 +27,7 @@ export const Landing: React.FC = props => {
   return (
     <div className={classes.root}>
       <div className={classes.landing}>
-        <div className={classes.landingMessage}>
+        <div>
           <h1>CourtSharing</h1>
           <p>Find sports and events.</p>
           <p>Anywhere, anytime.</p>
