@@ -56,6 +56,7 @@ export const Login: React.FC = props => {
   return (
     <div className="login-container">
       <Snackbar
+        key={new Date().getTime() - 10}
         open={showErrorMessage.length > 0}
         autoHideDuration={ERROR_AUTO_HIDE_DURATION_MS}
         anchorOrigin={SNACKBAR_POSITION}
@@ -63,7 +64,7 @@ export const Login: React.FC = props => {
         message={showErrorMessage}
       />
       <h1>Login</h1>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+      <StyledFirebaseAuth key={new Date().getTime()} uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
   );
 };
