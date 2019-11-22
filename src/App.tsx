@@ -10,6 +10,8 @@ import { Login } from "./components/pages/Login/Login";
 import { Feed } from "./components/pages/Feed/Feed";
 import { MainAppBar } from "./components/shared/AppBar";
 import { UserProvider } from "./context/UserContext";
+import { addNewEvent } from "./services/API";
+import { Event } from "./models/Event";
 
 initializeFirebase();
 

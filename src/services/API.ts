@@ -1,5 +1,6 @@
 import { ErrorMessage } from "./../models/ErrorMessage";
 import { EventParams } from "../models/EventParams";
+import { Event } from "../models/Event";
 import { Observable, from } from "rxjs";
 import { tap } from "rxjs/operators";
 
@@ -23,7 +24,7 @@ export const login = (
   );
 };
 
-export const getEvents = (params?: EventParams) => {
+export const getEvents = (params?: EventParams): Observable<Event[]> => {
   const emptyQuery = "";
   let query: string = emptyQuery;
 
@@ -42,7 +43,7 @@ export const getEvents = (params?: EventParams) => {
   });
 };
 
-export const addNewEvent = (event: Event) => {
+export const addNewEvent = (event: Event): Observable<Event> => {
   return Observable.create((observer: any) => {
     fetch(API_URL + "/events", {
       method: "POST",

@@ -3,6 +3,6 @@ export interface Event {
     eventDate: string
     title: string
     description?: string
-    courtId: string
+    courtID: string
     creator: string
 }
