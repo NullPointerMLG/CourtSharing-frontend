@@ -11,6 +11,7 @@ import { Snackbar } from "@material-ui/core";
 import { SnackbarOrigin } from "@material-ui/core/Snackbar";
 import { makeStyles } from "@material-ui/styles";
 import { Paper } from "@material-ui/core";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,6 +40,7 @@ export const Login: React.FC = props => {
 
   const [user, setUser] = useContext(UserContext);
   const [showErrorMessage, setShowErrorMessage] = useState(NO_ERROR_MESSAGE);
+  const [isLoading, setIsLoading] = useState(false);
 
   const closeSnackBar = () => {
     setShowErrorMessage(NO_ERROR_MESSAGE);
@@ -52,6 +54,7 @@ export const Login: React.FC = props => {
       signInSuccessWithAuthResult: () => {
         const user: firebase.User | null = firebase.auth().currentUser;
         if (user) {
+          setIsLoading(true)
           from(user.getIdToken())
             .pipe(switchMap((token: string) => login(token)))
             .subscribe(
@@ -63,6 +66,9 @@ export const Login: React.FC = props => {
                 firebase.auth().signOut();
                 if (isErrorMessage(err)) setShowErrorMessage(err.message);
                 else setShowErrorMessage(DEFAULT_ERROR_MSG);
+              },
+              () => {
+                setIsLoading(false)
               }
             );
         }
@@ -86,11 +92,13 @@ export const Login: React.FC = props => {
 
       <Paper className={classes.signBox}>
         <h1>Login</h1>
+        <ScaleLoader loading={isLoading} color={'#1DA1F2'} />
+        {!isLoading &&
         <StyledFirebaseAuth
           key={new Date().getTime()}
           uiConfig={uiConfig}
           firebaseAuth={firebase.auth()}
-        />
+        />}
       </Paper>
     </div>
   );
