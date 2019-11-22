@@ -66,11 +66,10 @@ export const Login: React.FC = props => {
                 firebase.auth().signOut();
                 if (isErrorMessage(err)) setShowErrorMessage(err.message);
                 else setShowErrorMessage(DEFAULT_ERROR_MSG);
-              },
-              () => {
-                setIsLoading(false)
               }
-            );
+            ).add(() => {
+              setIsLoading(false);
+            })
         }
         return false;
       }
