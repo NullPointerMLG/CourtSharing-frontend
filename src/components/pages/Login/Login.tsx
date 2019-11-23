@@ -76,7 +76,7 @@ export const Login: React.FC = props => {
     }
   };
 
-  if (user) return <Redirect to="/feed"></Redirect>;
+  if (user) return <Redirect to="/homepage"></Redirect>;
 
   return (
     <div className={classes.root}>

@@ -1,8 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Login } from "../Login/Login";
+import { Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: "flex",
     justifyContent: "space-between",
@@ -15,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
   landing: {
     width: "50%",
-    backgroundColor: "#1DA1F2",
+    backgroundColor: theme.palette.primary.main,
     color: "white"
   },
   landingBg: {
