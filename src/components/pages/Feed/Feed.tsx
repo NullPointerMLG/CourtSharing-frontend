@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Redirect } from "react-router";
 import { UserContext } from "../../../context/UserContext";
 import { Event } from "./Event";
@@ -32,10 +32,14 @@ export const Feed: React.FC = () => {
   const classes = useStyles();
   const [user] = useContext(UserContext);
   const [events, setEvents] = useState([]);
-  useEffect(() => { 
-    getEvents().then(res=>setEvents(res));
-  },[events]);
-  if (!user) return <Redirect to="/login"/>;
+
+  // TODO: handle error with a feedback component
+  useEffect(() => {
+    getEvents()
+      .then(res => setEvents(res))
+      .catch(e => console.warn(e));
+  }, []);
+  if (!user) return <Redirect to="/login" />;
 
   return (
     <div className={classes.root}>
@@ -54,7 +58,7 @@ export const Feed: React.FC = () => {
             >
               {events.map((event, i) => (
                 <GridListTile key={i} cols={1} className={classes.event}>
-                  <Event event={event}/>
+                  <Event event={event} />
                 </GridListTile>
               ))}
             </GridList>
