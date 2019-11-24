@@ -64,6 +64,7 @@ export const Login: React.FC = props => {
               },
               err => {
                 firebase.auth().signOut();
+                console.log(err);
                 if (isErrorMessage(err)) setShowErrorMessage(err.message);
                 else setShowErrorMessage(DEFAULT_ERROR_MSG);
               }

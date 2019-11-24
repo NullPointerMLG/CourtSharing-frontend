@@ -1,5 +1,5 @@
 export interface User {
     uuid: string;
-    fullName?: string;
-    avatar?: string;
+    name?: string;
+    photoURL?: string;
 }

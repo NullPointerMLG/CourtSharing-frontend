@@ -43,7 +43,7 @@ export const MainAppBar = () => {
   const classes = useStyles();
   const [user, setUser] = useContext(UserContext);
   const links = navbarItems.map(link =>
-    <Link to={link.url} className={classes.link}>{link.name}</Link>)
+    <Link to={link.url} className={classes.link} key={link.name}>{link.name}</Link>)
   const userLogOut = () => {
     const undefinedValue: any = undefined;
     firebase.auth().signOut();

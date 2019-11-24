@@ -14,7 +14,11 @@ export const login = (
   return from(
     fetch(API_URL + "/login", {
       method: "POST",
-      body: JSON.stringify({ token: token })
+      body: JSON.stringify({ token: token }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+      }
     })
   ).pipe(
     tap((response: any) => {
@@ -24,24 +28,34 @@ export const login = (
   );
 };
 
-export const getEvents = (params?: EventParams): Observable<Event[]> => {
-  const emptyQuery = "";
-  let query: string = emptyQuery;
+// export const getEvents = (params?: EventParams): Observable<Event[]> => {
+//   const emptyQuery = "";
+//   let query: string = emptyQuery;
 
-  if (params) {
-    query += params.date ? "?date=" + params.date : emptyQuery;
-    query += params.court ? "?court=" + params.court : emptyQuery;
-  }
-  return Observable.create((observer: any) => {
-    fetch(API_URL + "/events" + query, { method: "GET" })
-      .then(data => {
-        if (data.status !== 200) throw new Error(JSON.stringify(data));
-        observer.next(data);
-        observer.complete();
-      })
-      .catch(err => observer.error(err));
-  });
-};
+//   if (params) {
+//     query += params.date ? "?date=" + params.date : emptyQuery;
+//     query += params.court ? "?court=" + params.court : emptyQuery;
+//   }
+//   return Observable.create((observer: any) => {
+//     fetch(API_URL + "/events" + query, { method: "GET" })
+//       .then(data => {
+//         if (data.status !== 200) throw new Error(JSON.stringify(data));
+//         observer.next(data);
+//         observer.complete();
+//       })
+//       .catch(err => observer.error(err));
+//   });
+// };
+
+export const getEvents = (params?: EventParams) => {
+  return fetch(API_URL + "/events", {
+    method: 'GET', 
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+    .catch(error => console.error('Error:', error));
+}
 
 export const addNewEvent = (event: Event): Observable<Event> => {
   return Observable.create((observer: any) => {
