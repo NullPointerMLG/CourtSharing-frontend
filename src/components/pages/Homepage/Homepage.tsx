@@ -8,7 +8,7 @@ import {
   GridListTile,
   GridListTileBar,
 } from "@material-ui/core";
-import { HomePageBottomAppbar } from "./HomepageBottomAppbar";
+import { BottomAppbar } from "./BottomAppbar";
 
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
@@ -68,7 +68,7 @@ export const Homepage = () => {
             </GridListTile>
           ))}
       </GridList>
-      <HomePageBottomAppbar selectedSports={selectedSports}/>
+      <BottomAppbar selectedSports={selectedSports}/>
     </div>
   );
 };

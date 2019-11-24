@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AppBar, Typography, Toolbar, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import { Sport } from "../../../models/Sport";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { FavouriteSportsContext } from "../../../context/SportsContext";
 
 type HomePageAppBarProps = {
   selectedSports: Sport[];
-  onNext?: () => void;
 };
 
 const useStyles = makeStyles({
@@ -37,8 +37,9 @@ const useStyles = makeStyles({
   }
 });
 
-export const HomePageBottomAppbar = (props: HomePageAppBarProps) => {
-  const { selectedSports, onNext } = props;
+export const BottomAppbar = (props: HomePageAppBarProps) => {
+  const { selectedSports } = props;
+  const [, setFavouriteSports] = useContext(FavouriteSportsContext)
   const classes = useStyles();
 
   return (
@@ -49,7 +50,7 @@ export const HomePageBottomAppbar = (props: HomePageAppBarProps) => {
         </Typography>
         {selectedSports.length > 0 && (
           <Link to="/feed" className={classes.link}>
-            <Button color="secondary" className={classes.nextButton}>
+            <Button color="secondary" className={classes.nextButton} onClick={setFavouriteSports(selectedSports)}>
               <Typography className={classes.nextButtonText}>Next</Typography>
               <NavigateNextIcon className={classes.nextIcon} />
             </Button>

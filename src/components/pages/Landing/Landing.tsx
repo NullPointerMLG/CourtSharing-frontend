@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   landingBg: {
     backgroundImage:
-      "url('https://www.trzcacak.rs/myfile/full/331-3312030_royalty-free-halftone-pattern-abstract-geometric-royaltyfree-black.png')",
+      "url('https://i.imgur.com/Hy4RqeT.png')",
     width: "100%",
     display: "flex",
     alignItems: "center",
