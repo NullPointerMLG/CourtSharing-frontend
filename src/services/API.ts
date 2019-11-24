@@ -1,31 +1,28 @@
 import { ErrorMessage } from "./../models/ErrorMessage";
 import { EventParams } from "../models/EventParams";
 import { Event } from "../models/Event";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { Sport } from "../models/Sport";
-import { fromFetch } from "rxjs/fetch";
 
 const API_URL: string = "http://localhost:5000";
 
-export const login = (
-  accessToken: string
-): Observable<boolean | ErrorMessage> => {
+export const login = (accessToken: string): Promise<boolean | ErrorMessage> => {
   const token: string = accessToken;
 
-  return fromFetch(API_URL + "/login", {
+  return fetch(API_URL + "/login", {
     method: "POST",
-    body: JSON.stringify({ token: token })
-  }).pipe(
-    map((response: any) => {
-      if (response.status !== 200)
-        throw new Error(JSON.stringify(response.json()));
+    body: JSON.stringify({ token: token }),
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    }
+  })
+    .then((response: any) => {
+      if (response.status !== 200) throw new Error(JSON.stringify(Response));
       return response.json();
     })
-  );
+    .catch(err => err.json());
 };
 
-export const getEvents = (params?: EventParams): Observable<Event[]> => {
+export const getEvents = (params?: EventParams): Promise<Event[]> => {
   const emptyQuery = "";
   let query: string = emptyQuery;
 
@@ -33,33 +30,27 @@ export const getEvents = (params?: EventParams): Observable<Event[]> => {
     query += params.date ? "?date=" + params.date : emptyQuery;
     query += params.court ? "?court=" + params.court : emptyQuery;
   }
-  return fromFetch(API_URL + "/events" + query, { method: "GET" }).pipe(
-    map((response: any) => {
-      if (response.status !== 200)
-        throw new Error(JSON.stringify(response.json()));
-      return response.json();
+  return fetch(API_URL + "/events" + query, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(data => {
+      if (data.status !== 200) throw new Error(JSON.stringify(data));
+      return data.json();
     })
-  );
+    .catch(err => err.json());
 };
 
-export const addNewEvent = (event: Event): Observable<Event> => {
-  return fromFetch(API_URL + "/events", {
+export const addNewEvent = (event: Event): Promise<Event> => {
+  return fetch(API_URL + "/events", {
     method: "POST",
     body: JSON.stringify(event)
-  }).pipe(
-    map((response: any) => {
-      if (response.status !== 200)
-        throw new Error(JSON.stringify(response.json()));
-      return response.json();
+  })
+    .then(data => {
+      if (data.status !== 200) throw new Error(JSON.stringify(data));
+      return data.json();
     })
-  );
-};
-
-export const getSports = (): Promise<Sport[]> => {
-  return fetch(API_URL + "/sports", { method: "GET" })
-    .then((response: Response) => {
-      if (response.status !== 200)
-        throw new Error(JSON.stringify(response.json()));
-      return response.json();
-    })
+    .catch(err => err.json());
 };

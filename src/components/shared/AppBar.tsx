@@ -8,10 +8,10 @@ import { UserContext } from "../../context/UserContext";
 import firebase from "firebase";
 
 const navbarItems = [
-  {name: "Courts", url: "/courts"},
-  {name: "Feed", url: "/feed"},
-  {name: "Profile", url: "/profile"},
-]
+  { name: "Courts", url: "/courts" },
+  { name: "Feed", url: "/feed" },
+  { name: "Profile", url: "/profile" }
+];
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: "5px"
   },
   link: {
-      textDecoration: "none",
-      color: "inherit",
-      marginLeft: "1rem"
+    textDecoration: "none",
+    color: "inherit",
+    marginLeft: "1rem"
   },
   appbar: {
     display: "absolute"
@@ -42,8 +42,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const MainAppBar = () => {
   const classes = useStyles();
   const [user, setUser] = useContext(UserContext);
-  const links = navbarItems.map(link =>
-    <Link to={link.url} key={link.name} className={classes.link}>{link.name}</Link>)
+  const links = navbarItems.map(link => (
+    <Link to={link.url} key={link.name} className={classes.link}>
+      {link.name}
+    </Link>
+  ));
   const userLogOut = () => {
     const undefinedValue: any = undefined;
     firebase.auth().signOut();
@@ -65,7 +68,11 @@ export const MainAppBar = () => {
   const renderLogoutButton = () => {
     return (
       <Link to="/" className={classes.link}>
-        <Button color="secondary" onClick={userLogOut} className={classes.userButton}>
+        <Button
+          color="secondary"
+          onClick={userLogOut}
+          className={classes.userButton}
+        >
           <ExitToAppSharpIcon className={classes.loginIcon} />
           <Typography className={classes.loginButtonText}>Log out</Typography>
         </Button>
@@ -73,19 +80,19 @@ export const MainAppBar = () => {
     );
   };
 
-  return (
-    (user) ? 
-    <AppBar color="primary" position="sticky" >
+  return user ? (
+    <AppBar color="primary" position="sticky">
       <Toolbar>
         <Typography className={classes.title} color="secondary">
-          <Link to="/" className={classes.link}>CourtSharing</Link>
+          <Link to="/" className={classes.link}>
+            CourtSharing
+          </Link>
         </Typography>
-        <div className={classes.appbar}>  
-          {links}
-        </div>
-        {(user) ? renderLogoutButton() : renderLoginButton()}
+        <div className={classes.appbar}>{links}</div>
+        {user ? renderLogoutButton() : renderLoginButton()}
       </Toolbar>
     </AppBar>
-    : <React.Fragment></React.Fragment>
+  ) : (
+    <React.Fragment></React.Fragment>
   );
 };

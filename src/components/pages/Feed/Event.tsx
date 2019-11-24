@@ -100,7 +100,7 @@ export const Event: React.FC<Props> = props => {
         <div className={classes.creatorDataContainer}>
           <Avatar
             aria-label="Creator avatar"
-            src={props.event.creator.avatar}
+            src={props.event.creator.photoURL}
             className={classes.creatorAvatar}
           ></Avatar>
           <Typography
@@ -109,7 +109,7 @@ export const Event: React.FC<Props> = props => {
             component="p"
             className={classes.creatorName}
           >
-            {props.event.creator.fullName}
+            {props.event.creator.name}
           </Typography>
         </div>
         <Divider />
