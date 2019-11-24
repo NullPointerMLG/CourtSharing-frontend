@@ -8,6 +8,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { FilterMenu } from "./FilterMenu";
 import Grid from "@material-ui/core/Grid";
 import { getEvents } from "../../../services/API";
+import { Event as EventObject } from "../../../models/Event";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Feed: React.FC = () => {
   const classes = useStyles();
   const [user] = useContext(UserContext);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([] as EventObject[]);
 
   // TODO: handle error with a feedback component
   useEffect(() => {
