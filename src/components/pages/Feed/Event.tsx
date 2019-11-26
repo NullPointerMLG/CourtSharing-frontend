@@ -90,7 +90,7 @@ export const Event: React.FC<Props> = props => {
           </IconButton>
         }
         title={props.event.title}
-        subheader={formatDate(props.event.eventDate)}
+        subheader={formatDate(props.event.event_date)}
       />
       <CardMedia
         className={classes.media}
@@ -100,7 +100,7 @@ export const Event: React.FC<Props> = props => {
         <div className={classes.creatorDataContainer}>
           <Avatar
             aria-label="Creator avatar"
-            src={props.event.creator.photoURL}
+            src={props.event.creator.photo_url}
             className={classes.creatorAvatar}
           ></Avatar>
           <Typography
