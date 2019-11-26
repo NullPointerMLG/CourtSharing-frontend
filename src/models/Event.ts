@@ -1,10 +1,10 @@
 import { User } from "./User";
 
 export interface Event {
-    creationDate: Date
-    eventDate: number
+    creation_date: Date
+    event_date: number
     title: string
     description?: string
-    courtID: string
+    court_id: string
     creator: User
 }

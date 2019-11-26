@@ -63,7 +63,7 @@ export const Homepage = () => {
               key={sport.name}
               cols={1}
             >
-              <img src={sport.icon} alt={sport.name} className={classes.sportImage}/>
+              <img src={sport.icon_url} alt={sport.name} className={classes.sportImage}/>
               <GridListTileBar title={sport.name} className={selectedSports.includes(sport) ? classes.selected : ``}/>
             </GridListTile>
           ))}
