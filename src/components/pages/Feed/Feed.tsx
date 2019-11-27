@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useReducer } from "react";
 import { Redirect } from "react-router";
 import { UserContext } from "../../../context/UserContext";
 import { Event } from "./Event";
@@ -9,6 +9,7 @@ import { FilterMenu } from "./FilterMenu";
 import Grid from "@material-ui/core/Grid";
 import { getEvents } from "../../../services/API";
 import { Event as EventObject } from "../../../models/Event";
+import { reducer } from "./FilterReducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,11 +32,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Feed: React.FC = () => {
   const classes = useStyles();
+  const initialState = {sport: '', date: ''};
   const [user] = useContext(UserContext);
   const [events, setEvents] = useState([] as EventObject[]);
 
+  const [filterState] = useReducer(reducer, initialState);
   // TODO: handle error with a feedback component
+  
   useEffect(() => {
+    console.log(filterState);
     getEvents()
       .then(res => setEvents(res))
       .catch(e => console.warn(e));
