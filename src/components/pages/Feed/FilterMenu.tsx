@@ -5,6 +5,12 @@ import Select from '@material-ui/core/Select';
 import { reducer, State } from "./FilterReducer";
 import { Sport } from "../../../models/Sport";
 import { SportsContext } from "../../../context/SportsContext";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+
+import DateFnsUtils from '@date-io/date-fns';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -15,6 +21,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const FilterMenu: React.FC = props => {
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
+    new Date('2014-08-18T21:11:54'),
+  );
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
   const classes = useStyles();  
   const initialFilterState: State = {sport: '', date: ''};
   const initialState = {date: '', sport: ''}
@@ -49,6 +62,21 @@ export const FilterMenu: React.FC = props => {
           )}
         </Select>
         <h4>Date</h4>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <KeyboardDatePicker
+          disableToolbar
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id="date-picker-inline"
+          label="Date picker inline"
+          value={selectedDate}
+          onChange={handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />
+        </MuiPickersUtilsProvider>
       </Paper>
     </div>
   );
