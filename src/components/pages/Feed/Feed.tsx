@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useReducer } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Redirect } from "react-router";
 import { UserContext } from "../../../context/UserContext";
 import { Event } from "./Event";
@@ -9,7 +9,7 @@ import { FilterMenu } from "./FilterMenu";
 import Grid from "@material-ui/core/Grid";
 import { getEvents } from "../../../services/API";
 import { Event as EventObject } from "../../../models/Event";
-import { reducer } from "./FilterReducer";
+import { EventParams } from "../../../models/EventParams";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,15 +32,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Feed: React.FC = () => {
   const classes = useStyles();
-  const initialState = {sport: '', date: ''};
   const [user] = useContext(UserContext);
   const [events, setEvents] = useState([] as EventObject[]);
-
-  const [filterState] = useReducer(reducer, initialState);
   // TODO: handle error with a feedback component
   
+  const handleFilterEvents = (params: EventParams) => {
+    getEvents(params)
+    .then(res => setEvents(res))
+    .catch(e => console.warn(e));
+  }
+
   useEffect(() => {
-    console.log(filterState);
     getEvents()
       .then(res => setEvents(res))
       .catch(e => console.warn(e));
@@ -52,7 +54,7 @@ export const Feed: React.FC = () => {
       <Grid container>
         <Grid item xs={3}>
           <div className={classes.menuContainer}>
-            <FilterMenu />
+            <FilterMenu handleFilterEvents={handleFilterEvents} />
           </div>
         </Grid>
         <Grid item xs={9}>

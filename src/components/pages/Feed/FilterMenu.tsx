@@ -1,10 +1,16 @@
-import React, { useState, useReducer, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Select from '@material-ui/core/Select';
-import { reducer, State } from "./FilterReducer";
 import { Sport } from "../../../models/Sport";
 import { SportsContext } from "../../../context/SportsContext";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+
+import DateFnsUtils from '@date-io/date-fns';
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -14,19 +20,25 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const FilterMenu: React.FC = props => {
-  const classes = useStyles();  
-  const initialFilterState: State = {sport: '', date: ''};
+export const FilterMenu = (props:any) => {
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
+    new Date('2014-08-18T21:11:54'),
+  );
+  console.log(props);
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
+  
+  const classes = useStyles();
   const initialState = {date: '', sport: ''}
-  const [filterState, dispatch] = useReducer(reducer, initialFilterState);
   const [state, setState] = useState(initialState)
   const [sports] = useContext(SportsContext);
+  console.log(sports);
   const handleChange = (name: any ) => (event: any) => {
     setState({
       ...state,
       [name]: event.target.value,
     });
-    dispatch({type: "UPDATE_STATE", state})
   }; 
 
   return (
@@ -43,12 +55,30 @@ export const FilterMenu: React.FC = props => {
             id: 'sport-native-simple',
           }}
         >
-          <option value="All">All</option>
+          <option key="All" value="">All</option>
           {sports.map((sport: Sport) => 
-            <option value={sport.name}>{sport.name}</option>
+            <option key={sport.name} value={sport.name}>{sport.name}</option>
           )}
         </Select>
         <h4>Date</h4>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <KeyboardDatePicker
+          disableToolbar
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id="date-picker-inline"
+          label="Date picker inline"
+          value={selectedDate}
+          onChange={handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />
+        </MuiPickersUtilsProvider>
+        <Button variant="contained" color="primary" onClick={() => props.handleFilterEvents({sport: state.sport})}>
+          Primary
+        </Button>
       </Paper>
     </div>
   );
