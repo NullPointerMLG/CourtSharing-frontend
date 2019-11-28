@@ -1,14 +1,16 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { Landing } from "./components/pages/Landing/Landing";
-import { NotFound } from "./components/pages/NotFound/NotFound";
 import { theme } from "./themes/theme";
 import { MuiThemeProvider, makeStyles } from "@material-ui/core";
 import { initializeFirebase } from "./utils/firebase";
-import { Feed } from "./components/pages/Feed/Feed";
-import { MainAppBar } from "./components/shared/AppBar";
+import { Feed } from "./components/Pages/Feed/Feed";
+import { MainAppBar } from "./components/Shared/AppBar";
 import { ContextProvider } from "./context/ContextProvider";
 import { Homepage } from "./components/pages/Homepage/Homepage";
+import { Landing } from "./components/Pages/Landing/Landing";
+import Register from "./components/Pages/Register/Register";
+import { NotFound } from "./components/Pages/NotFound/NotFound";
+import { UserProvider } from "./context/UserContext";
 
 initializeFirebase();
 

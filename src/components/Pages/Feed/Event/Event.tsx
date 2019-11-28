@@ -14,8 +14,8 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { Event as EventEntity } from "./../../../models/Event";
+import { Event as EventEntity } from "../../../../models/Event";
+import { UserInfo } from "./../../../Utils/UserInfo";
 import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,16 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
     avatar: {
       backgroundColor: red[500]
     },
-    creatorDataContainer: { paddingBottom: "10px" },
-    creatorName: {
-      display: "inline-block"
-    },
-    creatorAvatar: {
-      display: "inline-block",
-      width: 20,
-      height: 20,
-      marginRight: 10
-    },
+
     description: {
       marginTop: "16px"
     }
@@ -59,6 +50,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
   event: EventEntity;
+  onClick: (event: EventEntity) => void;
+}
+
+export function formatDate(value: number): string {
+  var date = new Date(value * 1000);
+  var year = date.getFullYear();
+  var month = ("0" + (date.getMonth() + 1)).substr(-2);
+  var day = ("0" + date.getDate()).substr(-2);
+  var formattedTime = `${year}-${month}-${day}`;
+  return formattedTime;
 }
 
 export const Event: React.FC<Props> = props => {
@@ -68,50 +69,26 @@ export const Event: React.FC<Props> = props => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
-  const formatDate = (value: number): string => {
-    var date = new Date(value * 1000);
-    var year = date.getFullYear();
-    var month = ("0" + (date.getMonth() + 1)).substr(-2);
-    var day = ("0" + date.getDate()).substr(-2);
-    var formattedTime = `${year}-${month}-${day}`;
-    return formattedTime;
-  };
-
+  console.log(props.event.creator);
   return (
     <Card className={classes.card}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}></Avatar>
         }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
         title={props.event.title}
-        subheader={formatDate(props.event.eventDate)}
+        subheader={formatDate(props.event.event_date)}
+        onClick={() => props.onClick(props.event)}
       />
       <CardMedia
         className={classes.media}
         image="http://www.sportcourtofpgh.com/wp-content/uploads/2018/04/residential-court-img.jpg"
       />
       <CardContent>
-        <div className={classes.creatorDataContainer}>
-          <Avatar
-            aria-label="Creator avatar"
-            src={props.event.creator.photo_url}
-            className={classes.creatorAvatar}
-          ></Avatar>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            component="p"
-            className={classes.creatorName}
-          >
-            {props.event.creator.name}
-          </Typography>
-        </div>
+        <UserInfo
+          avatar={props.event.creator.photo_url}
+          name={props.event.creator.name}
+        />
         <Divider />
         <Typography
           className={classes.description}

@@ -1,18 +1,19 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Redirect } from "react-router";
 import { UserContext } from "../../../context/UserContext";
-import { Event } from "./Event";
+import { Event } from "./Event/Event";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { FilterMenu } from "./FilterMenu";
 import Grid from "@material-ui/core/Grid";
 import { getEvents } from "../../../services/API";
-import { Event as EventObject } from "../../../models/Event";
 import { EventParams } from "../../../models/EventParams";
 import { CourtMap } from "../../shared/CourtMap";
 import "./Feed.css";
 import { SelectedSportContext } from "../../../context/SportsContext";
+import { Event as EventEntity } from "../../../models/Event";
+import { EventDetails } from "./Event/EventDetails";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,7 +38,9 @@ export const Feed: React.FC = () => {
   const classes = useStyles();
   const [user] = useContext(UserContext);
   const [favouriteSport] = useContext(SelectedSportContext);
-  const [events, setEvents] = useState([] as EventObject[]);
+  const [events, setEvents] = useState<EventEntity[]>([]);
+  const [eventSelected, setEventSelected] = useState<EventEntity>();
+
   // TODO: handle error with a feedback component
 
   const handleFilterEvents = (params: EventParams) => {
@@ -59,29 +62,32 @@ export const Feed: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <Grid container>
-        <Grid item xs={3}>
-          <div className={classes.menuContainer}>
+      {!eventSelected ? (
+        <Grid container>
+          <Grid item xs={3}>
+            <div className={classes.menuContainer}>
             <FilterMenu handleFilterEvents={handleFilterEvents} />
-          </div>
+            </div>
+          </Grid>
+          <Grid item xs={9}>
+            <div className={classes.eventGridListContainer}>
+              <GridList
+                cellHeight={500}
+                className={classes.eventGridListContainer}
+                cols={2}
+              >
+                {events.map((event, i) => (
+                  <GridListTile key={i} cols={1} className={classes.event}>
+                    <Event event={event} onClick={setEventSelected} />
+                  </GridListTile>
+                ))}
+              </GridList>
+            </div>
+          </Grid>
         </Grid>
-        <Grid item xs={9}>
-          <CourtMap></CourtMap>
-          <div className={classes.eventGridListContainer}>
-            <GridList
-              cellHeight={500}
-              className={classes.eventGridListContainer}
-              cols={2}
-            >
-              {events.map((event, i) => (
-                <GridListTile key={i} cols={1} className={classes.event}>
-                  <Event event={event} />
-                </GridListTile>
-              ))}
-            </GridList>
-          </div>
-        </Grid>
-      </Grid>
+      ) : (
+        <EventDetails event={eventSelected} />
+      )}
     </div>
   );
 };
