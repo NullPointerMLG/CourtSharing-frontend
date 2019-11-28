@@ -74,7 +74,8 @@ export const Homepage = () => {
           setSports(responseSports);
         })
         .catch(err => {
-          setError(err.response.data);
+          console.warn(err);
+          setError(err.data);
         });
     }
   }, []);

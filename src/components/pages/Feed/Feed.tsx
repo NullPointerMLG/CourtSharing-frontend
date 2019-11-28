@@ -7,9 +7,12 @@ import GridListTile from "@material-ui/core/GridListTile";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { FilterMenu } from "./FilterMenu";
 import Grid from "@material-ui/core/Grid";
-import { getEvents } from "../../../services/API";
+import { getEvents, getCourts } from "../../../services/API";
 import { Event as EventObject } from "../../../models/Event";
 import { EventParams } from "../../../models/EventParams";
+import { GeoJsonObject } from "geojson";
+import { CourtMap } from "../../shared/CourtMap";
+import "./Feed.css";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,19 +37,24 @@ export const Feed: React.FC = () => {
   const classes = useStyles();
   const [user] = useContext(UserContext);
   const [events, setEvents] = useState([] as EventObject[]);
+  const [geoJson, setGeoJson] = useState<GeoJsonObject>();
   // TODO: handle error with a feedback component
-  
+
   const handleFilterEvents = (params: EventParams) => {
     getEvents(params)
-    .then(res => setEvents(res))
-    .catch(e => console.warn(e));
-  }
+      .then(res => setEvents(res))
+      .catch(e => console.warn(e));
+  };
 
   useEffect(() => {
     getEvents()
       .then(res => setEvents(res))
       .catch(e => console.warn(e));
+    getCourts("5dd5cdae1c9d440000719592")
+      .then(res => setGeoJson(res))
+      .catch(e => console.warn(e));
   }, []);
+
   if (!user) return <Redirect to="/login" />;
 
   return (
@@ -58,6 +66,7 @@ export const Feed: React.FC = () => {
           </div>
         </Grid>
         <Grid item xs={9}>
+          {geoJson && <CourtMap courts={geoJson}></CourtMap>}
           <div className={classes.eventGridListContainer}>
             <GridList
               cellHeight={500}

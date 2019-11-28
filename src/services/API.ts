@@ -1,3 +1,4 @@
+import { GeoJsonObject } from 'geojson';
 import { EventParams } from './../models/EventParams';
 import { ErrorMessage } from "./../models/ErrorMessage";
 import { Event } from "../models/Event";
@@ -15,7 +16,7 @@ const requestHandler = (request: AxiosRequestConfig) => {
   if (loggedUser) {
     const firebaseUser = JSON.parse(loggedUser);
     const token: string = firebaseUser.stsTokenManager.accessToken;
-    request.headers = { ...request.headers, Authorization: token };
+    request.headers = { ...request.headers, "Authorization": token };
   }
 
   request.headers = {
@@ -23,7 +24,6 @@ const requestHandler = (request: AxiosRequestConfig) => {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*"
   };
-
   return request;
 };
 
@@ -65,6 +65,20 @@ export const getSports = (): Promise<Sport[]> => {
         throw new Error(JSON.stringify(response.data));
       return response.data;
     });
+};
+
+export const getCourts = (sportId: string): Promise<GeoJsonObject> => {
+  return axiosInstance
+    .get("/courts")
+    .then((response: AxiosResponse) => {
+      if (response.status !== 200)
+        throw new Error(JSON.stringify(response.data));
+      return response.data;
+    })
+    .then(response => {
+      const resGeoJson = response as unknown
+      return (resGeoJson as GeoJsonObject)
+    })
 };
 
 export const addNewEvent = (event: Event): Promise<Event> => {
