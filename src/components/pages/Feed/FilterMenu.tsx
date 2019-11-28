@@ -33,6 +33,7 @@ export const FilterMenu = (props:any) => {
   const initialState = {date: '', sport: ''}
   const [state, setState] = useState(initialState)
   const [sports] = useContext(SportsContext);
+  
   console.log(sports);
   const handleChange = (name: any ) => (event: any) => {
     setState({
