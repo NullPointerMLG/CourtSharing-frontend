@@ -40,7 +40,6 @@ export const Feed: React.FC = () => {
   // TODO: handle error with a feedback component
   
   useEffect(() => {
-    console.log(filterState);
     getEvents()
       .then(res => setEvents(res))
       .catch(e => console.warn(e));

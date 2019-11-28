@@ -18,7 +18,7 @@ export const FilterMenu: React.FC = props => {
   const classes = useStyles();  
   const initialFilterState: State = {sport: '', date: ''};
   const initialState = {date: '', sport: ''}
-  const [filterState, dispatch] = useReducer(reducer, initialFilterState);
+  const [, dispatch] = useReducer(reducer, initialFilterState);
   const [state, setState] = useState(initialState)
   const [sports] = useContext(SportsContext);
   const handleChange = (name: any ) => (event: any) => {

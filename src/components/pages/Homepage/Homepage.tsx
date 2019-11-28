@@ -11,6 +11,8 @@ import {
 import { BottomAppbar } from "./BottomAppbar";
 import { getSports } from "../../../services/API";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import { UserContext } from "../../../context/UserContext";
+import { Redirect } from "react-router-dom";
 
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
@@ -47,8 +49,10 @@ const useStyle = makeStyles((theme: Theme) => ({
 
 export const Homepage = () => {
   const emptyArray: any = [];
+  const [user] = useContext(UserContext);
   const [sports, setSports] = useContext(SportsContext);
   const [selectedSports, setSelectedSports] = useState(emptyArray);
+  const [error, setError] = useState();
 
   const classes = useStyle();
 
@@ -64,21 +68,30 @@ export const Homepage = () => {
   };
 
   useEffect(() => {
-    if (sports.length === 0) {
-      getSports().then((responseSports: Sport[]) => setSports(responseSports));
+    if (user) {
+      getSports()
+        .then((responseSports: Sport[]) => {
+          setSports(responseSports);
+        })
+        .catch(err => {
+          setError(err.response.data);
+        });
     }
   }, []);
 
+  if (!user) return <Redirect to="/" />;
+
   return (
     <div className={classes.root}>
-      {sports.length === 0 && (
+      {error && error.message && <p>{error.message}</p>}
+      {!error && sports && sports.length === 0 && (
         <div className={classes.loadingSpinner}>
           <div className={classes.loadingSpinnerChild}>
             <ScaleLoader loading={true} color={"#1DA1F2"} />
           </div>
         </div>
       )}
-      {sports.length > 0 && (
+      {sports && sports.length > 0 && (
         <div>
           <GridList cols={4} className={classes.gridlist}>
             {sports.map((sport: Sport) => (

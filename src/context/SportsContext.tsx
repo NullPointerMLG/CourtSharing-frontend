@@ -1,7 +1,4 @@
 import React, { useState, createContext } from "react";
-import { getSports } from "../services/API";
-import { Sport } from "../models/Sport";
-
 const emptySports: any = [];
 export const SportsContext = createContext(emptySports);
 export const FavouriteSportsContext = createContext(emptySports);
