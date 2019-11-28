@@ -7,11 +7,7 @@ export const SportsContext = createContext(emptySports);
 export const FavouriteSportsContext = createContext(emptySports);
 
 export const SportsProvider = (props: { children: React.ReactNode; }) => {
-  const [sports, setSports] = useState(emptySports);  
-
-  if (sports.length === 0) {
-      getSports().then((responseSports: Sport[]) => setSports(responseSports))
-  }
+  const [sports, setSports] = useState(emptySports);
   
   return (<SportsContext.Provider value={[sports, setSports]}>{props.children}</SportsContext.Provider>);
 };
