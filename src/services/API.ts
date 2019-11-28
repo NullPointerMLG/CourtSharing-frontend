@@ -1,5 +1,5 @@
+import { EventParams } from './../models/EventParams';
 import { ErrorMessage } from "./../models/ErrorMessage";
-import { EventParams } from "../models/EventParams";
 import { Event } from "../models/Event";
 import { Sport } from "../models/Sport";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
@@ -47,18 +47,9 @@ export const login = (accessToken: string): Promise<boolean | ErrorMessage> => {
 };
 
 export const getEvents = (params?: EventParams): Promise<Event[]> => {
-  const emptyQuery = "";
-  let query: string = emptyQuery;
-  console.log(params)
-  if (params) {
-    query += params.sport ? "?sport=" + params.sport : emptyQuery;
-    // query += params.date ? "?date=" + params.date : emptyQuery;
-    // query += params.court ? "?court=" + params.court : emptyQuery;
-  }
-
   return axiosInstance
-    .get("/events" + query, {
-      data: JSON.stringify({ token: "a" })
+    .get("/events", {
+      params: params
     })
     .then((response: AxiosResponse) => {
       if (response.status !== 200) throw new Error(JSON.stringify(response));
@@ -68,7 +59,7 @@ export const getEvents = (params?: EventParams): Promise<Event[]> => {
 
 export const getSports = (): Promise<Sport[]> => {
   return axiosInstance
-    .get("/sports", { data: { token: "a" } })
+    .get("/sports")
     .then((response: AxiosResponse) => {
       if (response.status !== 200)
         throw new Error(JSON.stringify(response.data));
