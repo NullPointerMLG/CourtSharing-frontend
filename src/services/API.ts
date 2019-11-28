@@ -26,10 +26,11 @@ export const login = (accessToken: string): Promise<boolean | ErrorMessage> => {
 export const getEvents = (params?: EventParams): Promise<Event[]> => {
   const emptyQuery = "";
   let query: string = emptyQuery;
-
+  console.log(params)
   if (params) {
-    query += params.date ? "?date=" + params.date : emptyQuery;
-    query += params.court ? "?court=" + params.court : emptyQuery;
+    query += params.sport ? "?sport=" + params.sport : emptyQuery;
+    // query += params.date ? "?date=" + params.date : emptyQuery;
+    // query += params.court ? "?court=" + params.court : emptyQuery;
   }
 
   return fetch(API_URL + "/events" + query, {
