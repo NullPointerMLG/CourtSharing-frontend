@@ -68,8 +68,8 @@ export const getSports = (): Promise<Sport[]> => {
 };
 
 export const getCourts = (sportId: string): Promise<GeoJsonObject> => {
-  return axiosInstance
-    .get("/courts")
+   return axiosInstance
+    .get("/courts", {params: {id: sportId}})
     .then((response: AxiosResponse) => {
       if (response.status !== 200)
         throw new Error(JSON.stringify(response.data));

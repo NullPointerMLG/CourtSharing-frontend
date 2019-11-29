@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import { Sport } from "../../../models/Sport";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import { FavouriteSportsContext } from "../../../context/SportsContext";
+import { FavouriteSportContext } from "../../../context/SportsContext";
 
 type HomePageAppBarProps = {
-  selectedSports: Sport[];
+  selectedSport: Sport | undefined;
 };
 
 const useStyles = makeStyles({
@@ -38,19 +38,19 @@ const useStyles = makeStyles({
 });
 
 export const BottomAppbar = (props: HomePageAppBarProps) => {
-  const { selectedSports } = props;
-  const [, setFavouriteSports] = useContext(FavouriteSportsContext)
+  const { selectedSport } = props;
+  const [, setFavouriteSport] = useContext(FavouriteSportContext)
   const classes = useStyles();
 
   return (
     <AppBar className={classes.bottomNavBar}>
       <Toolbar>
         <Typography className={classes.title} color="secondary">
-          Select the sports you are interested in
+          Select the sport you are interested in
         </Typography>
-        {selectedSports.length > 0 && (
+        {selectedSport && (
           <Link to="/feed" className={classes.link}>
-            <Button color="secondary" className={classes.nextButton} onClick={setFavouriteSports(selectedSports)}>
+            <Button color="secondary" className={classes.nextButton} onClick={setFavouriteSport(selectedSport)}>
               <Typography className={classes.nextButtonText}>Next</Typography>
               <NavigateNextIcon className={classes.nextIcon} />
             </Button>

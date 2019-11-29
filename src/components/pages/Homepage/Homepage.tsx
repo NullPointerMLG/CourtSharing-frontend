@@ -48,22 +48,18 @@ const useStyle = makeStyles((theme: Theme) => ({
 }));
 
 export const Homepage = () => {
-  const emptyArray: any = [];
   const [user] = useContext(UserContext);
   const [sports, setSports] = useContext(SportsContext);
-  const [selectedSports, setSelectedSports] = useState(emptyArray);
+  const [selectedSport, setSelectedSport] = useState<Sport>();
   const [error, setError] = useState();
 
   const classes = useStyle();
 
   const clickSport = (sport: Sport): void => {
-    if (!selectedSports.includes(sport))
-      setSelectedSports([...selectedSports, sport]);
+    if (selectedSport === sport)
+      setSelectedSport(undefined);
     else {
-      const newSports: Sport[] = selectedSports.filter(
-        (auxSport: Sport) => auxSport.name !== sport.name
-      );
-      setSelectedSports(newSports);
+      setSelectedSport(sport);
     }
   };
 
@@ -111,13 +107,13 @@ export const Homepage = () => {
                 <GridListTileBar
                   title={sport.name}
                   className={
-                    selectedSports.includes(sport) ? classes.selected : ``
+                    selectedSport === sport ? classes.selected : ``
                   }
                 />
               </GridListTile>
             ))}
           </GridList>
-          <BottomAppbar selectedSports={selectedSports} />
+          <BottomAppbar selectedSport={selectedSport} />
         </div>
       )}
     </div>
