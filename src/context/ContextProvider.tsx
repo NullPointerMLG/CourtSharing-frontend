@@ -1,13 +1,13 @@
 import React from 'react';
-import { SportsProvider, FavouriteSportProvider } from './SportsContext';
+import { SportsProvider, SelectedSportProvider } from './SportsContext';
 import { UserProvider } from './UserContext';
 
 export const ContextProvider = (props: { children: React.ReactNode; }) => {
     return <SportsProvider>
         <UserProvider>
-            <FavouriteSportProvider>
+            <SelectedSportProvider>
                 {props.children}
-            </FavouriteSportProvider>
+            </SelectedSportProvider>
         </UserProvider>
     </SportsProvider>
 }

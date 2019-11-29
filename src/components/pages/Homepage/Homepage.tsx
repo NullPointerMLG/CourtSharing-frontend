@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { SportsContext, FavouriteSportContext } from "../../../context/SportsContext";
+import { SportsContext, SelectedSportContext } from "../../../context/SportsContext";
 import { Sport } from "../../../models/Sport";
 import {
   makeStyles,
@@ -50,7 +50,7 @@ const useStyle = makeStyles((theme: Theme) => ({
 export const Homepage = () => {
   const [user] = useContext(UserContext);
   const [sports, setSports] = useContext(SportsContext);
-  const [favouriteSport, setFavouriteSport] = useContext(FavouriteSportContext);
+  const [favouriteSport, setFavouriteSport] = useContext(SelectedSportContext);
   const [error, setError] = useState();
 
   const classes = useStyle();

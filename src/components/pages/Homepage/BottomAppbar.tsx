@@ -3,7 +3,7 @@ import { AppBar, Typography, Toolbar, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import { FavouriteSportContext } from "../../../context/SportsContext";
+import { SelectedSportContext } from "../../../context/SportsContext";
 
 const useStyles = makeStyles({
   bottomNavBar: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 });
 
 export const BottomAppbar = () => {
-  const [favouriteSport, setFavouriteSport] = useContext(FavouriteSportContext);
+  const [favouriteSport, setFavouriteSport] = useContext(SelectedSportContext);
   const classes = useStyles();
 
   return (
