@@ -24,7 +24,7 @@ export const FilterMenu = (props:any) => {
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(
     new Date('2014-08-18T21:11:54'),
   );
-  console.log(props);
+  
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
   };
@@ -34,7 +34,6 @@ export const FilterMenu = (props:any) => {
   const [state, setState] = useState(initialState)
   const [sports] = useContext(SportsContext);
   
-  console.log(sports);
   const handleChange = (name: any ) => (event: any) => {
     setState({
       ...state,

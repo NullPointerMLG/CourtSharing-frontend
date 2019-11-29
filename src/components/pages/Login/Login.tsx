@@ -55,7 +55,7 @@ export const Login: React.FC = props => {
           setIsLoading(true);
           user.getIdToken().then((token: string) =>
             login(token)
-              .then(value => {
+              .then(() => {
                 localStorage.setItem("loggedUser", JSON.stringify(user));
                 setUser(user);
               })

@@ -1,7 +1,7 @@
 import React, { useState, createContext } from "react";
 const emptySports: any = [];
 export const SportsContext = createContext(emptySports);
-export const FavouriteSportsContext = createContext(emptySports);
+export const FavouriteSportContext = createContext(emptySports);
 
 export const SportsProvider = (props: { children: React.ReactNode; }) => {
   const [sports, setSports] = useState(emptySports);
@@ -10,7 +10,7 @@ export const SportsProvider = (props: { children: React.ReactNode; }) => {
 };
 
 export const FavouriteSportProvider = (props: { children: React.ReactNode; }) => {
-  const [favouriteSports, setFavouriteSports] = useState(emptySports);  
+  const [favouriteSport, setFavouriteSport] = useState();  
   
-  return (<FavouriteSportsContext.Provider value={[favouriteSports, setFavouriteSports]}>{props.children}</FavouriteSportsContext.Provider>);
+  return (<FavouriteSportContext.Provider value={[favouriteSport, setFavouriteSport]}>{props.children}</FavouriteSportContext.Provider>);
 };

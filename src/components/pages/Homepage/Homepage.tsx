@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { SportsContext } from "../../../context/SportsContext";
+import { SportsContext, FavouriteSportContext } from "../../../context/SportsContext";
 import { Sport } from "../../../models/Sport";
 import {
   makeStyles,
@@ -48,22 +48,18 @@ const useStyle = makeStyles((theme: Theme) => ({
 }));
 
 export const Homepage = () => {
-  const emptyArray: any = [];
   const [user] = useContext(UserContext);
   const [sports, setSports] = useContext(SportsContext);
-  const [selectedSports, setSelectedSports] = useState(emptyArray);
+  const [favouriteSport, setFavouriteSport] = useContext(FavouriteSportContext);
   const [error, setError] = useState();
 
   const classes = useStyle();
 
   const clickSport = (sport: Sport): void => {
-    if (!selectedSports.includes(sport))
-      setSelectedSports([...selectedSports, sport]);
+    if (favouriteSport === sport)
+      setFavouriteSport(undefined);
     else {
-      const newSports: Sport[] = selectedSports.filter(
-        (auxSport: Sport) => auxSport.name !== sport.name
-      );
-      setSelectedSports(newSports);
+      setFavouriteSport(sport);
     }
   };
 
@@ -74,7 +70,8 @@ export const Homepage = () => {
           setSports(responseSports);
         })
         .catch(err => {
-          setError(err.response.data);
+          console.warn(err);
+          setError(err.data);
         });
     }
   }, []);
@@ -110,13 +107,13 @@ export const Homepage = () => {
                 <GridListTileBar
                   title={sport.name}
                   className={
-                    selectedSports.includes(sport) ? classes.selected : ``
+                    favouriteSport === sport ? classes.selected : ``
                   }
                 />
               </GridListTile>
             ))}
           </GridList>
-          <BottomAppbar selectedSports={selectedSports} />
+          <BottomAppbar />
         </div>
       )}
     </div>
