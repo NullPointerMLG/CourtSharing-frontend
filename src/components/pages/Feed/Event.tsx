@@ -90,7 +90,7 @@ export const Event: React.FC<Props> = props => {
           </IconButton>
         }
         title={props.event.title}
-        subheader={formatDate(props.event.event_date)}
+        subheader={formatDate(props.event.eventDate)}
       />
       <CardMedia
         className={classes.media}
