@@ -10,7 +10,7 @@ export const SportsProvider = (props: { children: React.ReactNode; }) => {
 };
 
 export const FavouriteSportProvider = (props: { children: React.ReactNode; }) => {
-  const [favouriteSport, setFavouriteSport] = useState(emptySports);  
+  const [favouriteSport, setFavouriteSport] = useState();  
   
   return (<FavouriteSportContext.Provider value={[favouriteSport, setFavouriteSport]}>{props.children}</FavouriteSportContext.Provider>);
 };

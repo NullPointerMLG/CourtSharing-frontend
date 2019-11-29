@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { SportsContext } from "../../../context/SportsContext";
+import { SportsContext, FavouriteSportContext } from "../../../context/SportsContext";
 import { Sport } from "../../../models/Sport";
 import {
   makeStyles,
@@ -50,16 +50,16 @@ const useStyle = makeStyles((theme: Theme) => ({
 export const Homepage = () => {
   const [user] = useContext(UserContext);
   const [sports, setSports] = useContext(SportsContext);
-  const [selectedSport, setSelectedSport] = useState<Sport>();
+  const [favouriteSport, setFavouriteSport] = useContext(FavouriteSportContext);
   const [error, setError] = useState();
 
   const classes = useStyle();
 
   const clickSport = (sport: Sport): void => {
-    if (selectedSport === sport)
-      setSelectedSport(undefined);
+    if (favouriteSport === sport)
+      setFavouriteSport(undefined);
     else {
-      setSelectedSport(sport);
+      setFavouriteSport(sport);
     }
   };
 
@@ -107,13 +107,13 @@ export const Homepage = () => {
                 <GridListTileBar
                   title={sport.name}
                   className={
-                    selectedSport === sport ? classes.selected : ``
+                    favouriteSport === sport ? classes.selected : ``
                   }
                 />
               </GridListTile>
             ))}
           </GridList>
-          <BottomAppbar selectedSport={selectedSport} />
+          <BottomAppbar />
         </div>
       )}
     </div>

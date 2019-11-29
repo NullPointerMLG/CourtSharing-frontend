@@ -24,6 +24,9 @@ const requestHandler = (request: AxiosRequestConfig) => {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*"
   };
+
+  console.log(request);
+
   return request;
 };
 

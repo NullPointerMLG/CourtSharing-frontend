@@ -13,6 +13,7 @@ import { EventParams } from "../../../models/EventParams";
 import { GeoJsonObject } from "geojson";
 import { CourtMap } from "../../shared/CourtMap";
 import "./Feed.css";
+import { FavouriteSportContext } from "../../../context/SportsContext";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Feed: React.FC = () => {
   const classes = useStyles();
   const [user] = useContext(UserContext);
+  const [favouriteSport] = useContext(FavouriteSportContext);
   const [events, setEvents] = useState([] as EventObject[]);
   const [geoJson, setGeoJson] = useState<GeoJsonObject>();
   // TODO: handle error with a feedback component
@@ -47,15 +49,18 @@ export const Feed: React.FC = () => {
   };
 
   useEffect(() => {
-    getEvents()
-      .then(res => setEvents(res))
-      .catch(e => console.warn(e));
-    getCourts("5dd5cdae1c9d440000719592")
-      .then(res => setGeoJson(res))
-      .catch(e => console.warn(e));
+    if (favouriteSport && user) {
+      getEvents()
+        .then(res => setEvents(res))
+        .catch(e => console.warn(e));
+      getCourts(favouriteSport._id.$oid)
+        .then(res => setGeoJson(res))
+        .catch(e => console.warn(e));
+    }
   }, []);
 
   if (!user) return <Redirect to="/login" />;
+  if (!favouriteSport) return <Redirect to="/homepage" />;
 
   return (
     <div className={classes.root}>

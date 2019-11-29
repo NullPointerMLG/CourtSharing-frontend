@@ -27,7 +27,7 @@ export const CourtMap = (props: MapProps) => {
 
   return (
     <div className={classes.map}>
-      <Map center={position} zoom={10}>
+      <Map center={position} zoom={13}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
