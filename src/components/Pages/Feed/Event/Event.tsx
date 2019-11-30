@@ -116,7 +116,7 @@ export const Event: React.FC<Props> = props => {
       <CardContent>
         <UserInfo
           avatar={props.event.creator.photoURL}
-          name={props.event.creator.name}
+          name={props.event.creator.name} size={24}
         />
         <Divider />
         <Typography

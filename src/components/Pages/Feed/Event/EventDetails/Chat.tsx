@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import { addComment } from "./../../../../../services/API";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStylesChat = makeStyles((theme: Theme) =>
   createStyles({
@@ -133,15 +134,18 @@ interface CommentProps {
   message: string;
 }
 
+// TODO: add delete button
 const Comment: React.FC<CommentProps> = props => {
   const classes = useStylesComment();
   return (
     <div>
-      <Avatar
-        aria-label="Creator avatar"
-        src={props.avatar}
-        className={classes.avatar}
-      ></Avatar>
+      <Tooltip title={props.name}>
+        <Avatar
+          aria-label="Creator avatar"
+          src={props.avatar}
+          className={classes.avatar}
+        ></Avatar>
+      </Tooltip>
       <Typography
         variant="body2"
         color="textSecondary"

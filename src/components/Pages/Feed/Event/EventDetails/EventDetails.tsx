@@ -129,7 +129,7 @@ export const EventDetails: React.FC<Props> = props => {
               {props.event.participants.map((p, index) => {
                 return (
                   <div className={classes.participant} key={index}>
-                    <UserInfo avatar={p.photoURL} name={p.name} />
+                    <UserInfo avatar={p.photoURL} name={p.name} size={24} />
                   </div>
                 );
               })}
