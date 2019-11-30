@@ -20,3 +20,9 @@ export interface Comment {
   message: string;
   user: User;
 }
+
+export interface CommentAddParams {
+  userUUID: string;
+  message: string;
+  eventID: string;
+}

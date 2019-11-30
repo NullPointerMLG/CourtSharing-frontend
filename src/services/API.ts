@@ -1,6 +1,6 @@
 import { GeoJsonObject } from "geojson";
 import { EventParams } from "./../models/EventParams";
-import { EventUpdateParams } from "./../models/Event";
+import { EventUpdateParams, CommentAddParams } from "./../models/Event";
 import { ErrorMessage } from "./../models/ErrorMessage";
 import { Event } from "../models/Event";
 import { Sport } from "../models/Sport";
@@ -65,6 +65,19 @@ export const updateEvent = (
 ): Promise<boolean | ErrorMessage> => {
   return axiosInstance
     .put(BASE_URL + "/events/" + eventID, {
+      params
+    })
+    .then((response: any) => {
+      if (response.status !== 200) throw new Error(JSON.stringify(Response));
+      return response.data;
+    });
+};
+
+export const addComment = (
+  params: CommentAddParams
+): Promise<boolean | ErrorMessage> => {
+  return axiosInstance
+    .post(BASE_URL + "/comments", {
       params
     })
     .then((response: any) => {

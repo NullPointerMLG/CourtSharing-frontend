@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   event: Event;
   onBack: () => void;
+  userUUID: string;
 }
 
 export const EventDetails: React.FC<Props> = props => {
@@ -145,7 +146,11 @@ export const EventDetails: React.FC<Props> = props => {
             </Typography>
             <Divider />
             <div className={classes.chat}>
-              <Chat comments={props.event.comments} />
+              <Chat
+                comments={props.event.comments}
+                eventID={props.event.id}
+                userUUID={props.userUUID}
+              />
             </div>
           </Grid>
         </Grid>

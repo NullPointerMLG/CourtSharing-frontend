@@ -96,7 +96,7 @@ export const Feed: React.FC = () => {
           </Grid>
         </Grid>
       ) : (
-        <EventDetails event={eventSelected} onBack={onEventDetailsBack} />
+        <EventDetails event={eventSelected} onBack={onEventDetailsBack} userUUID={user.uid}/>
       )}
     </div>
   );
