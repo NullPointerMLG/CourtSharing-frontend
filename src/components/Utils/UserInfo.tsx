@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: { paddingBottom: "10px" },
+    root: {},
     name: {
       display: "inline-block",
       verticalAlign: "top"

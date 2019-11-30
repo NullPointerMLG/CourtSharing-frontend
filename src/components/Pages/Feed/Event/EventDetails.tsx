@@ -13,12 +13,24 @@ import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import Typography from "@material-ui/core/Typography";
 import { formatDate } from "./Event";
+import { UserInfo } from "./../../../Utils/UserInfo";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
     sectionTitle: {
       fontSize: "24px"
+    },
+    participantsContainer: {
+      marginTop: "20px",
+      display: "flex",
+      flexWrap: "wrap"
+    },
+    participant: {
+      padding: "10px",
+      borderRadius: "20px",
+      backgroundColor: "#ededed",
+      margin: "4px"
     }
   })
 );
@@ -97,6 +109,15 @@ export const EventDetails: React.FC<Props> = props => {
               Participants
             </Typography>
             <Divider />
+            <div className={classes.participantsContainer}>
+              {props.event.participants.map(p => {
+                return (
+                  <div className={classes.participant}>
+                    <UserInfo avatar={p.photoURL} name={p.name} />
+                  </div>
+                );
+              })}
+            </div>
           </Grid>
         </Grid>
       </div>
