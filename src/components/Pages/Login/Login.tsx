@@ -27,6 +27,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+interface User extends firebase.User {
+  id: number;
+}
+
 export const Login: React.FC = props => {
   const NO_ERROR_MESSAGE: string = "";
   const ERROR_AUTO_HIDE_DURATION_MS: number = 6000;
@@ -55,9 +59,10 @@ export const Login: React.FC = props => {
           setIsLoading(true);
           user.getIdToken().then((token: string) =>
             login(token)
-              .then(() => {
+              .then(id => {
                 localStorage.setItem("loggedUser", JSON.stringify(user));
-                setUser(user);
+                let userComplete: User = { ...user, id: id as number };
+                setUser(userComplete);
               })
               .catch(err => {
                 firebase.auth().signOut();

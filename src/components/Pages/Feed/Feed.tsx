@@ -60,6 +60,10 @@ export const Feed: React.FC = () => {
   if (!user) return <Redirect to="/login" />;
   if (!favouriteSport) return <Redirect to="/homepage" />;
 
+  const onEventDetailsBack = () => {
+    setEventSelected(undefined);
+  };
+
   return (
     <div className={classes.root}>
       {!eventSelected ? (
@@ -79,7 +83,12 @@ export const Feed: React.FC = () => {
               >
                 {events.map((event, i) => (
                   <GridListTile key={i} cols={1} className={classes.event}>
-                    <Event event={event} onClick={setEventSelected} />
+                    <Event
+                      event={event}
+                      onClick={setEventSelected}
+                      userUUID={user.uid}
+                      setEvents={setEvents}
+                    />
                   </GridListTile>
                 ))}
               </GridList>
@@ -87,7 +96,7 @@ export const Feed: React.FC = () => {
           </Grid>
         </Grid>
       ) : (
-        <EventDetails event={eventSelected} />
+        <EventDetails event={eventSelected} onBack={onEventDetailsBack} />
       )}
     </div>
   );

@@ -1,22 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Event as EventEntity } from "../../../../models/Event";
 import { UserInfo } from "./../../../Utils/UserInfo";
 import Divider from "@material-ui/core/Divider";
+import { Button } from "@material-ui/core";
+import { updateEvent, getEvents } from "./../../../../services/API";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,6 +39,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
     description: {
       marginTop: "16px"
+    },
+    assistContainer: {
+      display: "flex"
+    },
+    assistButton: {
+      marginLeft: "auto"
     }
   })
 );
@@ -51,6 +52,8 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   event: EventEntity;
   onClick: (event: EventEntity) => void;
+  userUUID: string;
+  setEvents: (events: EventEntity[]) => void;
 }
 
 export function formatDate(value: number): string {
@@ -64,12 +67,38 @@ export function formatDate(value: number): string {
 
 export const Event: React.FC<Props> = props => {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [assist, setAssist] = useState<boolean>();
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const { event, userUUID } = props;
+
+  useEffect(() => {
+    let found = false;
+    for (let key in event.participants) {
+      if (event.participants[key].uuid === userUUID) {
+        setAssist(true);
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      setAssist(false);
+    }
+  }, [event.participants, userUUID]);
+
+  const onClickAssist = () => {
+    updateEvent(props.event.id, { participantUUID: props.userUUID })
+      .then(() => {
+        reloadEvents();
+      })
+      .catch(e => console.warn(e));
   };
-  console.log(props.event.creator);
+
+  const reloadEvents = () => {
+    getEvents()
+      .then(res => props.setEvents(res))
+      .catch(e => console.warn(e));
+  };
+
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -98,28 +127,19 @@ export const Event: React.FC<Props> = props => {
         >
           {props.event.description}
         </Typography>
+        {props.event.creator.uuid !== props.userUUID && (
+          <div className={classes.assistContainer}>
+            <Button
+              variant="contained"
+              color={!assist ? "primary" : "secondary"}
+              className={classes.assistButton}
+              onClick={onClickAssist}
+            >
+              {!assist ? "Assist" : "Cancel"}
+            </Button>
+          </div>
+        )}
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent></CardContent>
-      </Collapse>
     </Card>
   );
 };

@@ -14,6 +14,7 @@ import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import Typography from "@material-ui/core/Typography";
 import { formatDate } from "./Event";
 import { UserInfo } from "./../../../Utils/UserInfo";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,12 +32,16 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: "20px",
       backgroundColor: "#ededed",
       margin: "4px"
+    },
+    backButton: {
+      marginBottom: "20px"
     }
   })
 );
 
 interface Props {
   event: Event;
+  onBack: () => void;
 }
 
 export const EventDetails: React.FC<Props> = props => {
@@ -44,6 +49,14 @@ export const EventDetails: React.FC<Props> = props => {
   return (
     <div className={classes.root}>
       <div>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={props.onBack}
+          className={classes.backButton}
+        >
+          BACK
+        </Button>
         <Grid container spacing={3}>
           <Grid item xs={6}>
             <div>
@@ -110,9 +123,9 @@ export const EventDetails: React.FC<Props> = props => {
             </Typography>
             <Divider />
             <div className={classes.participantsContainer}>
-              {props.event.participants.map(p => {
+              {props.event.participants.map((p, index) => {
                 return (
-                  <div className={classes.participant}>
+                  <div className={classes.participant} key={index}>
                     <UserInfo avatar={p.photoURL} name={p.name} />
                   </div>
                 );
