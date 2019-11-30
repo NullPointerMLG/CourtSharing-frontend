@@ -12,8 +12,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     avatar: {
       display: "inline-block",
-      width: 20,
-      height: 20,
       marginRight: 10
     }
   })
@@ -22,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   avatar?: string;
   name?: string;
+  size: number;
 }
 
 export const UserInfo: React.FC<Props> = props => {
@@ -30,6 +29,7 @@ export const UserInfo: React.FC<Props> = props => {
   return (
     <div className={classes.root}>
       <Avatar
+        style={{ width: props.size, height: props.size }}
         aria-label="Creator avatar"
         src={props.avatar}
         className={classes.avatar}

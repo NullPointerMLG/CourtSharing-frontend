@@ -7,14 +7,15 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
-import { Event } from "../../../../models/Event";
+import { Event } from "../../../../../models/Event";
 import DateRangeRoundedIcon from "@material-ui/icons/DateRangeRounded";
 import DescriptionRoundedIcon from "@material-ui/icons/DescriptionRounded";
 import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import Typography from "@material-ui/core/Typography";
-import { formatDate } from "./Event";
-import { UserInfo } from "./../../../Utils/UserInfo";
+import { formatDate } from "../Event";
+import { UserInfo } from "../../../../Utils/UserInfo";
 import { Button } from "@material-ui/core";
+import { Chat } from "./Chat";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,13 +36,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     backButton: {
       marginBottom: "20px"
-    }
+    },
+    chat: {}
   })
 );
 
 interface Props {
   event: Event;
   onBack: () => void;
+  userUUID: string;
 }
 
 export const EventDetails: React.FC<Props> = props => {
@@ -126,10 +129,28 @@ export const EventDetails: React.FC<Props> = props => {
               {props.event.participants.map((p, index) => {
                 return (
                   <div className={classes.participant} key={index}>
-                    <UserInfo avatar={p.photoURL} name={p.name} />
+                    <UserInfo avatar={p.photoURL} name={p.name} size={24} />
                   </div>
                 );
               })}
+            </div>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              className={classes.sectionTitle}
+            >
+              Thread
+            </Typography>
+            <Divider />
+            <div className={classes.chat}>
+              <Chat
+                comments={props.event.comments}
+                eventID={props.event.id}
+                userUUID={props.userUUID}
+              />
             </div>
           </Grid>
         </Grid>
