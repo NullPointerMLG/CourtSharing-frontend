@@ -13,7 +13,7 @@ import { CourtMap } from "../../Shared/CourtMap";
 import "./Feed.css";
 import { SelectedSportContext } from "../../../context/SportsContext";
 import { Event as EventEntity } from "../../../models/Event";
-import { EventDetails } from "./Event/EventDetails";
+import { EventDetails } from "./Event/EventDetails/EventDetails";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
