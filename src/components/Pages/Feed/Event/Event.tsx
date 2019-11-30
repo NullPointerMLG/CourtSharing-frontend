@@ -77,7 +77,7 @@ export const Event: React.FC<Props> = props => {
           <Avatar aria-label="recipe" className={classes.avatar}></Avatar>
         }
         title={props.event.title}
-        subheader={formatDate(props.event.event_date)}
+        subheader={formatDate(props.event.eventDate)}
         onClick={() => props.onClick(props.event)}
       />
       <CardMedia
@@ -86,7 +86,7 @@ export const Event: React.FC<Props> = props => {
       />
       <CardContent>
         <UserInfo
-          avatar={props.event.creator.photo_url}
+          avatar={props.event.creator.photoURL}
           name={props.event.creator.name}
         />
         <Divider />

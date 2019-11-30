@@ -1,11 +1,11 @@
 import { User } from "./User";
 
 export interface Event {
-  creation_date: number;
-  event_date: number;
+  creationDate: number;
+  eventDate: number;
   title: string;
   description?: string;
-  court_id: string;
+  courtID: string;
   creator: User;
   participants: User[];
 }

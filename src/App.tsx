@@ -6,7 +6,7 @@ import { initializeFirebase } from "./utils/firebase";
 import { Feed } from "./components/Pages/Feed/Feed";
 import { MainAppBar } from "./components/Shared/AppBar";
 import { ContextProvider } from "./context/ContextProvider";
-import { Homepage } from "./components/pages/Homepage/Homepage";
+import { Homepage } from "./components/Pages/Homepage/Homepage";
 import { Landing } from "./components/Pages/Landing/Landing";
 import Register from "./components/Pages/Register/Register";
 import { NotFound } from "./components/Pages/NotFound/NotFound";

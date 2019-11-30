@@ -56,7 +56,7 @@ export const EventDetails: React.FC<Props> = props => {
                   </ListItemAvatar>
                   <ListItemText
                     primary={"Creation date"}
-                    secondary={formatDate(props.event.creation_date)}
+                    secondary={formatDate(props.event.creationDate)}
                   />
                 </ListItem>
                 <Divider variant="inset" component="li" />
@@ -68,7 +68,7 @@ export const EventDetails: React.FC<Props> = props => {
                   </ListItemAvatar>
                   <ListItemText
                     primary={"Event date"}
-                    secondary={formatDate(props.event.event_date)}
+                    secondary={formatDate(props.event.eventDate)}
                   />
                 </ListItem>
                 <Divider variant="inset" component="li" />
