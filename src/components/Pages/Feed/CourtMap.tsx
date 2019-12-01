@@ -10,8 +10,8 @@ import L, {
   Content
 } from "leaflet";
 import { makeStyles, Theme, Fab } from "@material-ui/core";
-import { SelectedSportContext } from "../../context/SportsContext";
-import { getCourts } from "../../services/API";
+import { SelectedSportContext } from "../../../context/SportsContext";
+import { getCourts } from "../../../services/API";
 import AddIcon from "@material-ui/icons/Add";
 
 const useStyle = makeStyles((theme: Theme) => ({

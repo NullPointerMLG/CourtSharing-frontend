@@ -9,7 +9,7 @@ import { FilterMenu } from "./FilterMenu";
 import Grid from "@material-ui/core/Grid";
 import { getEvents } from "../../../services/API";
 import { EventParams } from "../../../models/EventParams";
-import { CourtMap } from "../../Shared/CourtMap";
+import { CourtMap } from "./CourtMap";
 import "./Feed.css";
 import { SelectedSportContext } from "../../../context/SportsContext";
 import { Event as EventEntity } from "../../../models/Event";
