@@ -3,4 +3,5 @@ export interface Sport {
     name: string
     resource_id?: string
     icon_url?: string
+    marker_url?: string
 }

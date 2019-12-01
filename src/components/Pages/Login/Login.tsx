@@ -4,8 +4,6 @@ import firebase from "firebase";
 import { UserContext } from "../../../context/UserContext";
 import { Redirect } from "react-router-dom";
 import { login } from "../../../services/API";
-import { from } from "rxjs";
-import { switchMap } from "rxjs/operators";
 import { isErrorMessage } from "../../../models/ErrorMessage";
 import { Snackbar } from "@material-ui/core";
 import { SnackbarOrigin } from "@material-ui/core/Snackbar";
@@ -28,6 +26,10 @@ const useStyles = makeStyles(theme => ({
     width: "50%"
   }
 }));
+
+interface User extends firebase.User {
+  id: number;
+}
 
 export const Login: React.FC = props => {
   const NO_ERROR_MESSAGE: string = "";
@@ -54,23 +56,23 @@ export const Login: React.FC = props => {
       signInSuccessWithAuthResult: () => {
         const user: firebase.User | null = firebase.auth().currentUser;
         if (user) {
-          setIsLoading(true)
-          from(user.getIdToken())
-            .pipe(switchMap((token: string) => login(token)))
-            .subscribe(
-              () => {
+          setIsLoading(true);
+          user.getIdToken().then((token: string) =>
+            login(token)
+              .then(id => {
                 localStorage.setItem("loggedUser", JSON.stringify(user));
-                setUser(user);
-              },
-              err => {
+                let userComplete: User = { ...user, id: id as number };
+                setUser(userComplete);
+              })
+              .catch(err => {
                 firebase.auth().signOut();
-                console.log(err);
                 if (isErrorMessage(err)) setShowErrorMessage(err.message);
                 else setShowErrorMessage(DEFAULT_ERROR_MSG);
-              }
-            ).add(() => {
-              setIsLoading(false);
-            })
+              })
+              .finally(() => {
+                setIsLoading(false);
+              })
+          );
         }
         return false;
       }
@@ -92,13 +94,14 @@ export const Login: React.FC = props => {
 
       <Paper className={classes.signBox}>
         <h1>Login</h1>
-        <ScaleLoader loading={isLoading} color={'#1DA1F2'} />
-        {!isLoading &&
-        <StyledFirebaseAuth
-          key={new Date().getTime()}
-          uiConfig={uiConfig}
-          firebaseAuth={firebase.auth()}
-        />}
+        <ScaleLoader loading={isLoading} color={"#1DA1F2"} />
+        {!isLoading && (
+          <StyledFirebaseAuth
+            key={new Date().getTime()}
+            uiConfig={uiConfig}
+            firebaseAuth={firebase.auth()}
+          />
+        )}
       </Paper>
     </div>
   );
