@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { GeoJsonObject } from "geojson";
-import { Map, TileLayer, GeoJSON, Popup } from "react-leaflet";
+import { Map, TileLayer, GeoJSON } from "react-leaflet";
 import L, { LatLngExpression, icon, Layer, IconOptions, Icon } from "leaflet";
 import { makeStyles, Theme } from "@material-ui/core";
-import { SelectedSportContext } from "../../context/SportsContext";
-import { getCourts } from "../../services/API";
+import { SelectedSportContext } from "../../../context/SportsContext";
+import { getCourts } from "../../../services/API";
 
 const useStyle = makeStyles((theme: Theme) => ({
   map: {
