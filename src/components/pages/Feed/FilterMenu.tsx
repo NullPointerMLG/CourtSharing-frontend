@@ -4,10 +4,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Select from '@material-ui/core/Select';
 import { Sport } from "../../../models/Sport";
 import { SportsContext } from "../../../context/SportsContext";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 import DateFnsUtils from '@date-io/date-fns';
 import { Button } from "@material-ui/core";

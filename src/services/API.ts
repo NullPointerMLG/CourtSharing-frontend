@@ -17,10 +17,10 @@ export const login = (accessToken: string): Promise<boolean | ErrorMessage> => {
     }
   })
     .then((response: any) => {
-      if (response.status !== 200) throw new Error(JSON.stringify(Response));
+      // if (response.status !== 200) throw new Error(JSON.stringify(Response));
       return response.json();
     })
-    .catch(err => err.json());
+    .catch(err => console.log(err));
 };
 
 export const getEvents = (params?: EventParams): Promise<Event[]> => {
@@ -29,7 +29,7 @@ export const getEvents = (params?: EventParams): Promise<Event[]> => {
   console.log(params)
   if (params) {
     query += params.sport ? "?sport=" + params.sport : emptyQuery;
-    // query += params.date ? "?date=" + params.date : emptyQuery;
+    query += params.date ? "?date=" + params.date : emptyQuery;
     // query += params.court ? "?court=" + params.court : emptyQuery;
   }
 
@@ -53,7 +53,7 @@ export const getSports = (): Promise<Sport[]> => {
         throw new Error(JSON.stringify(response.json()));
       return response.json();
     })
-    .catch(err => err.json());
+    .catch(err => console.log(err));
 };
 
 export const addNewEvent = (event: Event): Promise<Event> => {
