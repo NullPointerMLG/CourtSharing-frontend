@@ -17,6 +17,7 @@ export interface EventUpdateParams {
 }
 
 export interface Comment {
+  id:string;
   message: string;
   user: User;
 }

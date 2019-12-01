@@ -5,8 +5,10 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
-import { addComment } from "./../../../../../services/API";
+import { addComment, deleteComment } from "./../../../../../services/API";
 import Tooltip from "@material-ui/core/Tooltip";
+import DeleteForeverRoundedIcon from "@material-ui/icons/DeleteForeverRounded";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStylesChat = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,13 +20,13 @@ const useStylesChat = makeStyles((theme: Theme) =>
     },
     evenComment: {
       display: "inline-block",
-      padding: "4px 16px 4px 12px",
+      padding: "4px 12px 4px 12px",
       backgroundColor: "white",
       borderRadius: "20px"
     },
     oddComment: {
       display: "inline-block",
-      padding: "4px 16px 4px 12px",
+      padding: "4px 12px 4px 12px",
       backgroundColor: "#d9d9d9",
       borderRadius: "20px"
     },
@@ -51,6 +53,9 @@ const useStylesComment = makeStyles((theme: Theme) =>
       display: "inline-block",
       verticalAlign: "super",
       paddingLeft: "10px"
+    },
+    deleteButton: {
+      verticalAlign: "initial"
     }
   })
 );
@@ -117,6 +122,8 @@ export const Chat: React.FC<Props> = props => {
                   avatar={c.user.photoURL}
                   name={c.user.name}
                   message={c.message}
+                  owner={props.userUUID === c.user.uuid}
+                  id={c.id}
                 />
               </div>
               <br />
@@ -132,11 +139,20 @@ interface CommentProps {
   avatar?: string;
   name?: string;
   message: string;
+  owner: boolean;
+  id: string;
 }
 
 // TODO: add delete button
 const Comment: React.FC<CommentProps> = props => {
   const classes = useStylesComment();
+
+  // TODO: reload event data after homepage favourite sport selection
+  // TODO: handle error
+  const onDelete = () => {
+    deleteComment(props.id);
+  };
+
   return (
     <div>
       <Tooltip title={props.name}>
@@ -154,6 +170,11 @@ const Comment: React.FC<CommentProps> = props => {
       >
         {props.message}
       </Typography>
+      {props.owner && (
+        <IconButton className={classes.deleteButton} onClick={onDelete}>
+          <DeleteForeverRoundedIcon />
+        </IconButton>
+      )}
     </div>
   );
 };

@@ -86,6 +86,17 @@ export const addComment = (
     });
 };
 
+export const deleteComment = (
+  commentID: string
+): Promise<boolean | ErrorMessage> => {
+  return axiosInstance
+    .delete(BASE_URL + "/comments/" + commentID)
+    .then((response: any) => {
+      if (response.status !== 200) throw new Error(JSON.stringify(Response));
+      return response.data;
+    });
+};
+
 export const getSports = (): Promise<Sport[]> => {
   return axiosInstance.get("/sports").then((response: AxiosResponse) => {
     if (response.status !== 200) throw new Error(JSON.stringify(response.data));
