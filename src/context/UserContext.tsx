@@ -1,5 +1,5 @@
 import React, { useState, createContext } from "react";
-import { loadUserFromLocalStorage } from "../utils/userStorage";
+import { loadUserFromLocalStorage } from "../utils/storage";
 
 const anyObject: any = undefined;
 export const UserContext = createContext(anyObject);

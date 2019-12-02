@@ -13,7 +13,13 @@ import { NotFound } from "./components/Pages/NotFound/NotFound";
 initializeFirebase();
 
 const useStyles = makeStyles(theme => ({
-  root: { height: "100vh", display: "flex", flexDirection: "column" }
+  root: {
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden"
+  },
+  component: { overflowX: "scroll", overflowY: "scroll" }
 }));
 
 const App: React.FC = () => {
@@ -25,12 +31,14 @@ const App: React.FC = () => {
           <BrowserRouter>
             <MainAppBar></MainAppBar>
             <React.Fragment>
-              <Switch>
-                <Route exact path="/" component={Landing} />
-                <Route exact path="/feed" component={Feed} />
-                <Route exact path="/homepage" component={Homepage} />
-                <Route component={NotFound} />
-              </Switch>
+              <div className={classes.component}>
+                <Switch>
+                  <Route exact path="/" component={Landing} />
+                  <Route exact path="/feed" component={Feed} />
+                  <Route exact path="/homepage" component={Homepage} />
+                  <Route component={NotFound} />
+                </Switch>
+              </div>
             </React.Fragment>
           </BrowserRouter>
         </MuiThemeProvider>

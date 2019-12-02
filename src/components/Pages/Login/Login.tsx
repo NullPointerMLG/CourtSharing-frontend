@@ -10,6 +10,7 @@ import { SnackbarOrigin } from "@material-ui/core/Snackbar";
 import { makeStyles } from "@material-ui/styles";
 import { Paper } from "@material-ui/core";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import { saveUserToLocalStorage } from "../../../utils/storage";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -60,7 +61,7 @@ export const Login: React.FC = props => {
           user.getIdToken().then((token: string) =>
             login(token)
               .then(id => {
-                localStorage.setItem("loggedUser", JSON.stringify(user));
+                saveUserToLocalStorage(user);
                 let userComplete: User = { ...user, id: id as number };
                 setUser(userComplete);
               })

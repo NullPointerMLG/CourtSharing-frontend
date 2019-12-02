@@ -17,14 +17,15 @@ import { Redirect } from "react-router-dom";
 const useStyle = makeStyles((theme: Theme) => ({
   root: {
     display: "flex",
-    marginRight: "25%",
-    marginLeft: "25%",
-    height: "100%"
+    marginRight: "10%",
+    marginLeft: "10%",
+    marginTop: "5%",
+    height: "100%",
+    flexBasis: "10%"
   },
   gridlist: {
     justifyContent: "center",
-    alignSelf: "center",
-    margin: "0px 0px 70px 0px !important"
+    alignSelf: "center"
   },
   loadingSpinner: {
     justifyContent: "center",
@@ -38,7 +39,8 @@ const useStyle = makeStyles((theme: Theme) => ({
     justifyContent: "center"
   },
   selected: {
-    backgroundColor: "rgba(22, 140, 54, 0.6)"
+    backgroundColor: theme.palette.primary.main,
+    opacity: "0.6"
   },
   sportImage: {
     height: "100%",
@@ -90,7 +92,7 @@ export const Homepage = () => {
       )}
       {!error && sports && sports.length > 0 && (
         <div>
-          <GridList cols={4} className={classes.gridlist}>
+          <GridList cols={8} className={classes.gridlist}>
             {sports.map((sport: Sport) => (
               <GridListTile
                 onClick={() => {
@@ -100,14 +102,14 @@ export const Homepage = () => {
                 cols={1}
               >
                 <img
-                  src={sport.icon_url}
+                  src={sport.marker_url}
                   alt={sport.name}
                   className={classes.sportImage}
                 />
                 <GridListTileBar
                   title={sport.name}
                   className={
-                    favouriteSport === sport ? classes.selected : ``
+                    favouriteSport && (favouriteSport.name === sport.name) ? classes.selected : ``
                   }
                 />
               </GridListTile>
