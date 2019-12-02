@@ -57,12 +57,8 @@ interface Props {
 }
 
 export function formatDate(value: number): string {
-  var date = new Date(value * 1000);
-  var year = date.getFullYear();
-  var month = ("0" + (date.getMonth() + 1)).substr(-2);
-  var day = ("0" + date.getDate()).substr(-2);
-  var formattedTime = `${year}-${month}-${day}`;
-  return formattedTime;
+  const date: Date = new Date(value);
+  return date.toLocaleDateString();
 }
 
 export const Event: React.FC<Props> = props => {

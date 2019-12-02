@@ -56,7 +56,7 @@ export const MainAppBar = () => {
 
   const renderLoginButton = () => {
     return (
-      <Link to="/login" className={classes.link}>
+      <Link to="/" className={classes.link}>
         <Button color="secondary" className={classes.userButton}>
           <PersonSharpIcon className={classes.loginIcon} />
           <Typography className={classes.loginButtonText}>Log in</Typography>
