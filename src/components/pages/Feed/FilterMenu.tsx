@@ -64,7 +64,7 @@ export const FilterMenu: React.FC<Props> = props => {
             All
           </option>
           {sports.map((sport: Sport) => (
-            <option key={sport.name} value={sport.name}>
+            <option key={sport.name} value={sport._id.$oid}>
               {sport.name}
             </option>
           ))}
@@ -88,9 +88,9 @@ export const FilterMenu: React.FC<Props> = props => {
         <Button
           variant="contained"
           color="primary"
-          /*
+          
           onClick={() => props.handleFilterEvents({ sport: state.sport })}
-          */
+
         >
           Primary
         </Button>

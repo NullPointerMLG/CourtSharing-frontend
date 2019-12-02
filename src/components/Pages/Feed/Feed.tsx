@@ -44,6 +44,7 @@ export const Feed: React.FC = () => {
   // TODO: handle error with a feedback component
 
   const handleFilterEvents = (params: EventParams) => {
+    console.log(params)
     getEvents(params)
       .then(res => setEvents(res))
       .catch(e => console.warn(e));
