@@ -33,7 +33,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: "15px",
     textAlign: "right",
     paddingRight: "5px",
-    color: "#000000"
+    color: "#000000",
+    textTransform: "none"
   },
   loginIcon: {
     paddingRight: "5px",
@@ -85,6 +86,10 @@ export const MainAppBar = () => {
     localStorage.removeItem("loggedUser");
   };
 
+  const handleFavouriteClick = () => {
+    setAnchorEl(null);
+  }
+
   const renderLoginButton = () => {
     return (
       <Link to="/" className={classes.link}>
@@ -115,7 +120,7 @@ export const MainAppBar = () => {
         >
           <div className={classes.columnFlex}>
             <Link to="/homepage" className={classes.link}>
-              <Button color="secondary" className={classes.userButton}>
+              <Button onClick={handleFavouriteClick} color="secondary" className={classes.userButton}>
                 <FavoriteIcon className={classes.loginIcon} />
                 <Typography className={classes.loginButtonText}>
                   Favourite Sport
