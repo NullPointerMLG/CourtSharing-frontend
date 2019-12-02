@@ -33,22 +33,18 @@ export const FilterMenu: React.FC<Props> = props => {
   };
 
   const classes = useStyles();
-  const initialState = { date: "", sport: "" };
-  const [state, setState] = useState(initialState);
+  const [sport, setSport] = useState("");
   const [sports] = useContext(SportsContext);
 
-  const handleChange = (name: string) => (event: any) => {
-    setState({
-      ...state,
-      [name]: event.target.value
-    });
+  const handleChange = () => (event: any) => {
+    setSport(event.target.value)
   };
 
   const filter = () => {
     let params: {[k: string]: any} = {};
     params.date = date;
-    if (state.sport !== "" && state.sport !== undefined){
-      params.sport = state.sport
+    if (sport !== "" && sport !== undefined){
+      params.sport = sport
     }
     props.handleFilterEvents(params)
   }
@@ -60,8 +56,8 @@ export const FilterMenu: React.FC<Props> = props => {
         <h4>Sport</h4>
         <Select
           native
-          value={state.sport}
-          onChange={handleChange("sport")}
+          value={sport}
+          onChange={handleChange()}
           inputProps={{
             name: "sport",
             id: "sport-native-simple"
