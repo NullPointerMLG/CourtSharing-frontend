@@ -1,5 +1,5 @@
 export interface EventParams {
     sport?: string
-    date?: string
+    date?: number
     court?: string
 }

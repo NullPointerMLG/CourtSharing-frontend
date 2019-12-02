@@ -4,10 +4,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
 import { Sport } from "../../../models/Sport";
 import { SportsContext } from "../../../context/SportsContext";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
+import {MuiPickersUtilsProvider,KeyboardDatePicker} from "@material-ui/pickers";
 
 import DateFnsUtils from "@date-io/date-fns";
 import { Button } from "@material-ui/core";
@@ -26,25 +23,31 @@ interface Props {
 }
 
 export const FilterMenu: React.FC<Props> = props => {
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date("2014-08-18T21:11:54")
-  );
-
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date());
+  const [date, setDate] = useState(parseInt((new Date().getTime()/1000).toFixed(0)));
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
+    if (date !== null) {  
+      setDate(parseInt((date.getTime()/1000).toFixed(0)));
+    }
   };
 
   const classes = useStyles();
-  const initialState = { date: "", sport: "" };
-  const [state, setState] = useState(initialState);
+  const [sport, setSport] = useState("");
   const [sports] = useContext(SportsContext);
 
-  const handleChange = (name: any) => (event: any) => {
-    setState({
-      ...state,
-      [name]: event.target.value
-    });
+  const handleChange = () => (event: any) => {
+    setSport(event.target.value)
   };
+
+  const filter = () => {
+    let params: {[k: string]: any} = {};
+    params.date = date;
+    if (sport !== "" && sport !== undefined){
+      params.sport = sport
+    }
+    props.handleFilterEvents(params)
+  }
 
   return (
     <div>
@@ -53,8 +56,8 @@ export const FilterMenu: React.FC<Props> = props => {
         <h4>Sport</h4>
         <Select
           native
-          value={state.sport}
-          onChange={handleChange("sport")}
+          value={sport}
+          onChange={handleChange()}
           inputProps={{
             name: "sport",
             id: "sport-native-simple"
@@ -64,7 +67,7 @@ export const FilterMenu: React.FC<Props> = props => {
             All
           </option>
           {sports.map((sport: Sport) => (
-            <option key={sport.name} value={sport.name}>
+            <option key={sport.name} value={sport._id.$oid}>
               {sport.name}
             </option>
           ))}
@@ -88,11 +91,8 @@ export const FilterMenu: React.FC<Props> = props => {
         <Button
           variant="contained"
           color="primary"
-          /*
-          onClick={() => props.handleFilterEvents({ sport: state.sport })}
-          */
-        >
-          Primary
+          onClick={() => filter()}>
+          Filter
         </Button>
       </Paper>
     </div>
