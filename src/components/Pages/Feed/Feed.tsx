@@ -55,7 +55,6 @@ export const Feed: React.FC = () => {
   // TODO: handle error with a feedback component
 
   const handleFilterEvents = (params: EventParams) => {
-    console.log(params)
     getEvents(params)
       .then(res => setEvents(res))
       .catch(e => console.warn(e));
@@ -84,8 +83,8 @@ export const Feed: React.FC = () => {
   const onCancelPopup = () => {
     setSelectedCourt(undefined);
     getEvents()
-        .then(res => setEvents(res))
-        .catch(e => console.warn(e));
+      .then(res => setEvents(res))
+      .catch(e => console.warn(e));
   };
 
   const onSubmitError = () => {
@@ -150,6 +149,7 @@ export const Feed: React.FC = () => {
           event={eventSelected}
           onBack={onEventDetailsBack}
           userUUID={user.uid}
+          setEvents={setEvents} setEventSelected={setEventSelected}
         />
       )}
     </div>
