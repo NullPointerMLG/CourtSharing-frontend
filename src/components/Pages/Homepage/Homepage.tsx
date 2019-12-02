@@ -76,6 +76,7 @@ export const Homepage = () => {
           setError(err.data);
         });
     }
+    // eslint-disable-next-line
   }, []);
 
   if (!user) return <Redirect to="/" />;

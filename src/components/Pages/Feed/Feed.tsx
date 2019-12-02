@@ -67,6 +67,7 @@ export const Feed: React.FC = () => {
         .then(res => setEvents(res))
         .catch(e => console.warn(e));
     }
+    // eslint-disable-next-line
   }, []);
 
   if (!user) return <Redirect to="/" />;

@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     overflow: "hidden"
   },
-  component: { overflowX: "scroll", overflowY: "scroll" }
+  component: { height: "100%", overflowY: "scroll" }
 }));
 
 const App: React.FC = () => {

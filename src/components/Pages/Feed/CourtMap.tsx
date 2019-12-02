@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { GeoJsonObject } from "geojson";
-import { Map, TileLayer, GeoJSON } from "react-leaflet";
+import { Map, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import L, {
   LatLngExpression,
   icon,
@@ -13,6 +13,7 @@ import { makeStyles, Theme, Fab } from "@material-ui/core";
 import { SelectedSportContext } from "../../../context/SportsContext";
 import { getCourts } from "../../../services/API";
 import AddIcon from "@material-ui/icons/Add";
+import { usePosition } from "use-position";
 
 const useStyle = makeStyles((theme: Theme) => ({
   mapContainer: {
@@ -34,12 +35,25 @@ const useStyle = makeStyles((theme: Theme) => ({
 }));
 
 interface CourtMapProps {
-  onAddEventClick: any
+  onAddEventClick: any;
 }
+
+const MLG_DEFAULT_LOCATION: LatLngExpression = [36.72354892, -4.427047];
+
+const isNearMalaga = (latitude: number, longitude: number): boolean => {
+  return (
+    Math.abs(latitude - MLG_DEFAULT_LOCATION[0]) < 1 &&
+    Math.abs(longitude - MLG_DEFAULT_LOCATION[1]) < 1
+  );
+};
 
 export const CourtMap = (props: CourtMapProps) => {
   const classes = useStyle();
-  const position: LatLngExpression = [36.72354892, -4.427047];
+  const { latitude, longitude } = usePosition();
+  const position: LatLngExpression =
+    latitude && longitude && isNearMalaga(latitude, longitude)
+      ? [latitude, longitude]
+      : MLG_DEFAULT_LOCATION;
   const [selectedSport] = useContext(SelectedSportContext);
   const [geoJson, setGeoJson] = useState<GeoJsonObject>();
   const [selectedMarker, setSelectedMarker] = useState();
@@ -78,7 +92,10 @@ export const CourtMap = (props: CourtMapProps) => {
       {geoJson && selectedSport && (
         <div className={classes.mapContainer}>
           {selectedMarker && (
-            <Fab onClick={() => props.onAddEventClick(selectedMarker)} className={classes.addFab}>
+            <Fab
+              onClick={() => props.onAddEventClick(selectedMarker)}
+              className={classes.addFab}
+            >
               <AddIcon />
             </Fab>
           )}
@@ -94,6 +111,11 @@ export const CourtMap = (props: CourtMapProps) => {
               pointToLayer={pointToLayer}
               onEachFeature={onEachFeature}
             />
+            {latitude && longitude && (
+              <Marker position={position}>
+                <Popup>This is your location</Popup>
+              </Marker>
+            )}
           </Map>
         </div>
       )}
