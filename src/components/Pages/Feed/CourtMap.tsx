@@ -102,7 +102,6 @@ export const CourtMap = (props: CourtMapProps) => {
   }, [selectedSport]);
 
   useEffect(() => {
-    console.log(selectedMarker);
     if (selectedMarker) {
       getParking(selectedMarker.geometry.coordinates).then(
         (parkingResponses: ParkingResponse[]) => {
