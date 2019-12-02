@@ -14,6 +14,7 @@ import { SelectedSportContext } from "../../../context/SportsContext";
 import { getCourts, getParking } from "../../../services/API";
 import AddIcon from "@material-ui/icons/Add";
 import { usePosition } from "use-position";
+import classnames from 'classnames';
 import { ParkingResponse } from "../../../models/ParkingResponse";
 
 const useStyle = makeStyles((theme: Theme) => ({
@@ -32,6 +33,25 @@ const useStyle = makeStyles((theme: Theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.primary.light
     }
+  },
+  filterOptions: {
+    position: "absolute",
+    margin: "10px",
+    right: "50px",
+    bottom: "0px",
+    zIndex: 999,
+    display: "flex",
+    flexDirection: "column"
+  },
+  filterButton: {
+    backgroundColor: theme.palette.primary.contrastText,
+    marginBottom: "10px",
+    backgroundSize: "80% 80%",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat"
+  },
+  filterInactive: {
+    backgroundColor: theme.palette.secondary.dark
   }
 }));
 
@@ -83,10 +103,13 @@ export const CourtMap = (props: CourtMapProps) => {
 
   useEffect(() => {
     if (selectedMarker) {
-      getParking(
-        selectedMarker.geometry.coordinates
-      ).then((parkingResponses: ParkingResponse[]) =>
-        setParkings(parkingResponses)
+      getParking(selectedMarker.geometry.coordinates).then(
+        (parkingResponses: ParkingResponse[]) => {
+          parkingResponses.forEach(
+            (parking: ParkingResponse) => (parking.active = true)
+          );
+          setParkings(parkingResponses);
+        }
       );
     }
   }, [selectedMarker]);
@@ -106,8 +129,20 @@ export const CourtMap = (props: CourtMapProps) => {
 
   const onEachParkingFeature = (feature: any, layer: Layer) => {
     if (feature.properties) {
-      const popup: Content = decodeURIComponent(escape(feature.properties.description));
+      const popup: Content = decodeURIComponent(
+        escape(feature.properties.description)
+      );
       layer.bindPopup(popup);
+    }
+  };
+
+  const onFilterClick = (parking: ParkingResponse) => {
+    if (parkings) {
+      const currentParkings: ParkingResponse[] = parkings.map((iterParking: ParkingResponse) => {
+        if (iterParking === parking) iterParking.active = !iterParking.active;
+        return iterParking;
+      });
+      setParkings(currentParkings);
     }
   };
 
@@ -133,25 +168,42 @@ export const CourtMap = (props: CourtMapProps) => {
               <AddIcon />
             </Fab>
           )}
+          {parkings && (
+            <div className={classes.filterOptions}>
+              {parkings.map((value: ParkingResponse) => (
+                <Fab
+                  className={classnames({[classes.filterButton]: true, [classes.filterInactive]: !value.active})}
+                  onClick={() => onFilterClick(value)}
+                  style={{ backgroundImage: `url(${value.marker_url})` }}
+                ></Fab>
+              ))}
+            </div>
+          )}
           <Map center={position} zoom={13}>
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             <GeoJSON
+              key={geoJson.toString()}
               data={geoJson}
               icon={sportIcon}
               pointToLayer={sportLayer}
               onEachFeature={onEachFeature}
             />
             {parkings &&
-              parkings.map((parking: ParkingResponse) => (
-                <GeoJSON
-                  data={parking.data}
-                  onEachFeature={onEachParkingFeature}
-                  pointToLayer={parkingLayer}
-                />
-              ))}
+              parkings.map((parking: ParkingResponse) => {
+                return parking.active ? (
+                  <GeoJSON
+                    key={parking.data.toString()}
+                    data={parking.data}
+                    onEachFeature={onEachParkingFeature}
+                    pointToLayer={parkingLayer}
+                  />
+                ) : (
+                  <div />
+                );
+              })}
             {latitude && longitude && isNearMalaga(latitude, longitude) && (
               <Marker position={position}>
                 <Popup>This is your location</Popup>
