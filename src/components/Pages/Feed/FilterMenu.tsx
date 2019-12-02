@@ -24,11 +24,11 @@ interface Props {
 
 export const FilterMenu: React.FC<Props> = props => {
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date());
-  const [date, setDate] = useState(new Date().getTime()/1000);
+  const [date, setDate] = useState(parseInt((new Date().getTime()/1000).toFixed(0)));
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
     if (date !== null) {  
-      setDate(date.getTime()/1000);
+      setDate(parseInt((date.getTime()/1000).toFixed(0)));
     }
   };
 
@@ -37,12 +37,21 @@ export const FilterMenu: React.FC<Props> = props => {
   const [state, setState] = useState(initialState);
   const [sports] = useContext(SportsContext);
 
-  const handleChange = (name: any) => (event: any) => {
+  const handleChange = (name: string) => (event: any) => {
     setState({
       ...state,
       [name]: event.target.value
     });
   };
+
+  const filter = () => {
+    let params: {[k: string]: any} = {};
+    params.date = date;
+    if (state.sport !== "" && state.sport !== undefined){
+      params.sport = state.sport
+    }
+    props.handleFilterEvents(params)
+  }
 
   return (
     <div>
@@ -86,7 +95,7 @@ export const FilterMenu: React.FC<Props> = props => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => props.handleFilterEvents({ sport: state.sport, date: date })}>
+          onClick={() => filter()}>
           Filter
         </Button>
       </Paper>
