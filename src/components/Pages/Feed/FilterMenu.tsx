@@ -23,12 +23,14 @@ interface Props {
 }
 
 export const FilterMenu: React.FC<Props> = props => {
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date());
-  const [date, setDate] = useState(parseInt((new Date().getTime()/1000).toFixed(0)));
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
+  const [date, setDate] = useState<number | null>(null);
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
     if (date !== null) {  
       setDate(parseInt((date.getTime()/1000).toFixed(0)));
+    } else {
+      setDate(date)
     }
   };
 
@@ -42,6 +44,10 @@ export const FilterMenu: React.FC<Props> = props => {
 
   const filter = () => {
     let params: {[k: string]: any} = {};
+    
+    if (date !== null && date !== undefined){
+      params.date = date
+    } 
     params.date = date;
     if (sport !== "" && sport !== undefined){
       params.sport = sport
