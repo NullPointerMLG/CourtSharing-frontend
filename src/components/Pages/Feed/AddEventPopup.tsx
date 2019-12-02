@@ -39,8 +39,10 @@ export const AddEventPopup = (props: AddEventPropups) => {
 
   const onSubmit = () => {
     if (event.event_date && event.title && event.description) {
-      event.event_date = new Date(event.event_date).getTime().toString()
-      addNewEvent(event);
+      event.event_date = new Date(event.event_date).getTime().toString();
+      addNewEvent(event).then(() => {
+        props.onCancel();
+      });
     } else {
       props.onError();
     }

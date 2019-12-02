@@ -81,6 +81,9 @@ export const Feed: React.FC = () => {
 
   const onCancelPopup = () => {
     setSelectedCourt(undefined);
+    getEvents()
+        .then(res => setEvents(res))
+        .catch(e => console.warn(e));
   };
 
   const onSubmitError = () => {
