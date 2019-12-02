@@ -8,7 +8,8 @@ import { SelectedSportContext } from "../../../context/SportsContext";
 const useStyles = makeStyles({
   bottomNavBar: {
     bottom: 0,
-    top: "auto"
+    top: "auto",
+    minHeight: "45px"
   },
   title: {
     fontSize: "20px",
