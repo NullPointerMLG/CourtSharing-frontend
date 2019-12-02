@@ -11,9 +11,10 @@ import L, {
 } from "leaflet";
 import { makeStyles, Theme, Fab } from "@material-ui/core";
 import { SelectedSportContext } from "../../../context/SportsContext";
-import { getCourts } from "../../../services/API";
+import { getCourts, getParking } from "../../../services/API";
 import AddIcon from "@material-ui/icons/Add";
 import { usePosition } from "use-position";
+import { ParkingResponse } from "../../../models/ParkingResponse";
 
 const useStyle = makeStyles((theme: Theme) => ({
   mapContainer: {
@@ -47,6 +48,15 @@ const isNearMalaga = (latitude: number, longitude: number): boolean => {
   );
 };
 
+const DEFAULT_ICON_SIZE: [number, number] = [20, 20];
+
+const getIconFromURL = (url: string): any => {
+  return icon({
+    iconUrl: url,
+    iconSize: DEFAULT_ICON_SIZE
+  });
+};
+
 export const CourtMap = (props: CourtMapProps) => {
   const classes = useStyle();
   const { latitude, longitude } = usePosition();
@@ -57,6 +67,7 @@ export const CourtMap = (props: CourtMapProps) => {
   const [selectedSport] = useContext(SelectedSportContext);
   const [geoJson, setGeoJson] = useState<GeoJsonObject>();
   const [selectedMarker, setSelectedMarker] = useState();
+  const [parkings, setParkings] = useState<ParkingResponse[]>();
   const sportIcon: Icon<IconOptions> | undefined = selectedSport
     ? icon({
         iconUrl: selectedSport.marker_url,
@@ -69,6 +80,16 @@ export const CourtMap = (props: CourtMapProps) => {
       .then(res => setGeoJson(res))
       .catch(e => console.warn(e));
   }, [selectedSport]);
+
+  useEffect(() => {
+    if (selectedMarker) {
+      getParking(
+        selectedMarker.geometry.coordinates
+      ).then((parkingResponses: ParkingResponse[]) =>
+        setParkings(parkingResponses)
+      );
+    }
+  }, [selectedMarker]);
 
   const onEachFeature = (feature: any, layer: Layer) => {
     if (feature.properties) {
@@ -83,8 +104,21 @@ export const CourtMap = (props: CourtMapProps) => {
     }
   };
 
-  const pointToLayer = (feature: any, latlng: any) => {
-    return L.marker(latlng, { icon: sportIcon }); // Change the icon to a custom icon
+  const onEachParkingFeature = (feature: any, layer: Layer) => {
+    if (feature.properties) {
+      const popup: Content = decodeURIComponent(escape(feature.properties.description));
+      layer.bindPopup(popup);
+    }
+  };
+
+  const sportLayer = (feature: any, latlng: any) => {
+    return L.marker(latlng, { icon: sportIcon });
+  };
+
+  const parkingLayer = (feature: any, latlng: any) => {
+    return L.marker(latlng, {
+      icon: getIconFromURL(feature.properties.marker_url)
+    });
   };
 
   return (
@@ -105,13 +139,20 @@ export const CourtMap = (props: CourtMapProps) => {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
             <GeoJSON
-              key="hash(geoJson)"
               data={geoJson}
               icon={sportIcon}
-              pointToLayer={pointToLayer}
+              pointToLayer={sportLayer}
               onEachFeature={onEachFeature}
             />
-            {latitude && longitude && (
+            {parkings &&
+              parkings.map((parking: ParkingResponse) => (
+                <GeoJSON
+                  data={parking.data}
+                  onEachFeature={onEachParkingFeature}
+                  pointToLayer={parkingLayer}
+                />
+              ))}
+            {latitude && longitude && isNearMalaga(latitude, longitude) && (
               <Marker position={position}>
                 <Popup>This is your location</Popup>
               </Marker>
