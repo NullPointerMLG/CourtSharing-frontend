@@ -4,10 +4,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
 import { Sport } from "../../../models/Sport";
 import { SportsContext } from "../../../context/SportsContext";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
+import {MuiPickersUtilsProvider,KeyboardDatePicker} from "@material-ui/pickers";
 
 import DateFnsUtils from "@date-io/date-fns";
 import { Button } from "@material-ui/core";
@@ -26,12 +23,13 @@ interface Props {
 }
 
 export const FilterMenu: React.FC<Props> = props => {
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date("2014-08-18T21:11:54")
-  );
-
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date());
+  const [date, setDate] = useState(new Date().getTime()/1000);
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
+    if (date !== null) {  
+      setDate(date.getTime()/1000);
+    }
   };
 
   const classes = useStyles();
@@ -88,11 +86,8 @@ export const FilterMenu: React.FC<Props> = props => {
         <Button
           variant="contained"
           color="primary"
-          
-          onClick={() => props.handleFilterEvents({ sport: state.sport })}
-
-        >
-          Primary
+          onClick={() => props.handleFilterEvents({ sport: state.sport, date: date })}>
+          Filter
         </Button>
       </Paper>
     </div>
