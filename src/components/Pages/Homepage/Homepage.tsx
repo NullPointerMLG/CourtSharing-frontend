@@ -88,7 +88,7 @@ export const Homepage = () => {
           </div>
         </div>
       )}
-      {sports && sports.length > 0 && (
+      {!error && sports && sports.length > 0 && (
         <div>
           <GridList cols={4} className={classes.gridlist}>
             {sports.map((sport: Sport) => (
