@@ -18,12 +18,6 @@ import { UserContext } from "../../context/UserContext";
 import firebase from "firebase";
 import classNames from "classnames";
 
-const navbarItems = [
-  { name: "Courts", url: "/courts" },
-  { name: "Feed", url: "/feed" },
-  { name: "Profile", url: "/profile" }
-];
-
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
     fontSize: "20px",

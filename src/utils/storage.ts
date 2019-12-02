@@ -1,4 +1,3 @@
-import { storage } from "firebase";
 import { Sport } from "../models/Sport";
 
 export const loadUserFromLocalStorage = () => {
