@@ -1,5 +1,5 @@
 import React, { useState, createContext } from "react";
-import { Sport } from "../models/Sport";
+import { loadSportFromLocalStorage } from "../utils/storage";
 const emptySports: any = [];
 const emptySport: any = undefined
 export const SportsContext = createContext(emptySports);
@@ -12,7 +12,7 @@ export const SportsProvider = (props: { children: React.ReactNode; }) => {
 };
 
 export const SelectedSportProvider = (props: { children: React.ReactNode; }) => {
-  const [selectedSport, setSelectedSport] = useState();  
+  const [selectedSport, setSelectedSport] = useState(loadSportFromLocalStorage()); 
   
   return (<SelectedSportContext.Provider value={[selectedSport, setSelectedSport]}>{props.children}</SelectedSportContext.Provider>);
 };

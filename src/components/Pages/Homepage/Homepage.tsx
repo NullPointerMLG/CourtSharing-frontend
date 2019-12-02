@@ -39,7 +39,8 @@ const useStyle = makeStyles((theme: Theme) => ({
     justifyContent: "center"
   },
   selected: {
-    backgroundColor: "rgba(22, 140, 54, 0.6)"
+    backgroundColor: theme.palette.primary.main,
+    opacity: "0.6"
   },
   sportImage: {
     height: "100%",
@@ -101,14 +102,14 @@ export const Homepage = () => {
                 cols={1}
               >
                 <img
-                  src={sport.icon_url}
+                  src={sport.marker_url}
                   alt={sport.name}
                   className={classes.sportImage}
                 />
                 <GridListTileBar
                   title={sport.name}
                   className={
-                    favouriteSport === sport ? classes.selected : ``
+                    favouriteSport && (favouriteSport.name === sport.name) ? classes.selected : ``
                   }
                 />
               </GridListTile>

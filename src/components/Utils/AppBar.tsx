@@ -43,11 +43,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     textDecoration: "none",
     color: "inherit"
   },
-  routeLink: {
-    textDecoration: "none",
-    color: "inherit",
-    marginLeft: "1rem"
-  },
   appbar: {
     display: "absolute"
   },
@@ -59,7 +54,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     zIndex: 999999,
     backgroundColor: "#e0e0e0",
     left: "-7px !important",
-    borderRadius: "15px 0px 15px 15px"
+    borderRadius: "15px 0px 15px 15px",
+    boxShadow: "11px 10px 18px -7px rgba(0,0,0,0.75)"
   },
   noBottomRound: {
     borderRadius: "15px 15px 0px 0px !important"
@@ -76,12 +72,6 @@ export const MainAppBar = () => {
   const [user, setUser] = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const showPopper: boolean = Boolean(anchorEl);
-
-  const links = navbarItems.map(link => (
-    <Link to={link.url} key={link.name} className={classes.routeLink}>
-      {link.name}
-    </Link>
-  ));
 
   const handleUserClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -158,7 +148,6 @@ export const MainAppBar = () => {
             CourtSharing
           </Link>
         </Typography>
-        <div className={classes.appbar}>{links}</div>
         {user ? renderLogoutButton() : renderLoginButton()}
       </Toolbar>
     </AppBar>

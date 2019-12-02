@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { SelectedSportContext } from "../../../context/SportsContext";
+import { saveSportToLocalStorage } from "../../../utils/storage";
 
 const useStyles = makeStyles({
   bottomNavBar: {
@@ -34,8 +35,12 @@ const useStyles = makeStyles({
 });
 
 export const BottomAppbar = () => {
-  const [favouriteSport, setFavouriteSport] = useContext(SelectedSportContext);
+  const [favouriteSport] = useContext(SelectedSportContext);
   const classes = useStyles();
+
+  const handleNextClick = () => {
+    saveSportToLocalStorage(favouriteSport);
+  }
 
   return (
     <AppBar className={classes.bottomNavBar}>
@@ -45,7 +50,7 @@ export const BottomAppbar = () => {
         </Typography>
         {favouriteSport && (
           <Link to="/feed">
-            <Button color="secondary" className={classes.nextButton}>
+            <Button onClick={handleNextClick} color="secondary" className={classes.nextButton}>
               <Typography className={classes.nextButtonText}>Next</Typography>
               <NavigateNextIcon className={classes.nextIcon} />
             </Button>
