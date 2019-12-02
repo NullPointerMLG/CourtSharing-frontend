@@ -23,6 +23,7 @@ interface AddEventPropups {
   court: any;
   sport: Sport;
   user: User;
+  onError: any;
 }
 
 export const AddEventPopup = (props: AddEventPropups) => {
@@ -41,8 +42,7 @@ export const AddEventPopup = (props: AddEventPropups) => {
       event.event_date = new Date(event.event_date).getTime().toString()
       addNewEvent(event);
     } else {
-      //show error
-      console.warn(event);
+      props.onError();
     }
   };
 

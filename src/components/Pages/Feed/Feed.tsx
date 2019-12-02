@@ -15,6 +15,8 @@ import { SelectedSportContext } from "../../../context/SportsContext";
 import { Event as EventEntity } from "../../../models/Event";
 import { EventDetails } from "./Event/EventDetails/EventDetails";
 import { AddEventPopup } from "./AddEventPopup";
+import { Snackbar } from "@material-ui/core";
+import { SnackbarOrigin } from "@material-ui/core/Snackbar";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,10 +39,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Feed: React.FC = () => {
   const classes = useStyles();
+  const ERROR_AUTO_HIDE_DURATION_MS: number = 4000;
+  const SNACKBAR_POSITION: SnackbarOrigin = {
+    vertical: "bottom",
+    horizontal: "right"
+  };
+  const ADD_EVENT_ERROR_MESSAGE: string = "Fill all the fields first!";
   const [user] = useContext(UserContext);
   const [selectedSport] = useContext(SelectedSportContext);
   const [events, setEvents] = useState<EventEntity[]>([]);
   const [selectedCourt, setSelectedCourt] = useState();
+  const [showError, setShowError] = useState<boolean>(false);
   const [eventSelected, setEventSelected] = useState<EventEntity>();
 
   // TODO: handle error with a feedback component
@@ -68,15 +77,40 @@ export const Feed: React.FC = () => {
 
   const onAddButtonClick = (selectedCourt: any) => {
     setSelectedCourt(selectedCourt);
-  }
-  
+  };
+
   const onCancelPopup = () => {
     setSelectedCourt(undefined);
-  }
+  };
+
+  const onSubmitError = () => {
+    setShowError(true);
+  };
+
+  const handleSnackbarClose = () => {
+    setShowError(false);
+  };
 
   return (
     <div className={classes.root}>
-      {selectedCourt && <AddEventPopup onCancel={onCancelPopup} court={selectedCourt} sport={selectedSport} user={user}/> }
+      {showError && (
+        <Snackbar
+          open={showError}
+          autoHideDuration={ERROR_AUTO_HIDE_DURATION_MS}
+          anchorOrigin={SNACKBAR_POSITION}
+          onClose={handleSnackbarClose}
+          message={ADD_EVENT_ERROR_MESSAGE}
+        />
+      )}
+      {selectedCourt && (
+        <AddEventPopup
+          onError={onSubmitError}
+          onCancel={onCancelPopup}
+          court={selectedCourt}
+          sport={selectedSport}
+          user={user}
+        />
+      )}
       {!eventSelected ? (
         <Grid container>
           <Grid item xs={3}>
@@ -107,7 +141,11 @@ export const Feed: React.FC = () => {
           </Grid>
         </Grid>
       ) : (
-        <EventDetails event={eventSelected} onBack={onEventDetailsBack} userUUID={user.uid}/>
+        <EventDetails
+          event={eventSelected}
+          onBack={onEventDetailsBack}
+          userUUID={user.uid}
+        />
       )}
     </div>
   );
