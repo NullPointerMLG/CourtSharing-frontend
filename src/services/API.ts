@@ -118,9 +118,9 @@ export const getCourts = (sportId: string): Promise<GeoJsonObject> => {
     });
 };
 
-export const addNewEvent = (event: Event): Promise<Event> => {
+export const addNewEvent = (event: any): Promise<Event> => {
   return axiosInstance
-    .post("/events", { data: JSON.stringify(event) })
+    .post("/events", JSON.stringify(event))
     .then((response: AxiosResponse) => {
       if (response.status !== 200)
         throw new Error(JSON.stringify(response.data));

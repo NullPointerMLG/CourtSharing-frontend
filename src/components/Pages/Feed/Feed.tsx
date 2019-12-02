@@ -14,6 +14,7 @@ import "./Feed.css";
 import { SelectedSportContext } from "../../../context/SportsContext";
 import { Event as EventEntity } from "../../../models/Event";
 import { EventDetails } from "./Event/EventDetails/EventDetails";
+import { AddEventPopup } from "./AddEventPopup";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,8 +38,9 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Feed: React.FC = () => {
   const classes = useStyles();
   const [user] = useContext(UserContext);
-  const [favouriteSport] = useContext(SelectedSportContext);
+  const [selectedSport] = useContext(SelectedSportContext);
   const [events, setEvents] = useState<EventEntity[]>([]);
+  const [selectedCourt, setSelectedCourt] = useState();
   const [eventSelected, setEventSelected] = useState<EventEntity>();
 
   // TODO: handle error with a feedback component
@@ -50,22 +52,31 @@ export const Feed: React.FC = () => {
   };
 
   useEffect(() => {
-    if (favouriteSport && user) {
+    if (selectedSport && user) {
       getEvents()
         .then(res => setEvents(res))
         .catch(e => console.warn(e));
     }
   }, []);
 
-  if (!user) return <Redirect to="/login" />;
-  if (!favouriteSport) return <Redirect to="/homepage" />;
+  if (!user) return <Redirect to="/" />;
+  if (!selectedSport) return <Redirect to="/homepage" />;
 
   const onEventDetailsBack = () => {
     setEventSelected(undefined);
   };
 
+  const onAddButtonClick = (selectedCourt: any) => {
+    setSelectedCourt(selectedCourt);
+  }
+  
+  const onCancelPopup = () => {
+    setSelectedCourt(undefined);
+  }
+
   return (
     <div className={classes.root}>
+      {selectedCourt && <AddEventPopup onCancel={onCancelPopup} court={selectedCourt} sport={selectedSport} user={user}/> }
       {!eventSelected ? (
         <Grid container>
           <Grid item xs={3}>
@@ -74,7 +85,7 @@ export const Feed: React.FC = () => {
             </div>
           </Grid>
           <Grid item xs={9}>
-            <CourtMap></CourtMap>
+            <CourtMap onAddEventClick={onAddButtonClick}></CourtMap>
             <div className={classes.eventGridListContainer}>
               <GridList
                 cellHeight={500}

@@ -24,7 +24,7 @@ const useStyle = makeStyles((theme: Theme) => ({
     position: "absolute",
     margin: "10px",
     bottom: "0px",
-    zIndex: 999999,
+    zIndex: 999,
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     "&:hover": {
@@ -33,12 +33,16 @@ const useStyle = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const CourtMap = () => {
+interface CourtMapProps {
+  onAddEventClick: any
+}
+
+export const CourtMap = (props: CourtMapProps) => {
   const classes = useStyle();
   const position: LatLngExpression = [36.72354892, -4.427047];
   const [selectedSport] = useContext(SelectedSportContext);
   const [geoJson, setGeoJson] = useState<GeoJsonObject>();
-  const [selectedMarker, setSelectedMarker] = useState<LatLngExpression>();
+  const [selectedMarker, setSelectedMarker] = useState();
   const sportIcon: Icon<IconOptions> | undefined = selectedSport
     ? icon({
         iconUrl: selectedSport.marker_url,
@@ -56,9 +60,7 @@ export const CourtMap = () => {
     if (feature.properties) {
       const popup: Content = feature.properties.NOMBRE;
       layer.addEventListener("popupopen", () => {
-        const coordinates = feature.geometry.coordinates;
-        const latLng: LatLngExpression = [coordinates[0], coordinates[1]];
-        setSelectedMarker(latLng);
+        setSelectedMarker(feature);
       });
       layer.addEventListener("popupclose", () => {
         setSelectedMarker(undefined);
@@ -76,7 +78,7 @@ export const CourtMap = () => {
       {geoJson && selectedSport && (
         <div className={classes.mapContainer}>
           {selectedMarker && (
-            <Fab className={classes.addFab}>
+            <Fab onClick={() => props.onAddEventClick(selectedMarker)} className={classes.addFab}>
               <AddIcon />
             </Fab>
           )}
