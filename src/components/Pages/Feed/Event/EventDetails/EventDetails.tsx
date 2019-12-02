@@ -45,6 +45,8 @@ interface Props {
   event: Event;
   onBack: () => void;
   userUUID: string;
+  setEvents: (events: Event[]) => void;
+  setEventSelected: (event: Event) => void;
 }
 
 export const EventDetails: React.FC<Props> = props => {
@@ -150,6 +152,7 @@ export const EventDetails: React.FC<Props> = props => {
                 comments={props.event.comments}
                 eventID={props.event.id}
                 userUUID={props.userUUID}
+                setEvents={props.setEvents} setEventSelected={props.setEventSelected}
               />
             </div>
           </Grid>

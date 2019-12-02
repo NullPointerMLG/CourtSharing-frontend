@@ -5,10 +5,15 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
-import { addComment, deleteComment } from "./../../../../../services/API";
+import {
+  addComment,
+  deleteComment,
+  getEvents
+} from "./../../../../../services/API";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteForeverRoundedIcon from "@material-ui/icons/DeleteForeverRounded";
 import IconButton from "@material-ui/core/IconButton";
+import { Event } from "./../../../../../models/Event";
 
 const useStylesChat = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,6 +73,8 @@ interface Props {
   comments: CommentEntity[];
   eventID: string;
   userUUID: string;
+  setEvents: (events: Event[]) => void;
+  setEventSelected: (event: Event) => void;
 }
 
 export const Chat: React.FC<Props> = props => {
@@ -75,15 +82,23 @@ export const Chat: React.FC<Props> = props => {
   const [message, setMessage] = useState<string>("");
 
   const onSend = () => {
-    // TODO: handle error
-    // TODO: reload events to get new comments after fixings homepage favourite sport refactor
     addComment({
       eventID: props.eventID,
       userUUID: props.userUUID,
       message: message
     }).then(() => {
+      reloadEvents();
       setMessage("");
     });
+  };
+
+  const reloadEvents = () => {
+    getEvents()
+      .then(res => {
+        props.setEvents(res);
+        props.setEventSelected(res.filter(e => e.id === props.eventID)[0]);
+      })
+      .catch(e => console.warn(e));
   };
 
   return (
@@ -124,6 +139,9 @@ export const Chat: React.FC<Props> = props => {
                   message={c.message}
                   owner={props.userUUID === c.user.uuid}
                   id={c.id}
+                  setEvents={props.setEvents}
+                  setEventSelected={props.setEventSelected}
+                  eventID={props.eventID}
                 />
               </div>
               <br />
@@ -141,16 +159,27 @@ interface CommentProps {
   message: string;
   owner: boolean;
   id: string;
+  eventID: string;
+  setEvents: (events: Event[]) => void;
+  setEventSelected: (event: Event) => void;
 }
 
-// TODO: add delete button
 const Comment: React.FC<CommentProps> = props => {
   const classes = useStylesComment();
 
-  // TODO: reload event data after homepage favourite sport selection
-  // TODO: handle error
   const onDelete = () => {
-    deleteComment(props.id);
+    deleteComment(props.id).then(() => {
+      reloadEvents();
+    });
+  };
+
+  const reloadEvents = () => {
+    getEvents()
+      .then(res => {
+        props.setEvents(res);
+        props.setEventSelected(res.filter(e => e.id === props.eventID)[0]);
+      })
+      .catch(e => console.warn(e));
   };
 
   return (
