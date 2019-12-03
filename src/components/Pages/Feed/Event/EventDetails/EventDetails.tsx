@@ -72,6 +72,10 @@ export const EventDetails: React.FC<Props> = props => {
     setImage(event.target.files[0]);
   };
 
+  const showImage = event => {
+    console.log(image);
+  }
+
   return (
     <div className={classes.root}>
       <div>
@@ -185,9 +189,16 @@ export const EventDetails: React.FC<Props> = props => {
             >
               Images
             </Typography>
-            <Divider />
-            <input type="file" onChange={setSelectedImage} />
-          </Grid>
+            <Divider />  
+            <input 
+            type="file" 
+            style={{display: 'none'}}
+            onChange={setSelectedImage}
+            id="text-button-file"/> 
+            <label htmlFor="text-button-file">
+              <Button variant="contained" color="primary" component="span">Upload</Button>
+            </label>       
+          </Grid>         
           <Grid item xs={12}>
             <Typography
               variant="body2"
