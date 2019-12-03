@@ -34,7 +34,8 @@ export const AddEventPopup = (props: AddEventPropups) => {
     sport_id: props.sport._id,
     creator_uuid: props.user.uid,
     title: "",
-    description: ""
+    description: "",
+    photo: ""
   });
 
   const onSubmit = () => {

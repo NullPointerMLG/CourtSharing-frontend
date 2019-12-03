@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
@@ -9,6 +9,7 @@ import {MuiPickersUtilsProvider,KeyboardDatePicker} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { Button } from "@material-ui/core";
 import { EventParams } from "./../../../models/EventParams";
+import { getSports } from "../../../services/API";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,7 +46,7 @@ export const FilterMenu: React.FC<Props> = props => {
 
   const classes = useStyles();
   const [sport, setSport] = useState("");
-  const [sports] = useContext(SportsContext);
+  const [sports, setSports] = useContext(SportsContext);
 
   const handleChange = () => (event: any) => {
     setSport(event.target.value)
@@ -64,6 +65,16 @@ export const FilterMenu: React.FC<Props> = props => {
     props.handleFilterEvents(params)
   }
 
+  useEffect(() => {
+    getSports()
+    .then((responseSports: Sport[]) => {
+      setSports(responseSports);
+    })
+    .catch(err => {
+      console.warn(err);
+    });
+  }, [])
+  
   return (
     <div className={classes.root}>
       <Paper className={classes.panel}>
