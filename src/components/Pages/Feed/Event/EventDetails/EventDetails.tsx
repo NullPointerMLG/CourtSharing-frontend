@@ -65,6 +65,13 @@ export const EventDetails: React.FC<Props> = props => {
   }, [event.courtID, event.sport._id.$oid]);
 
   const classes = useStyles();
+
+  const [image, setImage] = useState<File>();
+
+  const setSelectedImage = event => {
+    setImage(event.target.files[0]);
+  };
+
   return (
     <div className={classes.root}>
       <div>
@@ -168,6 +175,18 @@ export const EventDetails: React.FC<Props> = props => {
                 );
               })}
             </div>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              className={classes.sectionTitle}
+            >
+              Images
+            </Typography>
+            <Divider />
+            <input type="file" onChange={setSelectedImage} />
           </Grid>
           <Grid item xs={12}>
             <Typography
