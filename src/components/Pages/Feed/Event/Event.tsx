@@ -5,14 +5,12 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
 import { Event as EventEntity } from "../../../../models/Event";
 import { UserInfo } from "./../../../Utils/UserInfo";
 import Divider from "@material-ui/core/Divider";
 import { Button } from "@material-ui/core";
-import { updateEvent, getEvents, getCourts } from "./../../../../services/API";
+import { updateEvent, getEvents } from "./../../../../services/API";
 import { Map } from "./../../../Utils/Map";
-import { GeoJsonObject } from "geojson";
 
 const courtMock: any = [
   {
@@ -101,10 +99,7 @@ export const Event: React.FC<Props> = props => {
   const classes = useStyles();
   const [assist, setAssist] = useState<boolean>();
   const { event, userUUID } = props;
-  const [court, setCourt] = useState<GeoJsonObject>();
-  /*
-  useEffect(() => {}, []);
-  */
+
   useEffect(() => {
     let found = false;
     for (let key in event.participants) {

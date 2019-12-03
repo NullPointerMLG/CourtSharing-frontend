@@ -1,13 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
-import Divider from "@material-ui/core/Divider";
-import { Button } from "@material-ui/core";
+import React from "react";
 import { GeoJsonObject } from "geojson";
 import {
   Map as MapLeaflet,
@@ -24,12 +15,9 @@ import L, {
   Icon,
   Content
 } from "leaflet";
-import AddIcon from "@material-ui/icons/Add";
 import { usePosition } from "use-position";
-import classnames from "classnames";
 import { Sport } from "./../../models/Sport";
 
-const DEFAULT_ICON_SIZE: [number, number] = [20, 20];
 const MLG_DEFAULT_LOCATION: LatLngExpression = [36.72354892, -4.427047];
 
 const isNearMalaga = (latitude: number, longitude: number): boolean => {
@@ -45,7 +33,6 @@ interface Props {
 }
 
 export const Map: React.FC<Props> = props => {
-  const [selectedMarker, setSelectedMarker] = useState();
   const { latitude, longitude } = usePosition();
   const position: LatLngExpression =
     latitude && longitude && isNearMalaga(latitude, longitude)
@@ -66,12 +53,6 @@ export const Map: React.FC<Props> = props => {
   const onEachFeature = (feature: any, layer: Layer) => {
     if (feature.properties) {
       const popup: Content = feature.properties.NOMBRE;
-      layer.addEventListener("popupopen", () => {
-        setSelectedMarker(feature);
-      });
-      layer.addEventListener("popupclose", () => {
-        setSelectedMarker(undefined);
-      });
       layer.bindPopup(popup);
     }
   };
@@ -90,6 +71,11 @@ export const Map: React.FC<Props> = props => {
           pointToLayer={sportLayer}
           onEachFeature={onEachFeature}
         />
+        {latitude && longitude && isNearMalaga(latitude, longitude) && (
+          <Marker position={position}>
+            <Popup>This is your location</Popup>
+          </Marker>
+        )}
       </MapLeaflet>
     </div>
   );
