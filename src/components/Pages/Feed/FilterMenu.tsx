@@ -73,7 +73,7 @@ export const FilterMenu: React.FC<Props> = props => {
     .catch(err => {
       console.warn(err);
     });
-  }, [])
+  }, [setSports])
   
   return (
     <div className={classes.root}>

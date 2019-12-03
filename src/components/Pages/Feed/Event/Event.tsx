@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
@@ -11,12 +10,43 @@ import { Event as EventEntity } from "../../../../models/Event";
 import { UserInfo } from "./../../../Utils/UserInfo";
 import Divider from "@material-ui/core/Divider";
 import { Button } from "@material-ui/core";
-import { updateEvent, getEvents } from "./../../../../services/API";
+import { updateEvent, getEvents, getCourts } from "./../../../../services/API";
+import { Map } from "./../../../Utils/Map";
+import { GeoJsonObject } from "geojson";
+
+const courtMock: any = [
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [-4.427154, 36.71217891, 0]
+    },
+    geometry_name: "SDOGEOMETRIA",
+    properties: {
+      TITULARIDAD: "MUNICIPAL",
+      URL: "http://www.o2centrowellness.com/MSite/Home.aspx?ID=MAL",
+      DIRECCION: "CALLE PLAZA DE TOROS VIEJA, 5 ",
+      ACCESOPMR: "No",
+      INFOESP: {
+        Espacio_deportivo: "Piscina cubierta",
+        Iluminacion: "Si",
+        Actividad_deportiva: "Actividades Acu\u00e1ticas",
+        Dimensiones_en_metros: "25x12,5",
+        Tipo_de_pavimento: "Baldosas"
+      },
+      TARJETAJOVEN: "No",
+      NOMBRE: "O2 CENTRO WELLNESS PERCHEL (CENTRO DEPORTIVO EL PERCHEL)",
+      EMAIL: "elperchel@o2centrowellness.com",
+      ID: 248
+    },
+    id: "da_deportesPiscinas.fid--5673ced1_16ec3a9f062_69ee"
+  }
+];
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     card: {
-      maxWidth: 345,
+      maxWidth: 500,
       margin: "6px"
     },
     media: {
@@ -64,9 +94,11 @@ export function formatDate(value: number): string {
 export const Event: React.FC<Props> = props => {
   const classes = useStyles();
   const [assist, setAssist] = useState<boolean>();
-
   const { event, userUUID } = props;
-
+  const [court, setCourt] = useState<GeoJsonObject>();
+  /*
+  useEffect(() => {}, []);
+  */
   useEffect(() => {
     let found = false;
     for (let key in event.participants) {
@@ -105,14 +137,14 @@ export const Event: React.FC<Props> = props => {
         subheader={formatDate(props.event.eventDate)}
         onClick={() => props.onClick(props.event)}
       />
-      <CardMedia
-        className={classes.media}
-        image="http://www.sportcourtofpgh.com/wp-content/uploads/2018/04/residential-court-img.jpg"
-      />
       <CardContent>
+        <div>
+          <Map sport={props.event.sport} court={courtMock} />
+        </div>
         <UserInfo
           avatar={props.event.creator.photoURL}
-          name={props.event.creator.name} size={24}
+          name={props.event.creator.name}
+          size={24}
         />
         <Divider />
         <Typography

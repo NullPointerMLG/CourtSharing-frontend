@@ -16,6 +16,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { usePosition } from "use-position";
 import classnames from 'classnames';
 import { ParkingResponse } from "../../../models/ParkingResponse";
+import "./Feed.css"
 
 const useStyle = makeStyles((theme: Theme) => ({
   mapContainer: {
@@ -97,7 +98,7 @@ export const CourtMap = (props: CourtMapProps) => {
 
   useEffect(() => {
     getCourts(selectedSport._id.$oid)
-      .then(res => setGeoJson(res))
+      .then(res => {setGeoJson(res);console.log(res)})
       .catch(e => console.warn(e));
   }, [selectedSport]);
 
