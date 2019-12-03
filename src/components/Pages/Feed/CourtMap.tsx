@@ -37,7 +37,7 @@ const useStyle = makeStyles((theme: Theme) => ({
   filterOptions: {
     position: "absolute",
     margin: "10px",
-    right: "50px",
+    right: "5%",
     bottom: "0px",
     zIndex: 999,
     display: "flex",
