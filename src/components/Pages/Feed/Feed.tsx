@@ -140,7 +140,7 @@ export const Feed: React.FC = () => {
             <CourtMap onAddEventClick={onAddButtonClick}></CourtMap>
             <div className={classes.eventGridListContainer}>
               <GridList
-                cellHeight={520}
+                cellHeight={560}
                 className={classes.eventGridListContainer}
                 cols={2}
               >

@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
       transform: "rotate(180deg)"
     },
     avatar: {
-      backgroundColor: red[500]
+      backgroundColor: "white"
     },
 
     description: {
@@ -75,6 +75,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     assistButton: {
       marginLeft: "auto"
+    },
+    map: {
+      marginBottom: "10px"
+    },
+    userInfo: {
+      margin: "10px 0px 10px 0px"
     }
   })
 );
@@ -131,21 +137,28 @@ export const Event: React.FC<Props> = props => {
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}></Avatar>
+          <Avatar
+            aria-label="recipe"
+            className={classes.avatar}
+            src={props.event.sport.marker_url}
+          ></Avatar>
         }
         title={props.event.title}
         subheader={formatDate(props.event.eventDate)}
         onClick={() => props.onClick(props.event)}
       />
       <CardContent>
-        <div>
+        <div className={classes.map}>
           <Map sport={props.event.sport} court={courtMock} />
         </div>
-        <UserInfo
-          avatar={props.event.creator.photoURL}
-          name={props.event.creator.name}
-          size={24}
-        />
+        <Divider />
+        <div className={classes.userInfo}>
+          <UserInfo
+            avatar={props.event.creator.photoURL}
+            name={props.event.creator.name}
+            size={24}
+          />
+        </div>
         <Divider />
         <Typography
           className={classes.description}
