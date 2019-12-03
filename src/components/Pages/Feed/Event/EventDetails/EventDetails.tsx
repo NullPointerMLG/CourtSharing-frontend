@@ -16,6 +16,7 @@ import { formatDate } from "../Event";
 import { UserInfo } from "../../../../Utils/UserInfo";
 import { Button } from "@material-ui/core";
 import { Chat } from "./Chat";
+import { Map } from "./../../../../Utils/Map";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,9 +38,38 @@ const useStyles = makeStyles((theme: Theme) =>
     backButton: {
       marginBottom: "20px"
     },
-    chat: {}
+    map: { marginTop: "16px" }
   })
 );
+
+const courtMock: any = [
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [-4.427154, 36.71217891, 0]
+    },
+    geometry_name: "SDOGEOMETRIA",
+    properties: {
+      TITULARIDAD: "MUNICIPAL",
+      URL: "http://www.o2centrowellness.com/MSite/Home.aspx?ID=MAL",
+      DIRECCION: "CALLE PLAZA DE TOROS VIEJA, 5 ",
+      ACCESOPMR: "No",
+      INFOESP: {
+        Espacio_deportivo: "Piscina cubierta",
+        Iluminacion: "Si",
+        Actividad_deportiva: "Actividades Acu\u00e1ticas",
+        Dimensiones_en_metros: "25x12,5",
+        Tipo_de_pavimento: "Baldosas"
+      },
+      TARJETAJOVEN: "No",
+      NOMBRE: "O2 CENTRO WELLNESS PERCHEL (CENTRO DEPORTIVO EL PERCHEL)",
+      EMAIL: "elperchel@o2centrowellness.com",
+      ID: 248
+    },
+    id: "da_deportesPiscinas.fid--5673ced1_16ec3a9f062_69ee"
+  }
+];
 
 interface Props {
   event: Event;
@@ -116,7 +146,20 @@ export const EventDetails: React.FC<Props> = props => {
               </List>
             </div>
           </Grid>
-          <Grid item xs={6}></Grid>
+          <Grid item xs={6}>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              className={classes.sectionTitle}
+            >
+              {courtMock[0].properties.NOMBRE}
+            </Typography>
+            <Divider />
+            <div className={classes.map}>
+              <Map sport={props.event.sport} court={courtMock} />
+            </div>
+          </Grid>
           <Grid item xs={12}>
             <Typography
               variant="body2"
@@ -147,12 +190,13 @@ export const EventDetails: React.FC<Props> = props => {
               Thread
             </Typography>
             <Divider />
-            <div className={classes.chat}>
+            <div>
               <Chat
                 comments={props.event.comments}
                 eventID={props.event.id}
                 userUUID={props.userUUID}
-                setEvents={props.setEvents} setEventSelected={props.setEventSelected}
+                setEvents={props.setEvents}
+                setEventSelected={props.setEventSelected}
               />
             </div>
           </Grid>

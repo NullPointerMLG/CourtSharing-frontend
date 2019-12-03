@@ -14,9 +14,9 @@ import { SelectedSportContext } from "../../../context/SportsContext";
 import { getCourts, getParking } from "../../../services/API";
 import AddIcon from "@material-ui/icons/Add";
 import { usePosition } from "use-position";
-import classnames from 'classnames';
+import classnames from "classnames";
 import { ParkingResponse } from "../../../models/ParkingResponse";
-import "./Feed.css"
+import "./Feed.css";
 
 const useStyle = makeStyles((theme: Theme) => ({
   mapContainer: {
@@ -98,7 +98,9 @@ export const CourtMap = (props: CourtMapProps) => {
 
   useEffect(() => {
     getCourts(selectedSport._id.$oid)
-      .then(res => {setGeoJson(res);console.log(res)})
+      .then(res => {
+        setGeoJson(res);
+      })
       .catch(e => console.warn(e));
   }, [selectedSport]);
 
@@ -139,10 +141,12 @@ export const CourtMap = (props: CourtMapProps) => {
 
   const onFilterClick = (parking: ParkingResponse) => {
     if (parkings) {
-      const currentParkings: ParkingResponse[] = parkings.map((iterParking: ParkingResponse) => {
-        if (iterParking === parking) iterParking.active = !iterParking.active;
-        return iterParking;
-      });
+      const currentParkings: ParkingResponse[] = parkings.map(
+        (iterParking: ParkingResponse) => {
+          if (iterParking === parking) iterParking.active = !iterParking.active;
+          return iterParking;
+        }
+      );
       setParkings(currentParkings);
     }
   };
@@ -173,7 +177,10 @@ export const CourtMap = (props: CourtMapProps) => {
             <div className={classes.filterOptions}>
               {parkings.map((value: ParkingResponse) => (
                 <Fab
-                  className={classnames({[classes.filterButton]: true, [classes.filterInactive]: !value.active})}
+                  className={classnames({
+                    [classes.filterButton]: true,
+                    [classes.filterInactive]: !value.active
+                  })}
                   onClick={() => onFilterClick(value)}
                   style={{ backgroundImage: `url(${value.marker_url})` }}
                 ></Fab>
