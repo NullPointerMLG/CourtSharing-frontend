@@ -13,7 +13,16 @@ import { EventParams } from "./../../../models/EventParams";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      padding: "1rem"
+      position: "fixed"
+    },
+    panel: {
+      display: "flex",
+      flexDirection: "column",
+      padding: "1rem",
+    },
+    title: {
+      marginBottom: "0rem",
+      paddingBottom: "0rem"
     }
   })
 );
@@ -56,8 +65,8 @@ export const FilterMenu: React.FC<Props> = props => {
   }
 
   return (
-    <div>
-      <Paper className={classes.root}>
+    <div className={classes.root}>
+      <Paper className={classes.panel}>
         <h1>Filter</h1>
         <h4>Sport</h4>
         <Select
@@ -78,13 +87,13 @@ export const FilterMenu: React.FC<Props> = props => {
             </option>
           ))}
         </Select>
-        <h4>Date</h4>
+        <h4 className={classes.title}>Date</h4>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
             format="MM/dd/yyyy"
-            margin="normal"
+            margin="dense"
             id="date-picker-inline"
             label="Date picker inline"
             value={selectedDate}
