@@ -17,6 +17,7 @@ import { EventDetails } from "./Event/EventDetails/EventDetails";
 import { AddEventPopup } from "./AddEventPopup";
 import { Snackbar } from "@material-ui/core";
 import { SnackbarOrigin } from "@material-ui/core/Snackbar";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,6 +34,17 @@ const useStyles = makeStyles((theme: Theme) =>
     event: { marginBottom: "60px" },
     menuContainer: {
       marginLeft: "16px"
+    },
+    loadingSpinner: {
+      justifyContent: "center",
+      alignSelf: "center",
+      display: "flex",
+      width: "100%",
+      height: "100%"
+    },
+    loadingSpinnerChild: {
+      alignSelf: "center",
+      justifyContent: "center"
     }
   })
 );
@@ -50,8 +62,8 @@ export const Feed: React.FC = () => {
   const [events, setEvents] = useState<EventEntity[]>([]);
   const [selectedCourt, setSelectedCourt] = useState();
   const [showError, setShowError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [eventSelected, setEventSelected] = useState<EventEntity>();
-
   // TODO: handle error with a feedback component
 
   const handleFilterEvents = (params: EventParams) => {
@@ -63,7 +75,9 @@ export const Feed: React.FC = () => {
   useEffect(() => {
     if (selectedSport && user) {
       getEvents()
-        .then(res => setEvents(res))
+        .then(res => {
+          setEvents(res);
+          setLoading(false);})
         .catch(e => console.warn(e));
     }
     // eslint-disable-next-line
@@ -97,6 +111,7 @@ export const Feed: React.FC = () => {
 
   return (
     <div className={classes.root}>
+      
       {showError && (
         <Snackbar
           open={showError}
@@ -152,6 +167,12 @@ export const Feed: React.FC = () => {
           setEvents={setEvents} setEventSelected={setEventSelected}
         />
       )}
+      { loading && 
+        <div className={classes.loadingSpinner}>
+        <div className={classes.loadingSpinnerChild}>
+          <ScaleLoader loading={true} color={"#1DA1F2"} />
+        </div>
+      </div>}
     </div>
   );
 };
