@@ -34,6 +34,7 @@ interface Props {
 
 export const Map: React.FC<Props> = props => {
   const { latitude, longitude } = usePosition();
+  const courtPosition: LatLngExpression = [props.court[0].geometry.coordinates[1], props.court[0].geometry.coordinates[0]]
   const position: LatLngExpression =
     latitude && longitude && isNearMalaga(latitude, longitude)
       ? [latitude, longitude]
@@ -59,7 +60,7 @@ export const Map: React.FC<Props> = props => {
 
   return (
     <div>
-      <MapLeaflet center={position} zoom={13}>
+      <MapLeaflet center={courtPosition} zoom={11}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
