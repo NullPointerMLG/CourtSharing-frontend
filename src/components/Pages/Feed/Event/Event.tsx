@@ -83,7 +83,7 @@ export const Event: React.FC<Props> = props => {
         setCourt(res);
       })
       .catch(e => console.warn(e));
-  },[event.courtID, event.sport._id.$oid]);
+  }, [event.courtID, event.sport._id.$oid]);
 
   useEffect(() => {
     let found = false;

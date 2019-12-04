@@ -1,8 +1,8 @@
-import { ParkingResponse } from "./../models/ParkingResponse";
+import { ParkingResponse } from '../models/ParkingResponse';
 import { GeoJsonObject } from "geojson";
-import { EventParams } from "./../models/EventParams";
-import { EventUpdateParams, CommentAddParams } from "./../models/Event";
-import { ErrorMessage } from "./../models/ErrorMessage";
+import { EventParams } from "../models/EventParams";
+import { EventUpdateParams, CommentAddParams, ImagesUpdateParams } from "../models/Event";
+import { ErrorMessage } from "../models/ErrorMessage";
 import { Event } from "../models/Event";
 import { Sport } from "../models/Sport";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
@@ -73,7 +73,18 @@ export const updateEvent = (
       return response.data;
     });
 };
-
+export const addImage = (
+  params: ImagesUpdateParams
+): Promise<boolean | ErrorMessage> => {
+  return axiosInstance
+  .post(BASE_URL + "/image", {
+    params
+  })
+  .then((response: any) => {
+    if (response.status !== 200) throw new Error(JSON.stringify(Response));
+    return response.data;
+  });
+};
 export const addComment = (
   params: CommentAddParams
 ): Promise<boolean | ErrorMessage> => {

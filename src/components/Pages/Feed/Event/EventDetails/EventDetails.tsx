@@ -19,7 +19,8 @@ import { Chat } from "./Chat";
 import { Map } from "./../../../../Utils/Map";
 import { GeoJsonObject } from "geojson";
 import { getCourtDetails } from "./../../../../../services/API";
-import axios from "axios";
+import { uploadImageToImgur } from "../../../../../services/imgur";
+import { addImage } from "../../../../../services/API";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,27 +74,20 @@ export const EventDetails: React.FC<Props> = props => {
     setImage(event.target.files[0]);
   };
 
-  const uploadImage = event => {
-    const { REACT_APP_IMGUR_API_CLIENT_ID } = process.env;
-    const apiUrl: string = "https://api.imgur.com/3/upload.json";
+  const uploadImage = event => { 
+     
     const formData = new FormData();
-    formData.append("type", "file");
-    formData.append("image", image);
-
-    axios(apiUrl, {
-      method: "POST",
-      headers: {
-        authorization: `Client-ID ${REACT_APP_IMGUR_API_CLIENT_ID}`
-      },
-      data: formData
-    })
-      .then(response => {
-        console.log(response.data.data.link);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+    formData.append('type', 'file');
+    formData.append('image', image);
+    uploadImageToImgur(formData).then(value => {
+      if(value !== "") {
+        addImage({ eventID: props.event.id,  photoURL: value })
+        .then(() => {
+          setImage("")
+        });
+      }
+    });
+  }
 
   return (
     <div className={classes.root}>
