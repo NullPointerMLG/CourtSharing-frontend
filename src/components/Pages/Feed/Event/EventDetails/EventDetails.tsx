@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -74,20 +76,18 @@ export const EventDetails: React.FC<Props> = props => {
     setImage(event.target.files[0]);
   };
 
-  const uploadImage = event => { 
-     
+  const uploadImage = event => {
     const formData = new FormData();
-    formData.append('type', 'file');
-    formData.append('image', image);
+    formData.append("type", "file");
+    formData.append("image", image);
     uploadImageToImgur(formData).then(value => {
-      if(value !== "") {
-        addImage({ eventID: props.event.id,  photoURL: value })
-        .then(() => {
-          setImage("")
+      if (value !== "") {
+        addImage({ eventID: props.event.id, photoURL: value }).then(() => {
+          setImage("");
         });
       }
     });
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -203,6 +203,17 @@ export const EventDetails: React.FC<Props> = props => {
               Images
             </Typography>
             <Divider />
+            <Grid container>
+              <Grid item xs={9}>
+                <GridList cellHeight={500} cols={2}>
+                  {props.event.photos.map((p, i) => (
+                    <GridListTile key={i} cols={1}>
+                      <img src={p} alt={"event"} />
+                    </GridListTile>
+                  ))}
+                </GridList>
+              </Grid>
+            </Grid>
             <input
               type="file"
               style={{ display: "none" }}
