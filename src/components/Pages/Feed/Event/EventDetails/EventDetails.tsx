@@ -19,6 +19,7 @@ import { Chat } from "./Chat";
 import { Map } from "./../../../../Utils/Map";
 import { GeoJsonObject } from "geojson";
 import { getCourtDetails } from "./../../../../../services/API";
+import axios from "axios";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,15 +67,33 @@ export const EventDetails: React.FC<Props> = props => {
 
   const classes = useStyles();
 
-  const [image, setImage] = useState<File>();
+  const [image, setImage] = useState<File | string>("");
 
-  const setSelectedImage = event => {
+  const selectImage = event => {
     setImage(event.target.files[0]);
   };
 
-  const showImage = event => {
-    console.log(image);
-  }
+  const uploadImage = event => {
+    const { REACT_APP_IMGUR_API_CLIENT_ID } = process.env;
+    const apiUrl: string = "https://api.imgur.com/3/upload.json";
+    const formData = new FormData();
+    formData.append("type", "file");
+    formData.append("image", image);
+
+    axios(apiUrl, {
+      method: "POST",
+      headers: {
+        authorization: `Client-ID ${REACT_APP_IMGUR_API_CLIENT_ID}`
+      },
+      data: formData
+    })
+      .then(response => {
+        console.log(response.data.data.link);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className={classes.root}>
@@ -189,16 +208,27 @@ export const EventDetails: React.FC<Props> = props => {
             >
               Images
             </Typography>
-            <Divider />  
-            <input 
-            type="file" 
-            style={{display: 'none'}}
-            onChange={setSelectedImage}
-            id="text-button-file"/> 
+            <Divider />
+            <input
+              type="file"
+              style={{ display: "none" }}
+              onChange={selectImage}
+              id="text-button-file"
+            />
             <label htmlFor="text-button-file">
-              <Button variant="contained" color="primary" component="span">Upload</Button>
-            </label>       
-          </Grid>         
+              <Button variant="contained" color="primary" component="span">
+                Select
+              </Button>
+            </label>
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={uploadImage}
+            >
+              Upload
+            </Button>
+          </Grid>
           <Grid item xs={12}>
             <Typography
               variant="body2"
