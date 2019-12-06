@@ -62,6 +62,7 @@ export const UploadPhoto: React.FC<Props> = props => {
 
   const uploadImage = event => {
     if (image === null) return;
+    props.setOpen(false);
     const formData = new FormData();
     formData.append("type", "file");
     formData.append("image", image);
@@ -71,6 +72,7 @@ export const UploadPhoto: React.FC<Props> = props => {
           setImage("");
         });
       }
+      setImagePreview("");
     });
   };
   return (
@@ -106,6 +108,7 @@ export const UploadPhoto: React.FC<Props> = props => {
                     variant="contained"
                     color="default"
                     startIcon={<CloudUploadIcon />}
+                    onClick={uploadImage}
                   >
                     Upload
                   </Button>
