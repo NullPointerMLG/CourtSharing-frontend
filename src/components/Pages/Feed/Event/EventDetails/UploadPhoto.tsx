@@ -124,7 +124,7 @@ export const UploadPhoto: React.FC<Props> = props => {
                   <img
                     className={classes.image}
                     src={imagePreview}
-                    alt={"image-preview"}
+                    alt={"Preview"}
                   />
                 </div>
               )}
