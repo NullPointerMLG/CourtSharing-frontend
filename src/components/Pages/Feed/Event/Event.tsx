@@ -9,37 +9,13 @@ import { Event as EventEntity } from "../../../../models/Event";
 import { UserInfo } from "./../../../Utils/UserInfo";
 import Divider from "@material-ui/core/Divider";
 import { Button } from "@material-ui/core";
-import { updateEvent, getEvents } from "./../../../../services/API";
+import {
+  updateEvent,
+  getEvents,
+  getCourtDetails
+} from "./../../../../services/API";
 import { Map } from "./../../../Utils/Map";
-
-const courtMock: any = [
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [-4.427154, 36.71217891, 0]
-    },
-    geometry_name: "SDOGEOMETRIA",
-    properties: {
-      TITULARIDAD: "MUNICIPAL",
-      URL: "http://www.o2centrowellness.com/MSite/Home.aspx?ID=MAL",
-      DIRECCION: "CALLE PLAZA DE TOROS VIEJA, 5 ",
-      ACCESOPMR: "No",
-      INFOESP: {
-        Espacio_deportivo: "Piscina cubierta",
-        Iluminacion: "Si",
-        Actividad_deportiva: "Actividades Acu\u00e1ticas",
-        Dimensiones_en_metros: "25x12,5",
-        Tipo_de_pavimento: "Baldosas"
-      },
-      TARJETAJOVEN: "No",
-      NOMBRE: "O2 CENTRO WELLNESS PERCHEL (CENTRO DEPORTIVO EL PERCHEL)",
-      EMAIL: "elperchel@o2centrowellness.com",
-      ID: 248
-    },
-    id: "da_deportesPiscinas.fid--5673ced1_16ec3a9f062_69ee"
-  }
-];
+import { GeoJsonObject } from "geojson";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -98,7 +74,16 @@ export function formatDate(value: number): string {
 export const Event: React.FC<Props> = props => {
   const classes = useStyles();
   const [assist, setAssist] = useState<boolean>();
+  const [court, setCourt] = useState<GeoJsonObject>();
   const { event, userUUID } = props;
+
+  useEffect(() => {
+    getCourtDetails(event.courtID, event.sport._id.$oid)
+      .then(res => {
+        setCourt(res);
+      })
+      .catch(e => console.warn(e));
+  },[event.courtID, event.sport._id.$oid]);
 
   useEffect(() => {
     let found = false;
@@ -143,9 +128,11 @@ export const Event: React.FC<Props> = props => {
         onClick={() => props.onClick(props.event)}
       />
       <CardContent>
-        <div className={classes.map}>
-          <Map sport={props.event.sport} court={courtMock} />
-        </div>
+        {court && (
+          <div className={classes.map}>
+            <Map sport={props.event.sport} court={court} />
+          </div>
+        )}
         <Divider />
         <div className={classes.userInfo}>
           <UserInfo
