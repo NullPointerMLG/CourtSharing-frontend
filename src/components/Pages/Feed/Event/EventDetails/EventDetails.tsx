@@ -23,6 +23,9 @@ import { GeoJsonObject } from "geojson";
 import { getCourtDetails } from "./../../../../../services/api";
 import { uploadImageToImgur } from "../../../../../services/imgur";
 import { addImage } from "../../../../../services/api";
+import Fab from "@material-ui/core/Fab";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,6 +51,10 @@ const useStyles = makeStyles((theme: Theme) =>
     photoGridList: {
       flexWrap: "nowrap",
       transform: "translateZ(0)"
+    },
+    addPhoto: {
+      top: "100px",
+      right: "-200px"
     }
   })
 );
@@ -221,6 +228,17 @@ export const EventDetails: React.FC<Props> = props => {
                     </GridListTile>
                   ))}
                 </GridList>
+              </Grid>
+              <Grid item xs={3}>
+                <div>
+                  <Fab
+                    className={classes.addPhoto}
+                    color="primary"
+                    aria-label="add"
+                  >
+                    <AddIcon />
+                  </Fab>
+                </div>
               </Grid>
             </Grid>
             <input
