@@ -21,11 +21,9 @@ import { Chat } from "./Chat";
 import { Map } from "./../../../../Utils/Map";
 import { GeoJsonObject } from "geojson";
 import { getCourtDetails } from "./../../../../../services/api";
-import { uploadImageToImgur } from "../../../../../services/imgur";
-import { addImage } from "../../../../../services/api";
 import Fab from "@material-ui/core/Fab";
-import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
+import { UploadPhoto } from "./UploadPhoto";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,25 +78,7 @@ export const EventDetails: React.FC<Props> = props => {
   }, [event.courtID, event.sport._id.$oid]);
 
   const classes = useStyles();
-
-  const [image, setImage] = useState<File | string>("");
-
-  const selectImage = event => {
-    setImage(event.target.files[0]);
-  };
-
-  const uploadImage = event => {
-    const formData = new FormData();
-    formData.append("type", "file");
-    formData.append("image", image);
-    uploadImageToImgur(formData).then(value => {
-      if (value !== "") {
-        addImage({ eventID: props.event.id, photoURL: value }).then(() => {
-          setImage("");
-        });
-      }
-    });
-  };
+  const [dialog, setDialog] = useState<boolean>(false);
 
   return (
     <div className={classes.root}>
@@ -235,31 +215,14 @@ export const EventDetails: React.FC<Props> = props => {
                     className={classes.addPhoto}
                     color="primary"
                     aria-label="add"
+                    onClick={() => setDialog(true)}
                   >
                     <AddIcon />
                   </Fab>
+                  <UploadPhoto open={dialog} setOpen={setDialog} eventID={props.event.id}/>
                 </div>
               </Grid>
             </Grid>
-            <input
-              type="file"
-              style={{ display: "none" }}
-              onChange={selectImage}
-              id="text-button-file"
-            />
-            <label htmlFor="text-button-file">
-              <Button variant="contained" color="primary" component="span">
-                Select
-              </Button>
-            </label>
-            <Button
-              variant="contained"
-              color="primary"
-              component="span"
-              onClick={uploadImage}
-            >
-              Upload
-            </Button>
           </Grid>
           <Grid item xs={12}>
             <Typography
