@@ -24,6 +24,7 @@ import { getCourtDetails } from "./../../../../../services/api";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { UploadPhoto } from "./UploadPhoto";
+import { getEvents } from "../../../../../services/api";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,6 +80,15 @@ export const EventDetails: React.FC<Props> = props => {
 
   const classes = useStyles();
   const [dialog, setDialog] = useState<boolean>(false);
+
+  const reloadEvents = () => {
+    getEvents()
+      .then(res => {
+        props.setEvents(res);
+        props.setEventSelected(res.filter(e => e.id === props.event.id)[0]);
+      })
+      .catch(e => console.warn(e));
+  };
 
   return (
     <div className={classes.root}>
@@ -219,7 +229,12 @@ export const EventDetails: React.FC<Props> = props => {
                   >
                     <AddIcon />
                   </Fab>
-                  <UploadPhoto open={dialog} setOpen={setDialog} eventID={props.event.id}/>
+                  <UploadPhoto
+                    open={dialog}
+                    setOpen={setDialog}
+                    eventID={props.event.id}
+                    onUpload={reloadEvents}
+                  />
                 </div>
               </Grid>
             </Grid>

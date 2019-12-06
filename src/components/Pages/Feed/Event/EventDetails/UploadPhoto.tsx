@@ -34,6 +34,7 @@ interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
   eventID: string;
+  onUpload: () => void;
 }
 
 export const UploadPhoto: React.FC<Props> = props => {
@@ -73,8 +74,10 @@ export const UploadPhoto: React.FC<Props> = props => {
         });
       }
       setImagePreview("");
+      props.onUpload();
     });
   };
+
   return (
     <div>
       <Dialog
