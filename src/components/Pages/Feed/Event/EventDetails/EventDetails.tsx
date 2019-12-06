@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -18,7 +20,11 @@ import { Button } from "@material-ui/core";
 import { Chat } from "./Chat";
 import { Map } from "./../../../../Utils/Map";
 import { GeoJsonObject } from "geojson";
-import { getCourtDetails } from "./../../../../../services/API";
+import { getCourtDetails } from "./../../../../../services/api";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import { UploadPhoto } from "./UploadPhoto";
+import { getEvents } from "../../../../../services/api";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,7 +46,16 @@ const useStyles = makeStyles((theme: Theme) =>
     backButton: {
       marginBottom: "20px"
     },
-    map: { marginTop: "16px" }
+    map: { marginTop: "16px" },
+    photoGridList: {
+      flexWrap: "nowrap",
+      transform: "translateZ(0)",
+      minHeight: "250px"
+    },
+    addPhoto: {
+      top: "100px",
+      right: "-100px"
+    }
   })
 );
 
@@ -65,6 +80,17 @@ export const EventDetails: React.FC<Props> = props => {
   }, [event.courtID, event.sport._id.$oid]);
 
   const classes = useStyles();
+  const [dialog, setDialog] = useState<boolean>(false);
+
+  const reloadEvents = () => {
+    getEvents()
+      .then(res => {
+        props.setEvents(res);
+        props.setEventSelected(res.filter(e => e.id === props.event.id)[0]);
+      })
+      .catch(e => console.warn(e));
+  };
+
   return (
     <div className={classes.root}>
       <div>
@@ -168,6 +194,51 @@ export const EventDetails: React.FC<Props> = props => {
                 );
               })}
             </div>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              className={classes.sectionTitle}
+            >
+              Images
+            </Typography>
+            <Divider />
+            <br />
+            <Grid container>
+              <Grid item xs={3}>
+                <div>
+                  <Fab
+                    className={classes.addPhoto}
+                    color="primary"
+                    aria-label="add"
+                    onClick={() => setDialog(true)}
+                  >
+                    <AddIcon />
+                  </Fab>
+                  <UploadPhoto
+                    open={dialog}
+                    setOpen={setDialog}
+                    eventID={props.event.id}
+                    onUpload={reloadEvents}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={9}>
+                <GridList
+                  className={classes.photoGridList}
+                  cellHeight={250}
+                  cols={2.5}
+                >
+                  {props.event.photos.map((p, i) => (
+                    <GridListTile key={i} cols={1}>
+                      <img src={p} alt={"event"} />
+                    </GridListTile>
+                  ))}
+                </GridList>
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs={12}>
             <Typography

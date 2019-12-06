@@ -7,7 +7,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import { FilterMenu } from "./FilterMenu";
 import Grid from "@material-ui/core/Grid";
-import { getEvents } from "../../../services/API";
+import { getEvents } from "../../../services/api";
 import { EventParams } from "../../../models/EventParams";
 import { CourtMap } from "./CourtMap";
 import { SelectedSportContext } from "../../../context/SportsContext";

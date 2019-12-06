@@ -12,10 +12,16 @@ export interface Event {
   participants: User[];
   comments: Comment[];
   sport: Sport;
+  photos: string[];
 }
 
 export interface EventUpdateParams {
   participantUUID: string;
+}
+
+export interface ImagesUpdateParams {
+  eventID: string;
+  photoURL: string;
 }
 
 export interface Comment {
