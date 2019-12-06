@@ -6,6 +6,29 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { uploadImageToImgur } from "../../../../../services/imgur";
 import { addImage } from "../../../../../services/api";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import SearchIcon from "@material-ui/icons/Search";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: { minWidth: "600px", height: "auto" },
+    image: {
+      maxHeight: "40vh",
+      width: "auto"
+    },
+    dialogPaper: {
+      minHeight: "60vh",
+      maxHeight: "60vh",
+      minWidth: "70vw"
+    },
+    imageContainer: {
+      textAlign: "center"
+    },
+    uploadButton: { marginTop: "8px" }
+  })
+);
 
 interface Props {
   open: boolean;
@@ -16,6 +39,8 @@ interface Props {
 export const UploadPhoto: React.FC<Props> = props => {
   const [image, setImage] = useState<File | string | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
+
+  const classes = useStyles();
 
   const selectImage = async event => {
     setImage(event.target.files[0]);
@@ -50,29 +75,60 @@ export const UploadPhoto: React.FC<Props> = props => {
   };
   return (
     <div>
-      <Dialog open={props.open} aria-labelledby="upload-dialog">
+      <Dialog
+        classes={{ paper: classes.dialogPaper }}
+        open={props.open}
+        aria-labelledby="upload-dialog"
+      >
         <DialogTitle>Upload photo</DialogTitle>
         <DialogContent>
-          <input
-            type="file"
-            style={{ display: "none" }}
-            onChange={selectImage}
-            id="text-button-file"
-          />
-          <label htmlFor="text-button-file">
-            <Button variant="contained" color="primary" component="span">
-              Select
-            </Button>
-          </label>
-          {imagePreview !== "" && (
-            <img src={imagePreview} alt={"image-preview"} />
-          )}
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <input
+                type="file"
+                style={{ display: "none" }}
+                onChange={selectImage}
+                id="text-button-file"
+              />
+              <label htmlFor="text-button-file">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  startIcon={<SearchIcon />}
+                >
+                  Select
+                </Button>
+              </label>
+              {imagePreview && (
+                <div className={classes.uploadButton}>
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<CloudUploadIcon />}
+                  >
+                    Upload
+                  </Button>
+                </div>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              {imagePreview !== "" && (
+                <div className={classes.imageContainer}>
+                  <img
+                    className={classes.image}
+                    src={imagePreview}
+                    alt={"image-preview"}
+                  />
+                </div>
+              )}
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button color="primary" onClick={() => props.setOpen(false)}>
             Cancel
           </Button>
-          <Button color="primary">Upload</Button>
         </DialogActions>
       </Dialog>
     </div>
