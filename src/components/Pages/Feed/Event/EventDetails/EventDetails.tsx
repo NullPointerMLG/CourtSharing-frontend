@@ -49,11 +49,12 @@ const useStyles = makeStyles((theme: Theme) =>
     map: { marginTop: "16px" },
     photoGridList: {
       flexWrap: "nowrap",
-      transform: "translateZ(0)"
+      transform: "translateZ(0)",
+      minHeight: "250px"
     },
     addPhoto: {
       top: "100px",
-      right: "-200px"
+      right: "-100px"
     }
   })
 );
@@ -206,19 +207,6 @@ export const EventDetails: React.FC<Props> = props => {
             <Divider />
             <br />
             <Grid container>
-              <Grid item xs={9}>
-                <GridList
-                  className={classes.photoGridList}
-                  cellHeight={250}
-                  cols={2.5}
-                >
-                  {props.event.photos.map((p, i) => (
-                    <GridListTile key={i} cols={1}>
-                      <img src={p} alt={"event"} />
-                    </GridListTile>
-                  ))}
-                </GridList>
-              </Grid>
               <Grid item xs={3}>
                 <div>
                   <Fab
@@ -236,6 +224,19 @@ export const EventDetails: React.FC<Props> = props => {
                     onUpload={reloadEvents}
                   />
                 </div>
+              </Grid>
+              <Grid item xs={9}>
+                <GridList
+                  className={classes.photoGridList}
+                  cellHeight={250}
+                  cols={2.5}
+                >
+                  {props.event.photos.map((p, i) => (
+                    <GridListTile key={i} cols={1}>
+                      <img src={p} alt={"event"} />
+                    </GridListTile>
+                  ))}
+                </GridList>
               </Grid>
             </Grid>
           </Grid>
