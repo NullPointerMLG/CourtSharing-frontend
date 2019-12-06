@@ -9,7 +9,7 @@ import {
   addComment,
   deleteComment,
   getEvents
-} from "../../../../../services/API";
+} from "../../../../../services/api";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteForeverRoundedIcon from "@material-ui/icons/DeleteForeverRounded";
 import IconButton from "@material-ui/core/IconButton";

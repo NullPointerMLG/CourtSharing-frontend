@@ -11,7 +11,7 @@ import L, {
 } from "leaflet";
 import { makeStyles, Theme, Fab } from "@material-ui/core";
 import { SelectedSportContext } from "../../../context/SportsContext";
-import { getCourts, getParking } from "../../../services/API";
+import { getCourts, getParking } from "../../../services/api";
 import AddIcon from "@material-ui/icons/Add";
 import { usePosition } from "use-position";
 import classnames from "classnames";

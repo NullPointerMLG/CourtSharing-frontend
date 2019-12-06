@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Sport } from "../../../models/Sport";
 import { User } from "../../../models/User";
-import { addNewEvent } from "../../../services/API";
+import { addNewEvent } from "../../../services/api";
 
 const useStyles = makeStyles({
   textField: {

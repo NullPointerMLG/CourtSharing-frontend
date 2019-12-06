@@ -9,7 +9,7 @@ import {
   GridListTileBar
 } from "@material-ui/core";
 import { BottomAppbar } from "./BottomAppbar";
-import { getSports } from "../../../services/API";
+import { getSports } from "../../../services/api";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { UserContext } from "../../../context/UserContext";
 import { Redirect } from "react-router-dom";

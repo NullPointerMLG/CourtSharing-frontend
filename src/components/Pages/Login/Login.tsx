@@ -3,7 +3,7 @@ import { StyledFirebaseAuth } from "react-firebaseui";
 import firebase from "firebase";
 import { UserContext } from "../../../context/UserContext";
 import { Redirect } from "react-router-dom";
-import { login } from "../../../services/API";
+import { login } from "../../../services/api";
 import { isErrorMessage } from "../../../models/ErrorMessage";
 import { Snackbar } from "@material-ui/core";
 import { SnackbarOrigin } from "@material-ui/core/Snackbar";

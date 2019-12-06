@@ -9,7 +9,7 @@ import {MuiPickersUtilsProvider,KeyboardDatePicker} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { Button } from "@material-ui/core";
 import { EventParams } from "./../../../models/EventParams";
-import { getSports } from "../../../services/API";
+import { getSports } from "../../../services/api";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

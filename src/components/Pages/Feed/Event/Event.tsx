@@ -13,7 +13,7 @@ import {
   updateEvent,
   getEvents,
   getCourtDetails
-} from "./../../../../services/API";
+} from "./../../../../services/api";
 import { Map } from "./../../../Utils/Map";
 import { GeoJsonObject } from "geojson";
 

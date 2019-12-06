@@ -20,9 +20,9 @@ import { Button } from "@material-ui/core";
 import { Chat } from "./Chat";
 import { Map } from "./../../../../Utils/Map";
 import { GeoJsonObject } from "geojson";
-import { getCourtDetails } from "./../../../../../services/API";
+import { getCourtDetails } from "./../../../../../services/api";
 import { uploadImageToImgur } from "../../../../../services/imgur";
-import { addImage } from "../../../../../services/API";
+import { addImage } from "../../../../../services/api";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,7 +44,11 @@ const useStyles = makeStyles((theme: Theme) =>
     backButton: {
       marginBottom: "20px"
     },
-    map: { marginTop: "16px" }
+    map: { marginTop: "16px" },
+    photoGridList: {
+      flexWrap: "nowrap",
+      transform: "translateZ(0)"
+    }
   })
 );
 
@@ -203,9 +207,14 @@ export const EventDetails: React.FC<Props> = props => {
               Images
             </Typography>
             <Divider />
+            <br />
             <Grid container>
               <Grid item xs={9}>
-                <GridList cellHeight={500} cols={2}>
+                <GridList
+                  className={classes.photoGridList}
+                  cellHeight={250}
+                  cols={2.5}
+                >
                   {props.event.photos.map((p, i) => (
                     <GridListTile key={i} cols={1}>
                       <img src={p} alt={"event"} />
