@@ -1,4 +1,5 @@
 import { User } from "./User";
+import { Sport } from "./Sport";
 
 export interface Event {
   id: string;
@@ -10,6 +11,7 @@ export interface Event {
   creator: User;
   participants: User[];
   comments: Comment[];
+  sport: Sport;
 }
 
 export interface EventUpdateParams {
@@ -17,7 +19,7 @@ export interface EventUpdateParams {
 }
 
 export interface Comment {
-  id:string;
+  id: string;
   message: string;
   user: User;
 }

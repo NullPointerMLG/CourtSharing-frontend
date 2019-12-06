@@ -1,4 +1,4 @@
-import { ParkingResponse } from './../models/ParkingResponse';
+import { ParkingResponse } from "./../models/ParkingResponse";
 import { GeoJsonObject } from "geojson";
 import { EventParams } from "./../models/EventParams";
 import { EventUpdateParams, CommentAddParams } from "./../models/Event";
@@ -119,7 +119,26 @@ export const getCourts = (sportId: string): Promise<GeoJsonObject> => {
     });
 };
 
-export const getParking = (coordinates: number[]): Promise<ParkingResponse[]> => {
+export const getCourtDetails = (
+  courtID: string,
+  sportID: string
+): Promise<GeoJsonObject> => {
+  return axiosInstance
+    .get("/courts/" + courtID + "?=sport-id=" + sportID)
+    .then((response: AxiosResponse) => {
+      if (response.status !== 200)
+        throw new Error(JSON.stringify(response.data));
+      return response.data;
+    })
+    .then(response => {
+      const resGeoJson = response as unknown;
+      return resGeoJson as GeoJsonObject;
+    });
+};
+
+export const getParking = (
+  coordinates: number[]
+): Promise<ParkingResponse[]> => {
   return axiosInstance
     .get("/parkings", { params: { lat: coordinates[0], lon: coordinates[1] } })
     .then((response: AxiosResponse) => {

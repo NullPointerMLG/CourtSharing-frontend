@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
@@ -16,6 +16,9 @@ import { formatDate } from "../Event";
 import { UserInfo } from "../../../../Utils/UserInfo";
 import { Button } from "@material-ui/core";
 import { Chat } from "./Chat";
+import { Map } from "./../../../../Utils/Map";
+import { GeoJsonObject } from "geojson";
+import { getCourtDetails } from "./../../../../../services/API";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
     backButton: {
       marginBottom: "20px"
     },
-    chat: {}
+    map: { marginTop: "16px" }
   })
 );
 
@@ -50,6 +53,17 @@ interface Props {
 }
 
 export const EventDetails: React.FC<Props> = props => {
+  const [court, setCourt] = useState<GeoJsonObject>();
+
+  const { event } = props;
+  useEffect(() => {
+    getCourtDetails(event.courtID, event.sport._id.$oid)
+      .then(res => {
+        setCourt(res);
+      })
+      .catch(e => console.warn(e));
+  }, [event.courtID, event.sport._id.$oid]);
+
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -116,7 +130,25 @@ export const EventDetails: React.FC<Props> = props => {
               </List>
             </div>
           </Grid>
-          <Grid item xs={6}></Grid>
+          <Grid item xs={6}>
+            {court && (
+              <>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  component="p"
+                  className={classes.sectionTitle}
+                >
+                  {court[0].properties.NOMBRE}
+                </Typography>
+                <Divider />
+
+                <div className={classes.map}>
+                  <Map sport={props.event.sport} court={court} />
+                </div>
+              </>
+            )}
+          </Grid>
           <Grid item xs={12}>
             <Typography
               variant="body2"
@@ -147,12 +179,13 @@ export const EventDetails: React.FC<Props> = props => {
               Thread
             </Typography>
             <Divider />
-            <div className={classes.chat}>
+            <div>
               <Chat
                 comments={props.event.comments}
                 eventID={props.event.id}
                 userUUID={props.userUUID}
-                setEvents={props.setEvents} setEventSelected={props.setEventSelected}
+                setEvents={props.setEvents}
+                setEventSelected={props.setEventSelected}
               />
             </div>
           </Grid>

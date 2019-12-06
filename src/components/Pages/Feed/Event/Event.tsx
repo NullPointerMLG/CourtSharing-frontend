@@ -2,21 +2,25 @@ import React, { useState, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
 import { Event as EventEntity } from "../../../../models/Event";
 import { UserInfo } from "./../../../Utils/UserInfo";
 import Divider from "@material-ui/core/Divider";
 import { Button } from "@material-ui/core";
-import { updateEvent, getEvents } from "./../../../../services/API";
+import {
+  updateEvent,
+  getEvents,
+  getCourtDetails
+} from "./../../../../services/API";
+import { Map } from "./../../../Utils/Map";
+import { GeoJsonObject } from "geojson";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     card: {
-      maxWidth: 345,
+      maxWidth: 500,
       margin: "6px"
     },
     media: {
@@ -34,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
       transform: "rotate(180deg)"
     },
     avatar: {
-      backgroundColor: red[500]
+      backgroundColor: "white"
     },
 
     description: {
@@ -45,6 +49,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     assistButton: {
       marginLeft: "auto"
+    },
+    map: {
+      marginBottom: "10px"
+    },
+    userInfo: {
+      margin: "10px 0px 10px 0px"
     }
   })
 );
@@ -64,8 +74,16 @@ export function formatDate(value: number): string {
 export const Event: React.FC<Props> = props => {
   const classes = useStyles();
   const [assist, setAssist] = useState<boolean>();
-
+  const [court, setCourt] = useState<GeoJsonObject>();
   const { event, userUUID } = props;
+
+  useEffect(() => {
+    getCourtDetails(event.courtID, event.sport._id.$oid)
+      .then(res => {
+        setCourt(res);
+      })
+      .catch(e => console.warn(e));
+  },[event.courtID, event.sport._id.$oid]);
 
   useEffect(() => {
     let found = false;
@@ -99,21 +117,30 @@ export const Event: React.FC<Props> = props => {
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}></Avatar>
+          <Avatar
+            aria-label="recipe"
+            className={classes.avatar}
+            src={props.event.sport.marker_url}
+          ></Avatar>
         }
         title={props.event.title}
         subheader={formatDate(props.event.eventDate)}
         onClick={() => props.onClick(props.event)}
       />
-      <CardMedia
-        className={classes.media}
-        image="http://www.sportcourtofpgh.com/wp-content/uploads/2018/04/residential-court-img.jpg"
-      />
       <CardContent>
-        <UserInfo
-          avatar={props.event.creator.photoURL}
-          name={props.event.creator.name} size={24}
-        />
+        {court && (
+          <div className={classes.map}>
+            <Map sport={props.event.sport} court={court} />
+          </div>
+        )}
+        <Divider />
+        <div className={classes.userInfo}>
+          <UserInfo
+            avatar={props.event.creator.photoURL}
+            name={props.event.creator.name}
+            size={24}
+          />
+        </div>
         <Divider />
         <Typography
           className={classes.description}

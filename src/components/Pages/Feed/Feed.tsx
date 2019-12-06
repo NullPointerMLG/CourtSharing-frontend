@@ -10,7 +10,6 @@ import Grid from "@material-ui/core/Grid";
 import { getEvents } from "../../../services/API";
 import { EventParams } from "../../../models/EventParams";
 import { CourtMap } from "./CourtMap";
-import "./Feed.css";
 import { SelectedSportContext } from "../../../context/SportsContext";
 import { Event as EventEntity } from "../../../models/Event";
 import { EventDetails } from "./Event/EventDetails/EventDetails";
@@ -141,7 +140,7 @@ export const Feed: React.FC = () => {
             <CourtMap onAddEventClick={onAddButtonClick}></CourtMap>
             <div className={classes.eventGridListContainer}>
               <GridList
-                cellHeight={500}
+                cellHeight={560}
                 className={classes.eventGridListContainer}
                 cols={2}
               >

@@ -128,9 +128,8 @@ export const Chat: React.FC<Props> = props => {
       <div className={classes.comments}>
         {props.comments.map((c, i) => {
           return (
-            <div className={classes.commentContainer}>
+            <div key={i} className={classes.commentContainer}>
               <div
-                key={i}
                 className={isEven(i) ? classes.evenComment : classes.oddComment}
               >
                 <Comment
