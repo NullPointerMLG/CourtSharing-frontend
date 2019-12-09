@@ -62,7 +62,7 @@ export const getEvents = (params?: EventParams): Promise<Event[]> => {
 
 export const updateEvent = (
   eventID: string,
-  params: EventUpdateParams
+  params: EventUpdateParams | any
 ): Promise<boolean | ErrorMessage> => {
   return axiosInstance
     .put(BASE_URL + "/events/" + eventID, {

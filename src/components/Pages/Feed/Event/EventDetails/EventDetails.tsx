@@ -16,15 +16,17 @@ import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import Typography from "@material-ui/core/Typography";
 import { formatDate } from "../Event";
 import { UserInfo } from "../../../../Utils/UserInfo";
-import { Button } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import { Chat } from "./Chat";
 import { Map } from "./../../../../Utils/Map";
 import { GeoJsonObject } from "geojson";
-import { getCourtDetails } from "./../../../../../services/api";
+import { getCourtDetails, updateEvent } from "./../../../../../services/api";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { UploadPhoto } from "./UploadPhoto";
 import { getEvents } from "../../../../../services/api";
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,9 +70,15 @@ interface Props {
 }
 
 export const EventDetails: React.FC<Props> = props => {
+  const classes = useStyles();
+  const [dialog, setDialog] = useState<boolean>(false);
   const [court, setCourt] = useState<GeoJsonObject>();
-
+  const [edit, setEdit] = useState(false);
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
+  const [date, setDate] = useState<number | null>(null);
+  const [description, setDescription] = useState(props.event.description)
   const { event } = props;
+
   useEffect(() => {
     getCourtDetails(event.courtID, event.sport._id.$oid)
       .then(res => {
@@ -79,8 +87,30 @@ export const EventDetails: React.FC<Props> = props => {
       .catch(e => console.warn(e));
   }, [event.courtID, event.sport._id.$oid]);
 
-  const classes = useStyles();
-  const [dialog, setDialog] = useState<boolean>(false);
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+    if (date !== null) {  
+      setDate(parseInt((date.getTime()/1000).toFixed(0)));
+    } else {
+      setDate(date)
+    }
+  };
+  
+  const handleChange = event => {
+    setDescription(event.target.value);
+  }
+
+  const submitChanges = () => {
+    setEdit(false);
+    if (description) {  
+      event.description = description;
+    }
+    if (date) {  
+      event.eventDate = date;
+    }
+    console.log(event);
+    updateEvent(event.id, event);
+  }
 
   const reloadEvents = () => {
     getEvents()
@@ -136,10 +166,25 @@ export const EventDetails: React.FC<Props> = props => {
                       <DateRangeRoundedIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText
+                  {!edit ? <ListItemText
                     primary={"Event date"}
                     secondary={formatDate(props.event.eventDate)}
+                  />: 
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="dense"
+                    id="date-picker-inline"
+                    label="Date picker inline"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date"
+                    }}
                   />
+                </MuiPickersUtilsProvider>}
                 </ListItem>
                 <Divider variant="inset" component="li" />
                 <ListItem>
@@ -148,14 +193,43 @@ export const EventDetails: React.FC<Props> = props => {
                       <DescriptionRoundedIcon />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText
+                  {!edit ? <ListItemText
                     primary="Description"
                     secondary={props.event.description}
-                  />
+                  />: <TextField
+                  fullWidth
+                  // className={classes.textField}
+                  margin="dense"
+                  value={description}  
+                  onChange={handleChange}
+                  label="Description"
+                  type="text"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  variant="outlined"
+                  />}
                 </ListItem>
               </List>
+              {event.creator.uuid === props.userUUID && !edit && <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => setEdit(true)}
+              className={classes.backButton}
+              >
+                Edit
+              </Button>}
+              {edit === true && <Button
+              variant="outlined"
+              color="primary"
+              onClick={submitChanges}
+              className={classes.backButton}
+              >
+                Save
+              </Button>}
             </div>
           </Grid>
+          
           <Grid item xs={6}>
             {court && (
               <>
