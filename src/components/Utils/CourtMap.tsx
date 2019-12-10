@@ -10,13 +10,12 @@ import L, {
   Content
 } from "leaflet";
 import { makeStyles, Theme, Fab } from "@material-ui/core";
-import { SelectedSportContext } from "../../../context/SportsContext";
-import { getCourts, getParking } from "../../../services/api";
-import AddIcon from "@material-ui/icons/Add";
+import { SelectedSportContext } from "../../context/SportsContext";
+import { getCourts, getParking } from "../../services/api";
 import { usePosition } from "use-position";
 import classnames from "classnames";
-import { ParkingResponse } from "../../../models/ParkingResponse";
-import "./Feed.css";
+import { ParkingResponse } from "../../models/ParkingResponse";
+import "./CourtMap.css";
 
 const useStyle = makeStyles((theme: Theme) => ({
   mapContainer: {
@@ -56,10 +55,6 @@ const useStyle = makeStyles((theme: Theme) => ({
   }
 }));
 
-interface CourtMapProps {
-  onAddEventClick: any;
-}
-
 const MLG_DEFAULT_LOCATION: LatLngExpression = [36.72354892, -4.427047];
 
 const isNearMalaga = (latitude: number, longitude: number): boolean => {
@@ -77,6 +72,12 @@ const getIconFromURL = (url: string): any => {
     iconSize: DEFAULT_ICON_SIZE
   });
 };
+
+interface CourtMapProps {
+  showParkings?: boolean;
+  onMarkerClick?: (feature: any) => void;
+  onMarkerUnclicked?: () => void;
+}
 
 export const CourtMap = (props: CourtMapProps) => {
   const classes = useStyle();
@@ -102,10 +103,10 @@ export const CourtMap = (props: CourtMapProps) => {
         setGeoJson(res);
       })
       .catch(e => console.warn(e));
-  }, [selectedSport]);
+  }, [selectedSport, props.showParkings]);
 
   useEffect(() => {
-    if (selectedMarker) {
+    if (selectedMarker && props.showParkings) {
       getParking(selectedMarker.geometry.coordinates).then(
         (parkingResponses: ParkingResponse[]) => {
           parkingResponses.forEach(
@@ -115,9 +116,17 @@ export const CourtMap = (props: CourtMapProps) => {
         }
       );
     }
+    // eslint-disable-next-line
   }, [selectedMarker]);
 
   const onEachFeature = (feature: any, layer: Layer) => {
+    if (props.onMarkerClick) {
+      layer.addEventListener("click", () => {
+        if (props.onMarkerClick) {
+          props.onMarkerClick(feature);
+        }
+      });
+    }
     if (feature.properties) {
       const popup: Content = feature.properties.NOMBRE;
       layer.addEventListener("popupopen", () => {
@@ -125,6 +134,10 @@ export const CourtMap = (props: CourtMapProps) => {
       });
       layer.addEventListener("popupclose", () => {
         setSelectedMarker(undefined);
+
+        if (props.onMarkerUnclicked) {
+          props.onMarkerUnclicked();
+        }
       });
       layer.bindPopup(popup);
     }
@@ -165,15 +178,7 @@ export const CourtMap = (props: CourtMapProps) => {
     <div>
       {geoJson && selectedSport && (
         <div className={classes.mapContainer}>
-          {selectedMarker && (
-            <Fab
-              onClick={() => props.onAddEventClick(selectedMarker)}
-              className={classes.addFab}
-            >
-              <AddIcon />
-            </Fab>
-          )}
-          {parkings && (
+          {props.showParkings && parkings && (
             <div className={classes.filterOptions}>
               {parkings.map((value: ParkingResponse) => (
                 <Fab
@@ -199,7 +204,8 @@ export const CourtMap = (props: CourtMapProps) => {
               pointToLayer={sportLayer}
               onEachFeature={onEachFeature}
             />
-            {parkings &&
+            {props.showParkings &&
+              parkings &&
               parkings.map((parking: ParkingResponse) => {
                 return parking.active ? (
                   <GeoJSON

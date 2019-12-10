@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   }
 });
 
-interface AddEventPropups {
+interface AddEventProps {
   onCancel: any;
   court: any;
   sport: Sport;
@@ -26,7 +26,7 @@ interface AddEventPropups {
   onError: any;
 }
 
-export const AddEventPopup = (props: AddEventPropups) => {
+export const AddEventPopup = (props: AddEventProps) => {
   const classes = useStyles();
   const [event, setEvent] = useState({
     event_date: "",
