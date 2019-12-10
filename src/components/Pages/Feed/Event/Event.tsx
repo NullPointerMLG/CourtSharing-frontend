@@ -67,7 +67,7 @@ interface Props {
 }
 
 export function formatDate(value: number): string {
-  const date: Date = new Date(value);
+  const date: Date = new Date(value*1000);
   return date.toLocaleDateString();
 }
 
