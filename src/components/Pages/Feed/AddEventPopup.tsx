@@ -29,7 +29,7 @@ interface AddEventPropups {
 export const AddEventPopup = (props: AddEventPropups) => {
   const classes = useStyles();
   const [event, setEvent] = useState({
-    event_date: "",
+    event_date: 0,
     court_id: props.court.properties.ID,
     sport_id: props.sport._id,
     creator_uuid: props.user.uid,
@@ -40,7 +40,7 @@ export const AddEventPopup = (props: AddEventPropups) => {
 
   const onSubmit = () => {
     if (event.event_date && event.title && event.description) {
-      event.event_date = new Date(event.event_date).getTime().toString();
+      event.event_date = parseInt((new Date(event.event_date).getTime()/1000).toFixed(0));
       addNewEvent(event).then(() => {
         props.onCancel();
       });
