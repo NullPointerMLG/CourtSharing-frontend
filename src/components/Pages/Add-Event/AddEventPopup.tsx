@@ -11,6 +11,7 @@ import {
 import { Sport } from "../../../models/Sport";
 import { User } from "../../../models/User";
 import { addNewEvent } from "../../../services/api";
+import { Redirect } from "react-router";
 
 const useStyles = makeStyles({
   textField: {
@@ -28,6 +29,7 @@ interface AddEventProps {
 
 export const AddEventPopup = (props: AddEventProps) => {
   const classes = useStyles();
+  const [successPopup, setSuccessPopup] = useState();
   const [event, setEvent] = useState({
     event_date: "",
     court_id: props.court.properties.ID,
@@ -42,6 +44,7 @@ export const AddEventPopup = (props: AddEventProps) => {
     if (event.event_date && event.title && event.description) {
       event.event_date = new Date(event.event_date).getTime().toString();
       addNewEvent(event).then(() => {
+        setSuccessPopup(true);
         props.onCancel();
       });
     } else {
@@ -54,6 +57,8 @@ export const AddEventPopup = (props: AddEventProps) => {
     const value: string = changeEvent.target.value;
     setEvent({ ...event, [property]: value });
   };
+
+  if(successPopup) return <Redirect to="/feed" />
 
   return (
     <Dialog open={true}>
