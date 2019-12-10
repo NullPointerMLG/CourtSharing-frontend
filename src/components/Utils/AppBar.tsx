@@ -10,13 +10,13 @@ import {
   Popper
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import PersonSharpIcon from "@material-ui/icons/PersonSharp";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import firebase from "firebase";
 import classNames from "classnames";
+import { SelectedSportContext } from "../../context/SportsContext";
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: "right",
     paddingRight: "5px",
     color: "#000000",
+    textTransform: "none"
+  },
+  optionButton: {
+    fontSize: "15px",
     textTransform: "none"
   },
   loginIcon: {
@@ -58,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   columnFlex: {
     display: "flex",
     flexDirection: "column",
-    padding: "10px 0 10px 0",
+    padding: "10px 0 10px 0"
   }
 }));
 
@@ -66,6 +70,7 @@ export const MainAppBar = () => {
   const classes = useStyles();
   const [user, setUser] = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [selectedSport] = useContext(SelectedSportContext);
   const showPopper: boolean = Boolean(anchorEl);
 
   const handleUserClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -82,20 +87,9 @@ export const MainAppBar = () => {
 
   const handleFavouriteClick = () => {
     setAnchorEl(null);
-  }
-
-  const renderLoginButton = () => {
-    return (
-      <Link to="/" className={classes.link}>
-        <Button color="secondary" className={classes.userButton}>
-          <PersonSharpIcon className={classes.loginIcon} />
-          <Typography className={classes.loginButtonText}>Log in</Typography>
-        </Button>
-      </Link>
-    );
   };
 
-  const renderLogoutButton = () => {
+  const renderUser = () => {
     return (
       <div>
         <Chip
@@ -114,7 +108,11 @@ export const MainAppBar = () => {
         >
           <div className={classes.columnFlex}>
             <Link to="/homepage" className={classes.link}>
-              <Button onClick={handleFavouriteClick} color="secondary" className={classes.userButton}>
+              <Button
+                onClick={handleFavouriteClick}
+                color="secondary"
+                className={classes.userButton}
+              >
                 <FavoriteIcon className={classes.loginIcon} />
                 <Typography className={classes.loginButtonText}>
                   Favourite Sport
@@ -147,7 +145,18 @@ export const MainAppBar = () => {
             CourtSharing
           </Link>
         </Typography>
-        {user ? renderLogoutButton() : renderLoginButton()}
+        {selectedSport && (
+          <Link to="/add-event" className={classes.link}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              className={classes.optionButton}
+            >
+              Create event
+            </Button>
+          </Link>
+        )}
+        {renderUser()}
       </Toolbar>
     </AppBar>
   ) : (

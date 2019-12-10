@@ -9,6 +9,7 @@ import { ContextProvider } from "./context/ContextProvider";
 import { Homepage } from "./components/Pages/Homepage/Homepage";
 import { Landing } from "./components/Pages/Landing/Landing";
 import { NotFound } from "./components/Pages/NotFound/NotFound";
+import { AddEvent } from "./components/Pages/Add-Event/AddEvent";
 
 initializeFirebase();
 
@@ -36,6 +37,7 @@ const App: React.FC = () => {
                   <Route exact path="/" component={Landing} />
                   <Route exact path="/feed" component={Feed} />
                   <Route exact path="/homepage" component={Homepage} />
+                  <Route exact path="/add-event" component={AddEvent} />
                   <Route component={NotFound} />
                 </Switch>
               </div>

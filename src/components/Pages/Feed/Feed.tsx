@@ -9,13 +9,10 @@ import { FilterMenu } from "./FilterMenu";
 import Grid from "@material-ui/core/Grid";
 import { getEvents } from "../../../services/api";
 import { EventParams } from "../../../models/EventParams";
-import { CourtMap } from "./CourtMap";
+import { CourtMap } from "../../Utils/CourtMap";
 import { SelectedSportContext } from "../../../context/SportsContext";
 import { Event as EventEntity } from "../../../models/Event";
 import { EventDetails } from "./Event/EventDetails/EventDetails";
-import { AddEventPopup } from "./AddEventPopup";
-import { Snackbar } from "@material-ui/core";
-import { SnackbarOrigin } from "@material-ui/core/Snackbar";
 import ScaleLoader from "react-spinners/ScaleLoader";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -50,17 +47,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Feed: React.FC = () => {
   const classes = useStyles();
-  const ERROR_AUTO_HIDE_DURATION_MS: number = 4000;
-  const SNACKBAR_POSITION: SnackbarOrigin = {
-    vertical: "bottom",
-    horizontal: "right"
-  };
-  const ADD_EVENT_ERROR_MESSAGE: string = "Fill all the fields first!";
   const [user] = useContext(UserContext);
   const [selectedSport] = useContext(SelectedSportContext);
   const [events, setEvents] = useState<EventEntity[]>([]);
-  const [selectedCourt, setSelectedCourt] = useState();
-  const [showError, setShowError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [eventSelected, setEventSelected] = useState<EventEntity>();
   // TODO: handle error with a feedback component
@@ -89,46 +78,8 @@ export const Feed: React.FC = () => {
     setEventSelected(undefined);
   };
 
-  const onAddButtonClick = (selectedCourt: any) => {
-    setSelectedCourt(selectedCourt);
-  };
-
-  const onCancelPopup = () => {
-    setSelectedCourt(undefined);
-    getEvents()
-      .then(res => setEvents(res))
-      .catch(e => console.warn(e));
-  };
-
-  const onSubmitError = () => {
-    setShowError(true);
-  };
-
-  const handleSnackbarClose = () => {
-    setShowError(false);
-  };
-
   return (
     <div className={classes.root}>
-      
-      {showError && (
-        <Snackbar
-          open={showError}
-          autoHideDuration={ERROR_AUTO_HIDE_DURATION_MS}
-          anchorOrigin={SNACKBAR_POSITION}
-          onClose={handleSnackbarClose}
-          message={ADD_EVENT_ERROR_MESSAGE}
-        />
-      )}
-      {selectedCourt && (
-        <AddEventPopup
-          onError={onSubmitError}
-          onCancel={onCancelPopup}
-          court={selectedCourt}
-          sport={selectedSport}
-          user={user}
-        />
-      )}
       {!eventSelected ? (
         <Grid container>
           <Grid item xs={3}>
@@ -137,7 +88,7 @@ export const Feed: React.FC = () => {
             </div>
           </Grid>
           <Grid item xs={9}>
-            <CourtMap onAddEventClick={onAddButtonClick}></CourtMap>
+            <CourtMap showParkings={true}></CourtMap>
             <div className={classes.eventGridListContainer}>
               <GridList
                 cellHeight={560}
