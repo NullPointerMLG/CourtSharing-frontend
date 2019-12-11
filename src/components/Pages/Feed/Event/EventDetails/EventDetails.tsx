@@ -116,8 +116,6 @@ export const EventDetails: React.FC<Props> = props => {
     if (title) {  
       event.title = title;
     }
-    console.log(event);
-    console.log(event.title)
     updateEvent(event.id, {
       participantUUID: null,
       eventDate: event.eventDate,
