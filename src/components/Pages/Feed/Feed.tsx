@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: "hidden",
       paddingLeft: "40px"
     },
-    event: { marginBottom: "60px" },
+    event: { marginBottom: "60px", height: "auto !important" },
     menuContainer: {
       marginLeft: "16px"
     },
@@ -65,7 +65,8 @@ export const Feed: React.FC = () => {
       getEvents()
         .then(res => {
           setEvents(res);
-          setLoading(false);})
+          setLoading(false);
+        })
         .catch(e => console.warn(e));
     }
     // eslint-disable-next-line
@@ -90,11 +91,7 @@ export const Feed: React.FC = () => {
           <Grid item xs={9}>
             <CourtMap showParkings={true}></CourtMap>
             <div className={classes.eventGridListContainer}>
-              <GridList
-                cellHeight={560}
-                className={classes.eventGridListContainer}
-                cols={2}
-              >
+              <GridList className={classes.eventGridListContainer} cols={2}>
                 {events.map((event, i) => (
                   <GridListTile key={i} cols={1} className={classes.event}>
                     <Event
@@ -114,15 +111,17 @@ export const Feed: React.FC = () => {
           event={eventSelected}
           onBack={onEventDetailsBack}
           userUUID={user.uid}
-          setEvents={setEvents} setEventSelected={setEventSelected}
+          setEvents={setEvents}
+          setEventSelected={setEventSelected}
         />
       )}
-      { loading && 
+      {loading && (
         <div className={classes.loadingSpinner}>
-        <div className={classes.loadingSpinnerChild}>
-          <ScaleLoader loading={true} color={"#1DA1F2"} />
+          <div className={classes.loadingSpinnerChild}>
+            <ScaleLoader loading={true} color={"#1DA1F2"} />
+          </div>
         </div>
-      </div>}
+      )}
     </div>
   );
 };
