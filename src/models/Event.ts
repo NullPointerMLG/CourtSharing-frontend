@@ -16,10 +16,10 @@ export interface Event {
 }
 
 export interface EventUpdateParams {
-  participantUUID: string;  
-  eventDate: number;
-  title: string;
-  description?: string;
+  participantUUID: string | null;  
+  eventDate: number | null;
+  title: string | null;
+  description?: string | null;
 }
 
 export interface ImagesUpdateParams {
