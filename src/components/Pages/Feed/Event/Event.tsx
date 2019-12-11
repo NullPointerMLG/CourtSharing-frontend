@@ -100,7 +100,11 @@ export const Event: React.FC<Props> = props => {
   }, [event.participants, userUUID]);
 
   const onClickAssist = () => {
-    updateEvent(props.event.id, { participantUUID: props.userUUID })
+    updateEvent(props.event.id, { 
+      participantUUID: props.userUUID,
+      eventDate: null,
+      title: null,
+      description: null })
       .then(() => {
         reloadEvents();
       })

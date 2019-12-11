@@ -77,6 +77,7 @@ export const EventDetails: React.FC<Props> = props => {
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
   const [date, setDate] = useState<number | null>(null);
   const [description, setDescription] = useState(props.event.description)
+  const [title, setTitle] = useState(props.event.title)
   const { event } = props;
 
   useEffect(() => {
@@ -96,8 +97,12 @@ export const EventDetails: React.FC<Props> = props => {
     }
   };
   
-  const handleChange = event => {
+  const handleDescriptionChange = event => {
     setDescription(event.target.value);
+  }
+
+  const handleTitleChange = event => {
+    setTitle(event.target.value);
   }
 
   const submitChanges = () => {
@@ -107,9 +112,17 @@ export const EventDetails: React.FC<Props> = props => {
     }
     if (date) {  
       event.eventDate = date;
+    }    
+    if (title) {  
+      event.title = title;
     }
     console.log(event);
-    updateEvent(event.id, event);
+    console.log(event.title)
+    updateEvent(event.id, {
+      participantUUID: null,
+      eventDate: event.eventDate,
+      title: event.title,
+      description: event.description});
   }
 
   const reloadEvents = () => {
@@ -135,6 +148,27 @@ export const EventDetails: React.FC<Props> = props => {
         <Grid container spacing={3}>
           <Grid item xs={6}>
             <div>
+            {!edit ? <Typography
+                  variant="body2"
+                  component="h1"
+                  className={classes.sectionTitle}
+                >
+                  {title}
+                </Typography>:
+                  <TextField
+                  fullWidth
+                  // className={classes.textField}
+                  margin="dense"
+                  value={title}  
+                  onChange={handleTitleChange}
+                  label="Title"
+                  type="text"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  variant="outlined"
+                  />
+                }
               <List>
                 <ListItem>
                   <ListItemAvatar>
@@ -201,7 +235,7 @@ export const EventDetails: React.FC<Props> = props => {
                   // className={classes.textField}
                   margin="dense"
                   value={description}  
-                  onChange={handleChange}
+                  onChange={handleDescriptionChange}
                   label="Description"
                   type="text"
                   InputLabelProps={{
@@ -242,7 +276,6 @@ export const EventDetails: React.FC<Props> = props => {
                   {court[0].properties.NOMBRE}
                 </Typography>
                 <Divider />
-
                 <div className={classes.map}>
                   <Map sport={props.event.sport} court={court} />
                 </div>
