@@ -20,7 +20,8 @@ import { GeoJsonObject } from "geojson";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     card: {
-      maxWidth: 500,
+      minWidth: "55rem",
+      maxWidth: "55rem",
       margin: "6px"
     },
     media: {
