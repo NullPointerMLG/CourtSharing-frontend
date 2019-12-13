@@ -5,11 +5,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { uploadImageToImgur } from "../../../../../services/imgur";
-import { addImage } from "../../../../../services/api";
+import { addImage, getEvents } from "../../../../../services/api";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import SearchIcon from "@material-ui/icons/Search";
+import { Event } from "./../../../../../models/Event";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,7 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
+  setLoading: (value: boolean) => void;
   eventID: string;
+  setEvents: (events: Event[]) => void;
+  setEventSelected: (event: Event) => void;
   onUpload: () => void;
 }
 
@@ -61,9 +65,20 @@ export const UploadPhoto: React.FC<Props> = props => {
     });
   };
 
+  const reloadEvents = () => {
+    getEvents()
+      .then(res => {
+        props.setEvents(res);
+        props.setEventSelected(res.filter(e => e.id === props.eventID)[0]);
+      })
+      .catch(e => console.warn(e));
+  };
+
+
   const uploadImage = event => {
     if (image === null) return;
     props.setOpen(false);
+    props.setLoading(true);
     const formData = new FormData();
     formData.append("type", "file");
     formData.append("image", image);
@@ -71,6 +86,8 @@ export const UploadPhoto: React.FC<Props> = props => {
       if (value !== "") {
         addImage({ eventID: props.eventID, photoURL: value }).then(() => {
           setImage("");
+          props.setLoading(false);
+          reloadEvents();
         });
       }
       setImagePreview("");

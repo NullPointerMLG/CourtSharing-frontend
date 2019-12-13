@@ -25,6 +25,7 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { UploadPhoto } from "./UploadPhoto";
 import { getEvents } from "../../../../../services/api";
+import ScaleLoader from "react-spinners/ScaleLoader";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
@@ -78,6 +79,7 @@ export const EventDetails: React.FC<Props> = props => {
   const [date, setDate] = useState<number | null>(null);
   const [description, setDescription] = useState(props.event.description)
   const [title, setTitle] = useState(props.event.title)
+  const [loading, setLoading] = useState(false)
   const { event } = props;
 
   useEffect(() => {
@@ -230,7 +232,6 @@ export const EventDetails: React.FC<Props> = props => {
                     secondary={props.event.description}
                   />: <TextField
                   fullWidth
-                  // className={classes.textField}
                   margin="dense"
                   value={description}  
                   onChange={handleDescriptionChange}
@@ -321,12 +322,15 @@ export const EventDetails: React.FC<Props> = props => {
                     onClick={() => setDialog(true)}
                   >
                     <AddIcon />
-                  </Fab>
+                  </Fab>  
                   <UploadPhoto
                     open={dialog}
                     setOpen={setDialog}
                     eventID={props.event.id}
                     onUpload={reloadEvents}
+                    setLoading={setLoading}
+                    setEvents={props.setEvents}
+                    setEventSelected={props.setEventSelected}
                   />
                 </div>
               </Grid>
@@ -336,6 +340,9 @@ export const EventDetails: React.FC<Props> = props => {
                   cellHeight={250}
                   cols={2.5}
                 >
+                  
+                  {loading && 
+                  <ScaleLoader loading={true} color={"#1DA1F2"} />}
                   {props.event.photos.map((p, i) => (
                     <GridListTile key={i} cols={1}>
                       <img src={p} alt={"event"} />
