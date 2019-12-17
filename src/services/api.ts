@@ -7,7 +7,7 @@ import { Event } from "../models/Event";
 import { Sport } from "../models/Sport";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-const BASE_URL: string = "http://localhost:5000";
+const BASE_URL: string = "http://courtsharing-api.herokuapp.com";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL
